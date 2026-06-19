@@ -1,0 +1,284 @@
+<mxfile host="app.diagrams.net" modified="2026-06-18T12:00:00.000Z" agent="Shuyang" version="22.0.0">
+  <diagram id="system-arch-main" name="System Architecture">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1800" pageHeight="1300" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <!-- Title -->
+        <mxCell id="title" value="AI Mortgage Compliance Platform — System Architecture (MVP Scope)" style="text;html=1;fontSize=20;fontStyle=1;align=center;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="900" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="subtitle" value="Tech Stack: Node.js · Next.js · Self-hosted Supabase · n8n · Azure OCR/OpenAI · VPS Docker | RBAC excluded from MVP" style="text;html=1;fontSize=12;align=center;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="400" y="55" width="900" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- User -->
+        <mxCell id="user" value="User&#xa;(Broker / Compliance Analyst)" style="shape=umlActor;verticalLabelPosition=bottom;verticalAlign=top;html=1;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="50" height="90" as="geometry" />
+        </mxCell>
+
+        <!-- VPS Boundary -->
+        <mxCell id="vps" value="VPS Server — Docker Host (All components containerised per client requirement)" style="swimlane;startSize=28;fillColor=#f5f5f5;strokeColor=#666666;strokeWidth=2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="100" width="1320" height="720" as="geometry" />
+        </mxCell>
+
+        <!-- Frontend Container -->
+        <mxCell id="fe-c" value="Docker Container: nextjs-frontend (:3000)" style="swimlane;startSize=28;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="vps">
+          <mxGeometry x="30" y="50" width="300" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-next" value="Next.js App Router" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="fe-c">
+          <mxGeometry x="15" y="45" width="270" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-task1" value="Task i — Upload UI&#xa;· Loan application form&#xa;· PDF/JPEG/PNG/DOCX upload&#xa;· OCR status &amp; preview" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="fe-c">
+          <mxGeometry x="15" y="95" width="270" height="65" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-task2" value="Task ii — Verification UI&#xa;· Discrepancy comparison view&#xa;· Flag display &amp; override" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="fe-c">
+          <mxGeometry x="15" y="170" width="270" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-task3" value="Task iii — Dashboard (Nice to have)&#xa;· Stats &amp; confidence ranking" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#e1d5e7;strokeColor=#9673a6;dashed=1;" vertex="1" parent="fe-c">
+          <mxGeometry x="15" y="235" width="270" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="fe-api" value="apiClient → REST/JSON" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#666666;fontStyle=2;" vertex="1" parent="fe-c">
+          <mxGeometry x="15" y="295" width="270" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- Backend Container -->
+        <mxCell id="be-c" value="Docker Container: nodejs-api (:5000)" style="swimlane;startSize=28;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="vps">
+          <mxGeometry x="360" y="50" width="380" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="routes" value="Route Layer (Express)&#xa;/api/cases · /api/documents · /api/extractions&#xa;/api/validate · /api/comparison · /api/dashboard" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffffff;strokeColor=#6c8ebf;" vertex="1" parent="be-c">
+          <mxGeometry x="15" y="45" width="350" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="ctrl" value="Controller Layer&#xa;CaseController · DocumentController · VerificationController · DashboardController" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="be-c">
+          <mxGeometry x="15" y="110" width="350" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="svc" value="Service Layer (Business Logic)&#xa;CaptureService · NormalisationService · VerificationService · DiscrepancyService · DashboardService" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="be-c">
+          <mxGeometry x="15" y="165" width="350" height="55" as="geometry" />
+        </mxCell>
+        <mxCell id="dal" value="Data Access Layer (DAL)&#xa;Supabase client · Repository pattern · Audit logging" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="be-c">
+          <mxGeometry x="15" y="230" width="350" height="45" as="geometry" />
+        </mxCell>
+        <mxCell id="be-n8n-trigger" value="Triggers n8n via Webhook / REST" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#e1d5e7;strokeColor=#9673a6;fontStyle=2;" vertex="1" parent="be-c">
+          <mxGeometry x="15" y="285" width="350" height="25" as="geometry" />
+        </mxCell>
+
+        <!-- n8n Container -->
+        <mxCell id="n8n-c" value="Docker Container: n8n (:5678)" style="swimlane;startSize=28;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="vps">
+          <mxGeometry x="770" y="50" width="300" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="n8n-title" value="n8n Orchestration Engine" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#9673a6;fontStyle=1;" vertex="1" parent="n8n-c">
+          <mxGeometry x="15" y="45" width="270" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="wf1" value="Workflow 1 — Data Capture (Task i)&#xa;1. Receive document ref&#xa;2. Call Azure Document Intelligence&#xa;3. Call Azure OpenAI (field normalise)&#xa;4. Write extraction + confidence to DB" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="n8n-c">
+          <mxGeometry x="15" y="85" width="270" height="85" as="geometry" />
+        </mxCell>
+        <mxCell id="wf2" value="Workflow 2 — Verification (Task ii)&#xa;1. Load normalised fields&#xa;2. Call verification tool API&#xa;3. ABR lookup (Nice to have)&#xa;4. Detect discrepancies &amp; flag&#xa;5. Store verification results" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="n8n-c">
+          <mxGeometry x="15" y="180" width="270" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="wf3" value="Workflow 3 — Mock/Test path&#xa;Inject mock verification data for discrepancy testing" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;" vertex="1" parent="n8n-c">
+          <mxGeometry x="15" y="280" width="270" height="35" as="geometry" />
+        </mxCell>
+
+        <!-- Supabase Container -->
+        <mxCell id="db-c" value="Docker Container: supabase-db (PostgreSQL :5432)" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="vps">
+          <mxGeometry x="1100" y="50" width="200" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="db-tables" value="Supabase Tables&#xa;─────────────&#xa;loan_applications&#xa;documents&#xa;extraction_fields&#xa;  (+ confidence %)&#xa;verification_results&#xa;discrepancies&#xa;audit_log" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;align=left;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="db-c">
+          <mxGeometry x="25" y="50" width="150" height="250" as="geometry" />
+        </mxCell>
+
+        <!-- Storage row -->
+        <mxCell id="storage-c" value="Docker Volume: document-storage (encrypted file store for uploaded PDF/JPEG/PNG/DOCX)" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#fff2cc;strokeColor=#d6b656;dashed=1;" vertex="1" parent="vps">
+          <mxGeometry x="30" y="400" width="620" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Internal edges -->
+        <mxCell id="e-fe-be" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#d79b00;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="vps" source="fe-c" target="be-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-fe-be-l" value="REST/JSON" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="e-fe-be">
+          <mxGeometry x="-0.1" relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-be-n8n" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#9673a6;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="vps" source="be-c" target="n8n-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-be-n8n-l" value="Webhook trigger" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-be-n8n">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-be-db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#82b366;exitX=1;exitY=0.75;entryX=0;entryY=0.5;" edge="1" parent="vps" source="be-c" target="db-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-be-db-l" value="SQL (DAL)" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-be-db">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-n8n-db" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#82b366;dashed=1;exitX=1;exitY=0.5;entryX=0;entryY=0.5;" edge="1" parent="vps" source="n8n-c" target="db-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-n8n-db-l" value="Write results" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-n8n-db">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-8" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-be-storage" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#d6b656;dashed=1;" edge="1" parent="vps" source="be-c" target="storage-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-be-storage-l" value="Store raw files" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-be-storage">
+          <mxGeometry relative="1" as="geometry"><mxPoint x="10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- User to Frontend -->
+        <mxCell id="e-user-fe" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeWidth=2;strokeColor=#6c8ebf;" edge="1" parent="1" source="user" target="fe-c">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="e-user-fe-l" value="HTTPS :3000" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="e-user-fe">
+          <mxGeometry relative="1" as="geometry"><mxPoint y="-10" as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- External Services -->
+        <mxCell id="ext" value="External Cloud Services" style="swimlane;startSize=28;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="860" width="1320" height="160" as="geometry" />
+        </mxCell>
+        <mxCell id="azure-ocr" value="Azure Document Intelligence&#xa;(OCR — Task i Must Have)&#xa;PDF · JPEG · PNG · DOCX" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="ext">
+          <mxGeometry x="40" y="45" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="azure-openai" value="Azure OpenAI&#xa;(Field normalisation — Task i)&#xa;Structured JSON output" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="ext">
+          <mxGeometry x="290" y="45" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="verify-tool" value="Verification Tool API&#xa;(Task ii — from i.a research)&#xa;Third-party compliance check" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;" vertex="1" parent="ext">
+          <mxGeometry x="540" y="45" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="abr" value="ABR API&#xa;(Australian Business Registry)&#xa;Task ii — Nice to have" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#ffffff;strokeColor=#b85450;dashed=1;" vertex="1" parent="ext">
+          <mxGeometry x="790" y="45" width="220" height="70" as="geometry" />
+        </mxCell>
+        <mxCell id="out-scope" value="Out of MVP Scope: RBAC · Mercury CRM · Smartfinn · Automated loan decision" style="rounded=1;whiteSpace=wrap;html=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#666666;dashed=1;" vertex="1" parent="ext">
+          <mxGeometry x="1040" y="45" width="260" height="70" as="geometry" />
+        </mxCell>
+
+        <!-- n8n to external -->
+        <mxCell id="e-n8n-ocr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b85450;exitX=0.25;exitY=1;entryX=0.5;entryY=0;" edge="1" parent="1" source="n8n-c" target="azure-ocr">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="845" y="830" /><mxPoint x="350" y="830" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e-n8n-ocr-l" value="Extract fields" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-n8n-ocr">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-n8n-openai" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b85450;" edge="1" parent="1" source="n8n-c" target="azure-openai">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="920" y="830" /><mxPoint x="600" y="830" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e-n8n-openai-l" value="Normalise" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-n8n-openai">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-n8n-verify" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b85450;" edge="1" parent="1" source="n8n-c" target="verify-tool">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="995" y="830" /><mxPoint x="850" y="830" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e-n8n-verify-l" value="Verify" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-n8n-verify">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="e-n8n-abr" style="edgeStyle=orthogonalEdgeStyle;rounded=0;strokeColor=#b85450;dashed=1;" edge="1" parent="1" source="n8n-c" target="abr">
+          <mxGeometry relative="1" as="geometry"><Array as="points"><mxPoint x="1070" y="830" /><mxPoint x="1100" y="830" /></Array></mxGeometry>
+        </mxCell>
+        <mxCell id="e-n8n-abr-l" value="ABN lookup (optional)" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="e-n8n-abr">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <!-- Data Flow Legend -->
+        <mxCell id="legend" value="Labelled Data Flows (MVP)&#xa;&#xa;Flow A — Task i Capture:&#xa;  User upload → Next.js → Node DocumentController → store file → n8n WF1 → Azure OCR → OpenAI → extraction_fields + confidence → Supabase&#xa;&#xa;Flow B — Task ii Verification:&#xa;  User trigger validate → Node VerificationController → n8n WF2 → Verification API (+ ABR) → compare fields → discrepancies flagged → verification_results → Supabase&#xa;&#xa;Flow C — Task iii Dashboard (Nice to have):&#xa;  Next.js → Node DashboardController → DashboardService → aggregate confidence % → rank applications → UI" style="shape=note;whiteSpace=wrap;html=1;size=16;align=left;verticalAlign=top;fillColor=#ffff88;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1050" width="700" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- Scope mapping -->
+        <mxCell id="scope-map" value="Scope WBS Mapping&#xa;Task i (Must Have) → WF1 + Upload UI + DB tables + Azure OCR&#xa;Task ii → WF2 + Verification UI + discrepancy flags + tool API&#xa;Task iii (Nice to have) → Dashboard UI + stats API&#xa;Task iv RBAC → Excluded (no auth layer in MVP)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="930" y="1050" width="590" height="100" as="geometry" />
+        </mxCell>
+
+        <!-- Separation note -->
+        <mxCell id="sep-note" value="Responsibility Separation: Routes handle HTTP only · Services contain business logic · DAL handles Supabase · n8n orchestrates external AI/API calls (no god component)" style="text;html=1;fontSize=11;fontStyle=2;align=center;fontColor=#333333;" vertex="1" parent="1">
+          <mxGeometry x="930" y="1170" width="590" height="40" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+
+  <diagram id="data-model" name="Database Schema">
+    <mxGraphModel dx="1200" dy="800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1400" pageHeight="900" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="dm-title" value="Supabase Database Schema — Normalised Data Model (Task i &amp; ii)" style="text;html=1;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="300" y="20" width="700" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- loan_applications -->
+        <mxCell id="t-loan" value="loan_applications&#xa;─────────────────&#xa;id (PK)&#xa;applicant_name&#xa;date_of_birth&#xa;employer&#xa;declared_income&#xa;loan_amount&#xa;loan_type&#xa;property_address&#xa;overall_confidence_pct&#xa;status&#xa;created_at / updated_at" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="200" height="220" as="geometry" />
+        </mxCell>
+
+        <!-- documents -->
+        <mxCell id="t-doc" value="documents&#xa;─────────────────&#xa;id (PK)&#xa;application_id (FK)&#xa;file_name&#xa;file_type (pdf/jpeg/png/docx)&#xa;document_category&#xa;storage_path&#xa;ocr_status&#xa;uploaded_at" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="360" y="100" width="220" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- extraction_fields -->
+        <mxCell id="t-ext" value="extraction_fields&#xa;─────────────────&#xa;id (PK)&#xa;document_id (FK)&#xa;field_name (normalised)&#xa;field_value&#xa;confidence_score (0-100)&#xa;source (ocr/openai)&#xa;extracted_at" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="660" y="100" width="220" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- verification_results -->
+        <mxCell id="t-ver" value="verification_results&#xa;─────────────────&#xa;id (PK)&#xa;application_id (FK)&#xa;check_type (tool/abr/mock)&#xa;field_name&#xa;expected_value&#xa;actual_value&#xa;passed (bool)&#xa;verified_at" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="200" y="400" width="220" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- discrepancies -->
+        <mxCell id="t-disc" value="discrepancies&#xa;─────────────────&#xa;id (PK)&#xa;application_id (FK)&#xa;verification_id (FK)&#xa;field_name&#xa;severity (low/med/critical)&#xa;flag_status (open/resolved)&#xa;notes&#xa;flagged_at" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="520" y="400" width="220" height="200" as="geometry" />
+        </mxCell>
+
+        <!-- audit_log -->
+        <mxCell id="t-audit" value="audit_log&#xa;─────────────────&#xa;id (PK)&#xa;entity_type&#xa;entity_id&#xa;action&#xa;actor&#xa;timestamp" style="shape=table;startSize=30;container=1;collapsible=0;childLayout=tableLayout;fillColor=#f5f5f5;strokeColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="840" y="400" width="180" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="r1" style="endArrow=block;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="t-loan" target="t-doc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1l" value="1:N" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r2" style="endArrow=block;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="t-doc" target="t-ext">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2l" value="1:N" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="r2">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r3" style="endArrow=block;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="t-loan" target="t-ver">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3l" value="1:N" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="r3">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r4" style="endArrow=block;endFill=1;strokeColor=#666666;" edge="1" parent="1" source="t-ver" target="t-disc">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4l" value="1:N" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="r4">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="dm-note" value="overall_confidence_pct on loan_applications is computed from extraction_fields.confidence_score (Task iii ranking source)&#xa;Field names are normalised per Task i data modelling (Product Owner + Data Modelling Lead)" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;fillColor=#ffff88;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="940" height="60" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
