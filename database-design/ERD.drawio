@@ -1,0 +1,154 @@
+<mxfile host="app.diagrams.net" modified="2026-06-18T00:00:00.000Z" agent="Yang Shu" version="22.0.0">
+  <diagram id="erd" name="ERD - SmartFINN MVP">
+    <mxGraphModel dx="1400" dy="900" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1600" pageHeight="1100" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+
+        <mxCell id="title" value="SmartFINN — Entity Relationship Diagram (MVP)" style="text;html=1;fontSize=18;fontStyle=1;align=center;" vertex="1" parent="1">
+          <mxGeometry x="400" y="20" width="700" height="35" as="geometry" />
+        </mxCell>
+        <mxCell id="sub" value="Workstream 3 | OOS entities shown dashed: users, roles, reports, audit_logs, notifications" style="text;html=1;fontSize=11;align=center;fontColor=#666666;" vertex="1" parent="1">
+          <mxGeometry x="350" y="52" width="800" height="20" as="geometry" />
+        </mxCell>
+
+        <!-- clients -->
+        <mxCell id="clients" value="clients&#xa;─────────────&#xa;PK id&#xa;full_name&#xa;date_of_birth&#xa;email_masked&#xa;phone_masked&#xa;address_line&#xa;state, postcode&#xa;created_at, updated_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="100" width="180" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- applications -->
+        <mxCell id="applications" value="applications&#xa;─────────────&#xa;PK id&#xa;FK client_id&#xa;loan_type (enum)&#xa;loan_amount&#xa;declared_annual_income&#xa;property_address&#xa;status (enum)&#xa;overall_confidence_pct&#xa;risk_score, risk_level&#xa;created_at, updated_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="320" width="200" height="180" as="geometry" />
+        </mxCell>
+
+        <!-- documents -->
+        <mxCell id="documents" value="documents&#xa;─────────────&#xa;PK id&#xa;FK application_id&#xa;file_name, file_type&#xa;document_category&#xa;storage_path&#xa;ocr_status (enum)&#xa;is_mandatory&#xa;uploaded_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#fff2cc;strokeColor=#d6b656;" vertex="1" parent="1">
+          <mxGeometry x="380" y="100" width="190" height="170" as="geometry" />
+        </mxCell>
+
+        <!-- extracted_data -->
+        <mxCell id="extracted_data" value="extracted_data&#xa;─────────────&#xa;PK id&#xa;FK document_id (UNIQUE)&#xa;raw_ocr_json (JSONB)&#xa;normalized_fields (JSONB)&#xa;avg_confidence_pct&#xa;extraction_status&#xa;extracted_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="380" y="320" width="200" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- extracted_field_values -->
+        <mxCell id="efv" value="extracted_field_values&#xa;─────────────&#xa;PK id&#xa;FK extracted_data_id&#xa;field_name (normalised)&#xa;field_value&#xa;confidence_pct&#xa;source (ocr/openai)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="1">
+          <mxGeometry x="380" y="500" width="200" height="130" as="geometry" />
+        </mxCell>
+
+        <!-- fraud_results -->
+        <mxCell id="fraud_results" value="fraud_results&#xa;─────────────&#xa;PK id&#xa;FK document_id (UNIQUE)&#xa;fraud_status (enum)&#xa;severity (enum)&#xa;reason, confidence_pct&#xa;recommendation&#xa;raw_response (JSONB)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#f8cecc;strokeColor=#b85450;" vertex="1" parent="1">
+          <mxGeometry x="660" y="100" width="200" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- validation_rules -->
+        <mxCell id="validation_rules" value="validation_rules&#xa;─────────────&#xa;PK id&#xa;rule_code (UNIQUE)&#xa;rule_name, description&#xa;severity (enum)&#xa;loan_types[]&#xa;is_active&#xa;rule_config (JSONB)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="300" width="200" height="140" as="geometry" />
+        </mxCell>
+
+        <!-- verification_results -->
+        <mxCell id="verification_results" value="verification_results&#xa;─────────────&#xa;PK id&#xa;FK application_id&#xa;FK validation_rule_id&#xa;check_type (enum)&#xa;field_name&#xa;expected_value, actual_value&#xa;passed (bool)&#xa;verified_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#e1d5e7;strokeColor=#9673a6;" vertex="1" parent="1">
+          <mxGeometry x="660" y="470" width="210" height="150" as="geometry" />
+        </mxCell>
+
+        <!-- alerts -->
+        <mxCell id="alerts" value="alerts&#xa;─────────────&#xa;PK id&#xa;FK application_id&#xa;FK document_id (nullable)&#xa;FK validation_rule_id&#xa;alert_type (enum)&#xa;severity (enum)&#xa;title, description&#xa;status (enum)" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;fontStyle=1;" vertex="1" parent="1">
+          <mxGeometry x="940" y="100" width="200" height="160" as="geometry" />
+        </mxCell>
+
+        <!-- alert_status_history -->
+        <mxCell id="alert_status_history" value="alert_status_history&#xa;─────────────&#xa;PK id&#xa;FK alert_id&#xa;from_status, to_status&#xa;changed_by&#xa;notes&#xa;changed_at" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#ffe6cc;strokeColor=#d79b00;" vertex="1" parent="1">
+          <mxGeometry x="940" y="300" width="200" height="120" as="geometry" />
+        </mxCell>
+
+        <!-- OOS entities -->
+        <mxCell id="users" value="users (OOS)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="80" y="560" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="roles" value="roles (OOS)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="200" y="560" width="100" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="reports" value="reports (OOS)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="940" y="460" width="110" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="audit_logs" value="audit_logs (OOS)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="940" y="520" width="130" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="notifications" value="notifications (OOS)" style="rounded=1;whiteSpace=wrap;html=1;dashed=1;fillColor=#f5f5f5;strokeColor=#999999;fontColor=#888888;" vertex="1" parent="1">
+          <mxGeometry x="1080" y="520" width="130" height="40" as="geometry" />
+        </mxCell>
+
+        <!-- Relationships -->
+        <mxCell id="r1" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;strokeWidth=2;" edge="1" parent="1" source="clients" target="applications">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r1l" value="1 : N" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r1">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r2" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;strokeWidth=2;" edge="1" parent="1" source="applications" target="documents">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r2l" value="1 : N" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r2">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r3" style="endArrow=ERone;startArrow=ERone;endFill=0;startFill=0;strokeWidth=2;" edge="1" parent="1" source="documents" target="extracted_data">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3l" value="1 : 1" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r3">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r3b" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;" edge="1" parent="1" source="extracted_data" target="efv">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r3bl" value="1 : N" style="edgeLabel;html=1;" vertex="1" connectable="0" parent="r3b">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r4" style="endArrow=ERone;startArrow=ERone;endFill=0;startFill=0;strokeWidth=2;" edge="1" parent="1" source="documents" target="fraud_results">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r4l" value="1 : 1" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r4">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r5" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;" edge="1" parent="1" source="applications" target="alerts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r5l" value="1 : N" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r5">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r6" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;" edge="1" parent="1" source="alerts" target="alert_status_history">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r6l" value="1 : N" style="edgeLabel;html=1;fontStyle=1;" vertex="1" connectable="0" parent="r6">
+          <mxGeometry relative="1" as="geometry"><mxPoint as="offset" /></mxGeometry>
+        </mxCell>
+
+        <mxCell id="r7" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;dashed=1;" edge="1" parent="1" source="validation_rules" target="verification_results">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r8" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;dashed=1;" edge="1" parent="1" source="applications" target="verification_results">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="r9" style="endArrow=ERmany;startArrow=ERone;endFill=0;startFill=0;dashed=1;" edge="1" parent="1" source="validation_rules" target="alerts">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+
+        <!-- Legend -->
+        <mxCell id="legend" value="Relationship Summary (per Workstream 3)&#xa;· One client → many applications&#xa;· One application → many documents&#xa;· One document → one extracted_data (+ many extracted_field_values for search)&#xa;· One document → one fraud_result&#xa;· One application → many alerts → many alert_status_history&#xa;· validation_rules → verification_results → may generate alerts" style="shape=note;whiteSpace=wrap;html=1;size=14;align=left;fillColor=#ffff88;strokeColor=#36393d;" vertex="1" parent="1">
+          <mxGeometry x="80" y="650" width="520" height="120" as="geometry" />
+        </mxCell>
+
+        <mxCell id="scope-note" value="MVP Scope Alignment&#xa;Task i → clients, applications, documents, extracted_data&#xa;Task ii → validation_rules, verification_results, fraud_results, alerts&#xa;Task iii → applications.overall_confidence_pct, risk_score&#xa;Excluded → users, roles (RBAC), reports, audit_logs, notifications" style="rounded=1;whiteSpace=wrap;html=1;align=left;fillColor=#dae8fc;strokeColor=#6c8ebf;" vertex="1" parent="1">
+          <mxGeometry x="640" y="650" width="500" height="100" as="geometry" />
+        </mxCell>
+
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

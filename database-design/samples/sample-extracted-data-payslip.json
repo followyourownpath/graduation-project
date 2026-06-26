@@ -1,0 +1,81 @@
+{
+  "document_id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+  "document_category": "payslip",
+  "file_name": "payslip_mitchell_jan2026.pdf",
+  "extraction_status": "completed",
+  "extracted_at": "2026-06-18T09:14:32Z",
+  "avg_confidence_pct": 91.4,
+  "raw_ocr_json": {
+    "api_version": "azure-document-intelligence-2024-11-30",
+    "model": "prebuilt-payStub",
+    "pages": 1,
+    "raw_text_snippet": "Westpac Banking Corporation ... James Mitchell ... Gross Pay $11,833.00"
+  },
+  "normalized_fields": {
+    "employee_name": {
+      "value": "James Mitchell",
+      "confidence_pct": 99.2,
+      "source": "ocr"
+    },
+    "employer_name": {
+      "value": "Westpac Banking Corporation",
+      "confidence_pct": 96.1,
+      "source": "ocr"
+    },
+    "abn": {
+      "value": "33 007 457 141",
+      "confidence_pct": 94.0,
+      "source": "ocr"
+    },
+    "pay_period_start": {
+      "value": "2026-01-01",
+      "confidence_pct": 88.5,
+      "source": "openai"
+    },
+    "pay_period_end": {
+      "value": "2026-01-31",
+      "confidence_pct": 88.5,
+      "source": "openai"
+    },
+    "gross_income": {
+      "value": 11833.00,
+      "currency": "AUD",
+      "confidence_pct": 92.3,
+      "source": "ocr"
+    },
+    "net_income": {
+      "value": 8742.50,
+      "currency": "AUD",
+      "confidence_pct": 91.0,
+      "source": "ocr"
+    },
+    "tax_withheld": {
+      "value": 2180.00,
+      "currency": "AUD",
+      "confidence_pct": 89.7,
+      "source": "ocr"
+    },
+    "ytd_income": {
+      "value": 11833.00,
+      "currency": "AUD",
+      "confidence_pct": 85.2,
+      "source": "openai"
+    },
+    "payment_date": {
+      "value": "2026-01-31",
+      "confidence_pct": 90.1,
+      "source": "ocr"
+    }
+  },
+  "field_values_for_db_insert": [
+    { "field_name": "employee_name", "field_value": "James Mitchell", "confidence_pct": 99.2, "source": "ocr" },
+    { "field_name": "employer_name", "field_value": "Westpac Banking Corporation", "confidence_pct": 96.1, "source": "ocr" },
+    { "field_name": "abn", "field_value": "33 007 457 141", "confidence_pct": 94.0, "source": "ocr" },
+    { "field_name": "gross_income", "field_value": "11833.00", "confidence_pct": 92.3, "source": "ocr" },
+    { "field_name": "net_income", "field_value": "8742.50", "confidence_pct": 91.0, "source": "ocr" },
+    { "field_name": "ytd_income", "field_value": "11833.00", "confidence_pct": 85.2, "source": "openai" }
+  ],
+  "low_confidence_fields": [
+  ],
+  "missing_fields": []
+}
