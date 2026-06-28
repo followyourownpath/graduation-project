@@ -10,7 +10,7 @@ export default function DashboardLayout({ children }) {
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
-    { name: 'Applications', href: '#', icon: FileText },
+    { name: 'Applications', href: '/applications', icon: FileText },
     { name: 'Settings', href: '#', icon: Settings },
   ];
 
