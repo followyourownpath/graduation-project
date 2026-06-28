@@ -11,11 +11,12 @@
 - **状态管理**: Zustand（轻量级跨组件状态共享）或 React Context。
 
 ## 2. 核心路由设计
-项目初步将包含以下核心路由 (基于 Next.js App Router):
+项目已搭建并包含以下核心路由 (基于 Next.js App Router):
 
 - `/login` : 登录页面 (静态验证或 JWT Token 获取)
-- `/dashboard` : 审查控制台主页 (概览数据、申请列表)
-- `/application/new` : 创建新的房贷申请，包含文件批量上传
+- `/dashboard` : 审查控制台主页 (概览数据、紧急待办)
+- `/applications` : 申请列表管理页 (全量案卷查看、发起入口)
+- `/applications/new` : 创建新的房贷申请，包含文件批量拖拽上传
 - `/application/[id]` : 申请详情与审查校验页面 (分屏视图)
 
 ---
@@ -37,15 +38,34 @@
 - **UI 结构**:
   - 顶部/侧边导航栏 (Navigation Menu)。
   - 顶部数据统计卡片组。
-  - 下方数据表格及过滤器。
-- **Radix UI 组件**: `NavigationMenu`, `DropdownMenu` (用户头像菜单), `Select` (表格过滤), `Table` (或接入 TanStack Table 处理复杂逻辑), `Badge` (风险标签)。
+  - 下方近期紧急申请数据表格。
+- **Radix UI 组件**: `NavigationMenu`, `DropdownMenu` (用户头像菜单), `Card` (概览统计)。
 - **交互逻辑**:
-  1. 页面挂载时 (或服务端渲染 SSR) 获取统计数据和申请列表数据。
-  2. 表格支持按“状态”、“风险等级”、“贷款类型”进行过滤，触发状态变化并重新拉取数据。
-  3. 风险评分动态变色：高风险(Red), 中等(Amber), 低风险(Green)。
-  4. 点击列表某行的 "Review/Details" 按钮，携带对应的 application ID 路由跳转至 `/application/[id]`。
+  1. 页面展示系统整体运行健康度和最需要人工干预的“高风险/待处理”清单。
 
-### 3.3. 申请详情与审查页 (`/application/[id]`)
+### 3.3. 申请列表管理页 (`/applications`)
+- **UI 结构**:
+  - 顶部操作栏：包含标题以及醒目的主按钮 `+ New Application`。
+  - 数据表格及过滤器。
+- **Radix UI 组件**: `Select` (表格过滤), `Table`, `Badge` (风险标签)。
+- **交互逻辑**:
+  1. 表格支持按“状态”、“风险等级”、“贷款类型”进行过滤，触发状态变化并重新拉取数据。
+  2. 风险评分动态变色：高风险(Red), 中等(Amber), 低风险(Green)。
+  3. 点击 `+ New Application` 路由跳转至 `/applications/new`。
+  4. 点击列表某行的 "Review" 按钮，携带对应的 application ID 路由跳转至 `/application/[id]`。
+
+### 3.4. 新建申请与上传页 (`/applications/new`)
+- **UI 结构**:
+  - 顶部：申请人基础信息录入表单。
+  - 中部：巨大的虚线框 Drag & Drop 拖拽上传区域。
+  - 下部：已选择的文件队列及进度条展示区。
+  - 底部：提交按钮。
+- **交互逻辑**:
+  1. **拖拽响应**：用户拖拽文件进入区域时，边框高亮。
+  2. **上传动画**：前端拦截文件列表，并渲染到下方队列中。当前端触发上传时，动态增加各文件的进度条（百分比增加），上传中状态呈现蓝色 loading，完成后变为绿色对号。
+  3. **完成提交**：只有当所有文件上传状态均为 completed 后，“Submit Application” 按钮才可点击，点击后跳转回 `/applications`。
+
+### 3.5. 申请详情与审查页 (`/application/[id]`)
 - **UI 结构 (双视窗布局)**:
   - 顶部条：申请人摘要、返回控制台按钮、整体申请状态。
   - 左半区：原始文件查看器 (PDF/图片渲染)。
