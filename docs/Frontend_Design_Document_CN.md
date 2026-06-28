@@ -47,12 +47,12 @@ AI 驱动的房贷评分系统是一个旨在自动验证文件、加强合规�
   - 基于规则的合规性标记。
 - **操作栏：** 用于对申请进行“批准 (Approve)”、“标记以供审查 (Flag for Review)”或“拒绝 (Reject)”的按钮，以及备注/审计日志部分。
 
-## 5. 技术栈推荐
-- **框架：** React.js（推荐使用 Next.js 或 Vite 快速搭建）或 Vue.js。
-- **样式：** 使用 Tailwind CSS 进行快速、一致的样式设计，或使用 MUI / Ant Design 等组件库来实现企业级数据表格和表单。
-- **文档查看：** react-pdf 或类似库，用于在浏览器中原生渲染 PDF。
-- **状态管理：** Zustand, Redux, 或 React Context（取决于复杂度）。
-- **API 通信：** 使用 Axios 或 Fetch API 与 Python/.NET/Node.js 后端进行通信。
+## 5. 已确定的前端技术栈
+- **框架：** Next.js (App Router) 结合 React.js。
+- **样式与组件：** Tailwind CSS 搭配 Radix UI 与 shadcn/ui 组件库，快速搭建高可访问性的企业级界面。使用 Lucide React 作为图标库。
+- **文档查看：** 目前预留占位符，后续计划接入 `react-pdf` 或类似库用于在浏览器中原生渲染 PDF。
+- **状态管理：** 目前 MVP 阶段基于 React 自身状态 (State/Context)，视复杂度可引入 Zustand。
+- **API 通信：** 基于 Next.js 原生的 Fetch API 或 Axios 与后端进行交互。
 
 ## 6. 未来规划 (MVP 之后)
 - 与 Smartfinn（自动填充功能）和 Mercury CRM 集成。

@@ -47,12 +47,12 @@ This is the most critical page where officers spend their time.
   - Rule-based compliance flags.
 - **Action Bar:** Buttons to "Approve", "Flag for Review", or "Reject" the application, along with a notes/audit log section.
 
-## 5. Technology Stack Recommendations
-- **Framework:** React.js (Next.js or Vite for fast scaffolding) or Vue.js.
-- **Styling:** Tailwind CSS for rapid, consistent styling, or a component library like MUI / Ant Design for enterprise-ready data tables and forms.
-- **Document Viewing:** react-pdf or similar library to render PDFs natively in the browser.
-- **State Management:** Zustand, Redux, or React Context (depending on complexity).
-- **API Communication:** Axios or Fetch API to communicate with the Python/.NET/Node.js backend.
+## 5. Selected Technology Stack
+- **Framework:** Next.js (App Router) with React.js.
+- **Styling & Components:** Tailwind CSS with Radix UI and shadcn/ui for rapid, accessible, and enterprise-ready components. Lucide React for iconography.
+- **Document Viewing:** Placeholder implemented. Planned to use `react-pdf` or similar library to render PDFs natively.
+- **State Management:** React Component State / Context for MVP. Zustand if complexity increases.
+- **API Communication:** Next.js native Fetch API / Axios to communicate with the backend.
 
 ## 6. Future Considerations (Post-MVP)
 - Integration with Smartfinn (auto-fill capability) and Mercury CRM.
