@@ -1,0 +1,42 @@
+.statsCard {
+  margin-bottom: 0;
+}
+
+.statsLoading,
+.statsError {
+  margin: 0;
+  padding: 0.5rem 0;
+  font-size: 0.95rem;
+}
+
+.statsError {
+  color: var(--error, #c00);
+}
+
+.statsGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin: 0;
+}
+
+.statsGrid dt {
+  margin: 0 0 0.2rem;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text-muted);
+}
+
+.statsGrid dd {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+@media (max-width: 500px) {
+  .statsGrid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
