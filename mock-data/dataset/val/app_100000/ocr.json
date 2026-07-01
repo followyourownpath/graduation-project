@@ -1,0 +1,174 @@
+{
+  "application_id": "100000",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Jason Pitts",
+          "confidence": 0.9539
+        },
+        "date_of_birth": {
+          "value": "20/03/1973",
+          "confidence": 0.9801
+        },
+        "document_number": {
+          "value": "PA5018836",
+          "confidence": 0.9854
+        },
+        "expiry_date": {
+          "value": "20/04/2030",
+          "confidence": 0.975
+        },
+        "residential_address": {
+          "value": "117 Nelson View Quays, Fortitude Valley QLD 4006",
+          "confidence": 0.9146
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Jason Pitts",
+          "confidence": 0.9523
+        },
+        "employer_name": {
+          "value": "Castaneda Ltd Ltd",
+          "confidence": 0.9571
+        },
+        "abn": {
+          "value": "40 011 696 447",
+          "confidence": 0.9789
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9625
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9779
+        },
+        "gross_income": {
+          "value": "$4,489.77",
+          "confidence": 0.9501
+        },
+        "net_income": {
+          "value": "$3,407.35",
+          "confidence": 0.9784
+        },
+        "tax_withheld": {
+          "value": "$1,082.42",
+          "confidence": 0.9853
+        },
+        "superannuation": {
+          "value": "$516.32",
+          "confidence": 0.9206
+        },
+        "ytd_gross_income": {
+          "value": "$121,223.79",
+          "confidence": 0.9598
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Jason Pitts",
+          "confidence": 0.9732
+        },
+        "employer_name": {
+          "value": "Castaneda Ltd Ltd",
+          "confidence": 0.978
+        },
+        "abn": {
+          "value": "40 011 696 447",
+          "confidence": 0.9893
+        },
+        "job_title": {
+          "value": "Accountant",
+          "confidence": 0.9651
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9496
+        },
+        "start_date": {
+          "value": "19/06/2023",
+          "confidence": 0.951
+        },
+        "gross_annual_salary": {
+          "value": "$116,734.00 p.a.",
+          "confidence": 0.9512
+        },
+        "letter_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9371
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9156
+        },
+        "signatory_name": {
+          "value": "Adrienne Macdonald",
+          "confidence": 0.8565
+        },
+        "signatory_title": {
+          "value": "Talent Acquisition Lead",
+          "confidence": 0.9046
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Jason Pitts",
+          "confidence": 0.9762
+        },
+        "bsb": {
+          "value": "641-708",
+          "confidence": 0.9887
+        },
+        "account_number": {
+          "value": "3225 8372",
+          "confidence": 0.9812
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9657
+        },
+        "opening_balance": {
+          "value": "$18,030.82",
+          "confidence": 0.9659
+        },
+        "closing_balance": {
+          "value": "$18,435.42",
+          "confidence": 0.9739
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP CASTANEDA LTD L PAYROLL",
+          "amount": "$3,407.35"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP CASTANEDA LTD L PAYROLL",
+          "amount": "$3,407.35"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP CASTANEDA LTD L PAYROLL",
+          "amount": "$3,407.35"
+        }
+      ]
+    }
+  ]
+}

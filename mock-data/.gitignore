@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # Generated datasets (Keep code repository clean, datasets should be generated locally)
-dataset/
+# dataset/
 dataset_large/
 dataset_json_only/
 

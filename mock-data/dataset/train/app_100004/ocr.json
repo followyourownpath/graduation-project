@@ -1,0 +1,174 @@
+{
+  "application_id": "100004",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "April Kidd",
+          "confidence": 0.9805
+        },
+        "date_of_birth": {
+          "value": "13/09/1966",
+          "confidence": 0.9821
+        },
+        "document_number": {
+          "value": "PA4953156",
+          "confidence": 0.9883
+        },
+        "expiry_date": {
+          "value": "20/08/2030",
+          "confidence": 0.9744
+        },
+        "residential_address": {
+          "value": "Unit 69, 86 Travis Tarn Lower, Richmond VIC 3121",
+          "confidence": 0.9349
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "April Kidd",
+          "confidence": 0.9827
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9695
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.988
+        },
+        "pay_date": {
+          "value": "02/06/2026",
+          "confidence": 0.9511
+        },
+        "pay_period": {
+          "value": "03/05/2026 - 01/06/2026",
+          "confidence": 0.9425
+        },
+        "gross_income": {
+          "value": "$8,735.25",
+          "confidence": 0.975
+        },
+        "net_income": {
+          "value": "$6,707.64",
+          "confidence": 0.9681
+        },
+        "tax_withheld": {
+          "value": "$2,027.61",
+          "confidence": 0.9484
+        },
+        "superannuation": {
+          "value": "$1,004.55",
+          "confidence": 0.9228
+        },
+        "ytd_gross_income": {
+          "value": "$113,558.25",
+          "confidence": 0.9782
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "April Kidd",
+          "confidence": 0.9408
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9879
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.9726
+        },
+        "job_title": {
+          "value": "Accountant",
+          "confidence": 0.9285
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9577
+        },
+        "start_date": {
+          "value": "12/09/2022",
+          "confidence": 0.9724
+        },
+        "gross_annual_salary": {
+          "value": "$104,823.00 p.a.",
+          "confidence": 0.9664
+        },
+        "letter_date": {
+          "value": "21/06/2026",
+          "confidence": 0.9448
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8829
+        },
+        "signatory_name": {
+          "value": "Timothy Ingram",
+          "confidence": 0.8779
+        },
+        "signatory_title": {
+          "value": "Talent Acquisition Lead",
+          "confidence": 0.9452
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "April Kidd",
+          "confidence": 0.975
+        },
+        "bsb": {
+          "value": "343-347",
+          "confidence": 0.9879
+        },
+        "account_number": {
+          "value": "3807 2897",
+          "confidence": 0.9816
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9337
+        },
+        "opening_balance": {
+          "value": "$14,296.97",
+          "confidence": 0.9837
+        },
+        "closing_balance": {
+          "value": "$21,766.91",
+          "confidence": 0.9797
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "03/04/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,707.64"
+        },
+        {
+          "date": "03/05/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,707.64"
+        },
+        {
+          "date": "02/06/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,707.64"
+        }
+      ]
+    }
+  ]
+}

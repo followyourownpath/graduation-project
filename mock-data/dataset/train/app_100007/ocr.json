@@ -1,0 +1,174 @@
+{
+  "application_id": "100007",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Michael Rios",
+          "confidence": 0.9621
+        },
+        "date_of_birth": {
+          "value": "29/09/1968",
+          "confidence": 0.9617
+        },
+        "document_number": {
+          "value": "PA2726409",
+          "confidence": 0.9892
+        },
+        "expiry_date": {
+          "value": "19/08/2031",
+          "confidence": 0.9671
+        },
+        "residential_address": {
+          "value": "126 White Riverway Roadside, Ryde NSW 2112",
+          "confidence": 0.9015
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Michael Rios",
+          "confidence": 0.9356
+        },
+        "employer_name": {
+          "value": "Peterson, Ruiz and Reyes Pty Ltd",
+          "confidence": 0.9688
+        },
+        "abn": {
+          "value": "10 508 433 916",
+          "confidence": 0.9764
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9827
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9697
+        },
+        "gross_income": {
+          "value": "$4,734.42",
+          "confidence": 0.9614
+        },
+        "net_income": {
+          "value": "$3,573.72",
+          "confidence": 0.9589
+        },
+        "tax_withheld": {
+          "value": "$1,160.71",
+          "confidence": 0.9767
+        },
+        "superannuation": {
+          "value": "$544.46",
+          "confidence": 0.9686
+        },
+        "ytd_gross_income": {
+          "value": "$127,829.34",
+          "confidence": 0.9769
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Michael Rios",
+          "confidence": 0.9858
+        },
+        "employer_name": {
+          "value": "Peterson, Ruiz and Reyes Pty Ltd",
+          "confidence": 0.9568
+        },
+        "abn": {
+          "value": "10 508 433 916",
+          "confidence": 0.9608
+        },
+        "job_title": {
+          "value": "Software Engineer",
+          "confidence": 0.906
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.955
+        },
+        "start_date": {
+          "value": "10/09/2023",
+          "confidence": 0.9442
+        },
+        "gross_annual_salary": {
+          "value": "$123,095.00 p.a.",
+          "confidence": 0.9649
+        },
+        "letter_date": {
+          "value": "28/06/2026",
+          "confidence": 0.9646
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.942
+        },
+        "signatory_name": {
+          "value": "Isaac Patterson",
+          "confidence": 0.8913
+        },
+        "signatory_title": {
+          "value": "Talent Acquisition Lead",
+          "confidence": 0.879
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Michael Rios",
+          "confidence": 0.9469
+        },
+        "bsb": {
+          "value": "157-400",
+          "confidence": 0.9882
+        },
+        "account_number": {
+          "value": "8991 9050",
+          "confidence": 0.9801
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9276
+        },
+        "opening_balance": {
+          "value": "$6,629.74",
+          "confidence": 0.9619
+        },
+        "closing_balance": {
+          "value": "$4,434.04",
+          "confidence": 0.9573
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP PETERSON, RUIZ  PAYROLL",
+          "amount": "$3,573.72"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP PETERSON, RUIZ  PAYROLL",
+          "amount": "$3,573.72"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP PETERSON, RUIZ  PAYROLL",
+          "amount": "$3,573.72"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,178 @@
+{
+  "application_id": "100018",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Jason David Wilson",
+          "confidence": 0.9724
+        },
+        "date_of_birth": {
+          "value": "25/02/2003",
+          "confidence": 0.9669
+        },
+        "document_number": {
+          "value": "PA3413686",
+          "confidence": 0.9885
+        },
+        "expiry_date": {
+          "value": "08/02/2028",
+          "confidence": 0.9845
+        },
+        "residential_address": {
+          "value": "164 Arnold Fairway Vale, Launceston TAS 7250",
+          "confidence": 0.9296
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Jason David Wilson",
+          "confidence": 0.9626
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9618
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.973
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9863
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.974
+        },
+        "gross_income": {
+          "value": "$7,409.73",
+          "confidence": 0.9593
+        },
+        "net_income": {
+          "value": "$4,636.76",
+          "confidence": 0.9699
+        },
+        "tax_withheld": {
+          "value": "$2,180.19",
+          "confidence": 0.9483
+        },
+        "superannuation": {
+          "value": "$852.12",
+          "confidence": 0.9668
+        },
+        "ytd_gross_income": {
+          "value": "$200,062.71",
+          "confidence": 0.9769
+        },
+        "hecs_repayment": {
+          "value": "$592.78",
+          "confidence": 0.9437
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Jason David Wilson",
+          "confidence": 0.9853
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9894
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.9796
+        },
+        "job_title": {
+          "value": "Sales Director",
+          "confidence": 0.9221
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9674
+        },
+        "start_date": {
+          "value": "14/10/2024",
+          "confidence": 0.9795
+        },
+        "gross_annual_salary": {
+          "value": "$192,653.00 p.a.",
+          "confidence": 0.96
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9528
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.916
+        },
+        "signatory_name": {
+          "value": "Jesus Wilson",
+          "confidence": 0.9416
+        },
+        "signatory_title": {
+          "value": "People & Culture Lead",
+          "confidence": 0.9153
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Jason David Wilson",
+          "confidence": 0.9803
+        },
+        "bsb": {
+          "value": "490-597",
+          "confidence": 0.9854
+        },
+        "account_number": {
+          "value": "2717 4572",
+          "confidence": 0.9724
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9474
+        },
+        "opening_balance": {
+          "value": "$6,288.07",
+          "confidence": 0.9741
+        },
+        "closing_balance": {
+          "value": "$8,545.62",
+          "confidence": 0.9726
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$4,636.76"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$4,636.76"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$4,636.76"
+        }
+      ]
+    }
+  ]
+}

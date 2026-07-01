@@ -1,0 +1,178 @@
+{
+  "application_id": "100001",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Lisa Fletcher",
+          "confidence": 0.9623
+        },
+        "date_of_birth": {
+          "value": "04/09/1970",
+          "confidence": 0.9747
+        },
+        "document_number": {
+          "value": "PA6033934",
+          "confidence": 0.986
+        },
+        "expiry_date": {
+          "value": "24/02/2030",
+          "confidence": 0.9527
+        },
+        "residential_address": {
+          "value": "336 Christopher Hill Street, Brisbane QLD 4000",
+          "confidence": 0.9499
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Lisa Fletcher",
+          "confidence": 0.9631
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9781
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.9855
+        },
+        "pay_date": {
+          "value": "02/06/2026",
+          "confidence": 0.9801
+        },
+        "pay_period": {
+          "value": "03/05/2026 - 01/06/2026",
+          "confidence": 0.9189
+        },
+        "gross_income": {
+          "value": "$9,424.42",
+          "confidence": 0.9632
+        },
+        "net_income": {
+          "value": "$6,690.47",
+          "confidence": 0.9619
+        },
+        "tax_withheld": {
+          "value": "$2,248.15",
+          "confidence": 0.9488
+        },
+        "superannuation": {
+          "value": "$1,083.81",
+          "confidence": 0.9693
+        },
+        "ytd_gross_income": {
+          "value": "$122,517.46",
+          "confidence": 0.9695
+        },
+        "hecs_repayment": {
+          "value": "$485.80",
+          "confidence": 0.961
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Lisa Fletcher",
+          "confidence": 0.9628
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9692
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.979
+        },
+        "job_title": {
+          "value": "Data Analyst",
+          "confidence": 0.9203
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9377
+        },
+        "start_date": {
+          "value": "24/10/2022",
+          "confidence": 0.9802
+        },
+        "gross_annual_salary": {
+          "value": "$113,093.00 p.a.",
+          "confidence": 0.9647
+        },
+        "letter_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9424
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8952
+        },
+        "signatory_name": {
+          "value": "Timothy Ingram",
+          "confidence": 0.8862
+        },
+        "signatory_title": {
+          "value": "Talent Acquisition Lead",
+          "confidence": 0.8504
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Lisa Fletcher",
+          "confidence": 0.9402
+        },
+        "bsb": {
+          "value": "324-833",
+          "confidence": 0.9785
+        },
+        "account_number": {
+          "value": "3266 2579",
+          "confidence": 0.973
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9721
+        },
+        "opening_balance": {
+          "value": "$15,748.38",
+          "confidence": 0.964
+        },
+        "closing_balance": {
+          "value": "$24,640.81",
+          "confidence": 0.9609
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "03/04/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,690.47"
+        },
+        {
+          "date": "03/05/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,690.47"
+        },
+        {
+          "date": "02/06/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$6,690.47"
+        }
+      ]
+    }
+  ]
+}

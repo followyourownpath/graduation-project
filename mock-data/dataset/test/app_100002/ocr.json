@@ -1,0 +1,174 @@
+{
+  "application_id": "100002",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Jessica Nicole Ramirez",
+          "confidence": 0.9847
+        },
+        "date_of_birth": {
+          "value": "25/05/1990",
+          "confidence": 0.9631
+        },
+        "document_number": {
+          "value": "PA9450643",
+          "confidence": 0.9828
+        },
+        "expiry_date": {
+          "value": "21/09/2030",
+          "confidence": 0.9672
+        },
+        "residential_address": {
+          "value": "Unit 72, 442 Williams Ring Steps, Glenelg SA 5045",
+          "confidence": 0.9477
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Jessica Nicole Ramirez",
+          "confidence": 0.9303
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9441
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.9718
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9774
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.96
+        },
+        "gross_income": {
+          "value": "$3,113.54",
+          "confidence": 0.9855
+        },
+        "net_income": {
+          "value": "$2,471.51",
+          "confidence": 0.9729
+        },
+        "tax_withheld": {
+          "value": "$642.02",
+          "confidence": 0.9815
+        },
+        "superannuation": {
+          "value": "$358.06",
+          "confidence": 0.9538
+        },
+        "ytd_gross_income": {
+          "value": "$84,065.58",
+          "confidence": 0.9448
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Jessica Nicole Ramirez",
+          "confidence": 0.9521
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.965
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.979
+        },
+        "job_title": {
+          "value": "Data Analyst",
+          "confidence": 0.9555
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9683
+        },
+        "start_date": {
+          "value": "28/05/2025",
+          "confidence": 0.9765
+        },
+        "gross_annual_salary": {
+          "value": "$80,952.00 p.a.",
+          "confidence": 0.9724
+        },
+        "letter_date": {
+          "value": "27/06/2026",
+          "confidence": 0.9762
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.936
+        },
+        "signatory_name": {
+          "value": "Jesus Wilson",
+          "confidence": 0.8541
+        },
+        "signatory_title": {
+          "value": "People & Culture Lead",
+          "confidence": 0.8918
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Jessica Nicole Ramirez",
+          "confidence": 0.967
+        },
+        "bsb": {
+          "value": "866-259",
+          "confidence": 0.9807
+        },
+        "account_number": {
+          "value": "1073 6022",
+          "confidence": 0.9721
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9387
+        },
+        "opening_balance": {
+          "value": "$13,170.81",
+          "confidence": 0.9596
+        },
+        "closing_balance": {
+          "value": "$7,013.31",
+          "confidence": 0.9634
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,471.51"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,471.51"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,471.51"
+        }
+      ]
+    }
+  ]
+}

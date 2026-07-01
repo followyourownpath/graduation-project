@@ -1,0 +1,174 @@
+{
+  "application_id": "100004",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Sherri Davis",
+          "confidence": 0.9529
+        },
+        "date_of_birth": {
+          "value": "19/05/1999",
+          "confidence": 0.9749
+        },
+        "document_number": {
+          "value": "PA2227462",
+          "confidence": 0.9853
+        },
+        "expiry_date": {
+          "value": "18/09/2029",
+          "confidence": 0.9754
+        },
+        "residential_address": {
+          "value": "16 Daniel Cul-de-sac Pathway, Richmond VIC 3121",
+          "confidence": 0.931
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Sherri Davis",
+          "confidence": 0.9689
+        },
+        "employer_name": {
+          "value": "Blair, Edwards and Richard Ltd",
+          "confidence": 0.9757
+        },
+        "abn": {
+          "value": "65 833 629 874",
+          "confidence": 0.9828
+        },
+        "pay_date": {
+          "value": "02/06/2026",
+          "confidence": 0.9741
+        },
+        "pay_period": {
+          "value": "03/05/2026 - 01/06/2026",
+          "confidence": 0.9709
+        },
+        "gross_income": {
+          "value": "$7,688.58",
+          "confidence": 0.9846
+        },
+        "net_income": {
+          "value": "$5,995.90",
+          "confidence": 0.9599
+        },
+        "tax_withheld": {
+          "value": "$1,692.68",
+          "confidence": 0.9459
+        },
+        "superannuation": {
+          "value": "$884.19",
+          "confidence": 0.9476
+        },
+        "ytd_gross_income": {
+          "value": "$99,951.54",
+          "confidence": 0.9353
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Sherri Davis",
+          "confidence": 0.9406
+        },
+        "employer_name": {
+          "value": "Blair, Edwards and Richard Ltd",
+          "confidence": 0.9883
+        },
+        "abn": {
+          "value": "65 833 629 874",
+          "confidence": 0.986
+        },
+        "job_title": {
+          "value": "Data Analyst",
+          "confidence": 0.9339
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9419
+        },
+        "start_date": {
+          "value": "24/06/2023",
+          "confidence": 0.97
+        },
+        "gross_annual_salary": {
+          "value": "$92,263.00 p.a.",
+          "confidence": 0.9861
+        },
+        "letter_date": {
+          "value": "24/06/2026",
+          "confidence": 0.9713
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.958
+        },
+        "signatory_name": {
+          "value": "Robert Smith",
+          "confidence": 0.8744
+        },
+        "signatory_title": {
+          "value": "People & Culture Lead",
+          "confidence": 0.8872
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Sherri Davis",
+          "confidence": 0.9618
+        },
+        "bsb": {
+          "value": "779-986",
+          "confidence": 0.9803
+        },
+        "account_number": {
+          "value": "2427 9376",
+          "confidence": 0.9787
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.963
+        },
+        "opening_balance": {
+          "value": "$17,358.66",
+          "confidence": 0.96
+        },
+        "closing_balance": {
+          "value": "$22,432.34",
+          "confidence": 0.9568
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "03/04/2026",
+          "description": "DIRECT DEP BLAIR, EDWARDS  PAYROLL",
+          "amount": "$5,995.90"
+        },
+        {
+          "date": "03/05/2026",
+          "description": "DIRECT DEP BLAIR, EDWARDS  PAYROLL",
+          "amount": "$5,995.90"
+        },
+        {
+          "date": "02/06/2026",
+          "description": "DIRECT DEP BLAIR, EDWARDS  PAYROLL",
+          "amount": "$5,995.90"
+        }
+      ]
+    }
+  ]
+}

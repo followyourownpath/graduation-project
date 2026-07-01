@@ -1,0 +1,174 @@
+{
+  "application_id": "100016",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Catherine Brandt",
+          "confidence": 0.9562
+        },
+        "date_of_birth": {
+          "value": "23/06/2004",
+          "confidence": 0.9715
+        },
+        "document_number": {
+          "value": "PA5866305",
+          "confidence": 0.9845
+        },
+        "expiry_date": {
+          "value": "24/02/2032",
+          "confidence": 0.9825
+        },
+        "residential_address": {
+          "value": "99 Linda Key Pathway, Richmond VIC 3121",
+          "confidence": 0.9691
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Catherien Brandt",
+          "confidence": 0.9548
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9775
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9708
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.968
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.942
+        },
+        "gross_income": {
+          "value": "$4,070.04",
+          "confidence": 0.9575
+        },
+        "net_income": {
+          "value": "$3,121.93",
+          "confidence": 0.9845
+        },
+        "tax_withheld": {
+          "value": "$948.10",
+          "confidence": 0.9643
+        },
+        "superannuation": {
+          "value": "$468.05",
+          "confidence": 0.9682
+        },
+        "ytd_gross_income": {
+          "value": "$109,891.08",
+          "confidence": 0.9317
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Catherine Brandt",
+          "confidence": 0.9503
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9879
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9843
+        },
+        "job_title": {
+          "value": "Data Analyst",
+          "confidence": 0.9275
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9255
+        },
+        "start_date": {
+          "value": "29/09/2024",
+          "confidence": 0.9476
+        },
+        "gross_annual_salary": {
+          "value": "$105,821.00 p.a.",
+          "confidence": 0.9763
+        },
+        "letter_date": {
+          "value": "28/06/2026",
+          "confidence": 0.9509
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8967
+        },
+        "signatory_name": {
+          "value": "Michael Gonzalez",
+          "confidence": 0.8942
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.8781
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Catherine Brandt",
+          "confidence": 0.9752
+        },
+        "bsb": {
+          "value": "592-130",
+          "confidence": 0.9743
+        },
+        "account_number": {
+          "value": "1776 2558",
+          "confidence": 0.9707
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9663
+        },
+        "opening_balance": {
+          "value": "$17,763.98",
+          "confidence": 0.9783
+        },
+        "closing_balance": {
+          "value": "$15,502.80",
+          "confidence": 0.984
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$3,121.93"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$3,121.93"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$3,121.93"
+        }
+      ]
+    }
+  ]
+}

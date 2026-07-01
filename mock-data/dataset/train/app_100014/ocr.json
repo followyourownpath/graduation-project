@@ -1,0 +1,174 @@
+{
+  "application_id": "100014",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Leonard Hinton",
+          "confidence": 0.9884
+        },
+        "date_of_birth": {
+          "value": "19/04/1982",
+          "confidence": 0.9894
+        },
+        "document_number": {
+          "value": "PA8940290",
+          "confidence": 0.9842
+        },
+        "expiry_date": {
+          "value": "01/08/2033",
+          "confidence": 0.9675
+        },
+        "residential_address": {
+          "value": "Unit 66, 283 Sutton Drive Service Way, Hawthorn VIC 3122",
+          "confidence": 0.9399
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Leonard Hinton",
+          "confidence": 0.9677
+        },
+        "employer_name": {
+          "value": "Jackson, Guzman and Patel Ltd",
+          "confidence": 0.9513
+        },
+        "abn": {
+          "value": "86 175 770 762",
+          "confidence": 0.9838
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9623
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9114
+        },
+        "gross_income": {
+          "value": "$4,546.81",
+          "confidence": 0.9751
+        },
+        "net_income": {
+          "value": "$3,446.14",
+          "confidence": 0.9542
+        },
+        "tax_withheld": {
+          "value": "$1,100.67",
+          "confidence": 0.962
+        },
+        "superannuation": {
+          "value": "$522.88",
+          "confidence": 0.9218
+        },
+        "ytd_gross_income": {
+          "value": "$122,763.87",
+          "confidence": 0.9392
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Leonard Hinton",
+          "confidence": 0.9414
+        },
+        "employer_name": {
+          "value": "Jackson, Guzman and Patel Ltd",
+          "confidence": 0.9692
+        },
+        "abn": {
+          "value": "86 175 770 762",
+          "confidence": 0.9628
+        },
+        "job_title": {
+          "value": "Software Engineer",
+          "confidence": 0.9579
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9344
+        },
+        "start_date": {
+          "value": "02/07/2022",
+          "confidence": 0.9674
+        },
+        "gross_annual_salary": {
+          "value": "$118,217.00 p.a.",
+          "confidence": 0.9897
+        },
+        "letter_date": {
+          "value": "29/06/2026",
+          "confidence": 0.9728
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9112
+        },
+        "signatory_name": {
+          "value": "Robert Alvarez",
+          "confidence": 0.8528
+        },
+        "signatory_title": {
+          "value": "Human Resources Director",
+          "confidence": 0.8705
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Leonard Hinton",
+          "confidence": 0.9442
+        },
+        "bsb": {
+          "value": "523-557",
+          "confidence": 0.9744
+        },
+        "account_number": {
+          "value": "4924 6621",
+          "confidence": 0.9839
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9432
+        },
+        "opening_balance": {
+          "value": "$20,067.95",
+          "confidence": 0.9823
+        },
+        "closing_balance": {
+          "value": "$16,893.25",
+          "confidence": 0.9727
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$3,446.14"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$3,446.14"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$3,446.14"
+        }
+      ]
+    }
+  ]
+}

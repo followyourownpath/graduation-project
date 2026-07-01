@@ -1,0 +1,174 @@
+{
+  "application_id": "100013",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Lisa Barry Ballard",
+          "confidence": 0.989
+        },
+        "date_of_birth": {
+          "value": "01/05/1994",
+          "confidence": 0.9644
+        },
+        "document_number": {
+          "value": "PA7729300",
+          "confidence": 0.9806
+        },
+        "expiry_date": {
+          "value": "30/10/2029",
+          "confidence": 0.9525
+        },
+        "residential_address": {
+          "value": "Unit 23, 342 Zamora Alleyway Roads, Launceston TAS 7250",
+          "confidence": 0.9337
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Lisa Barry Ballard",
+          "confidence": 0.9835
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9842
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.9731
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9571
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9122
+        },
+        "gross_income": {
+          "value": "$3,598.62",
+          "confidence": 0.9718
+        },
+        "net_income": {
+          "value": "$2,801.37",
+          "confidence": 0.9689
+        },
+        "tax_withheld": {
+          "value": "$797.25",
+          "confidence": 0.9761
+        },
+        "superannuation": {
+          "value": "$413.84",
+          "confidence": 0.9276
+        },
+        "ytd_gross_income": {
+          "value": "$97,162.74",
+          "confidence": 0.9372
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Lisa Barry Ballard",
+          "confidence": 0.9354
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.969
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.9708
+        },
+        "job_title": {
+          "value": "Registered Nurse",
+          "confidence": 0.9508
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9298
+        },
+        "start_date": {
+          "value": "11/02/2023",
+          "confidence": 0.9872
+        },
+        "gross_annual_salary": {
+          "value": "$93,564.00 p.a.",
+          "confidence": 0.9592
+        },
+        "letter_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9586
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9002
+        },
+        "signatory_name": {
+          "value": "Jesus Wilson",
+          "confidence": 0.8962
+        },
+        "signatory_title": {
+          "value": "People & Culture Lead",
+          "confidence": 0.9371
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Lisa Barry Ballard",
+          "confidence": 0.9643
+        },
+        "bsb": {
+          "value": "579-564",
+          "confidence": 0.9769
+        },
+        "account_number": {
+          "value": "2412 9354",
+          "confidence": 0.9701
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9414
+        },
+        "opening_balance": {
+          "value": "$12,261.28",
+          "confidence": 0.9763
+        },
+        "closing_balance": {
+          "value": "$9,530.78",
+          "confidence": 0.9755
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,801.37"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,801.37"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,801.37"
+        }
+      ]
+    }
+  ]
+}

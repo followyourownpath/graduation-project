@@ -1,0 +1,158 @@
+{
+  "application_id": "100010",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Stephen Joshua Huynh",
+          "confidence": 0.9528
+        },
+        "date_of_birth": {
+          "value": "11/02/1996",
+          "confidence": 0.9895
+        },
+        "document_number": {
+          "value": "PA4746258",
+          "confidence": 0.9845
+        },
+        "expiry_date": {
+          "value": "09/08/2030",
+          "confidence": 0.9824
+        },
+        "residential_address": {
+          "value": "399 Larsen Corner Avenue, Fremantle WA 6160",
+          "confidence": 0.9279
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Stephen Joshua Huynh",
+          "confidence": 0.971
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9852
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9759
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9663
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.927
+        },
+        "gross_income": {
+          "value": "$3,299.65",
+          "confidence": 0.9835
+        },
+        "net_income": {
+          "value": "$2,598.07",
+          "confidence": 0.9571
+        },
+        "tax_withheld": {
+          "value": "$701.58",
+          "confidence": 0.9554
+        },
+        "superannuation": {
+          "value": "$379.46",
+          "confidence": 0.9244
+        },
+        "ytd_gross_income": {
+          "value": "$89,090.55",
+          "confidence": 0.971
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Stephen Joshua Huynh",
+          "confidence": 0.9738
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.975
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9804
+        },
+        "job_title": {
+          "value": "Data Analyst",
+          "confidence": 0.9559
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9492
+        },
+        "start_date": {
+          "value": "13/09/2023",
+          "confidence": 0.9879
+        },
+        "gross_annual_salary": {
+          "value": "$85,791.00 p.a.",
+          "confidence": 0.9554
+        },
+        "letter_date": {
+          "value": "23/06/2026",
+          "confidence": 0.9739
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8978
+        },
+        "signatory_name": {
+          "value": "Michael Gonzalez",
+          "confidence": 0.8875
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.864
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Stephen Joshua Huynh",
+          "confidence": 0.9407
+        },
+        "bsb": {
+          "value": "192-521",
+          "confidence": 0.9809
+        },
+        "account_number": {
+          "value": "5085 9526",
+          "confidence": 0.9897
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9417
+        },
+        "opening_balance": {
+          "value": "$19,987.95",
+          "confidence": 0.9525
+        },
+        "closing_balance": {
+          "value": "$7,066.88",
+          "confidence": 0.9578
+        }
+      },
+      "salary_credits": []
+    }
+  ]
+}

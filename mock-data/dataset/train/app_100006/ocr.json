@@ -1,0 +1,178 @@
+{
+  "application_id": "100006",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Jennifer Cummings",
+          "confidence": 0.9689
+        },
+        "date_of_birth": {
+          "value": "20/05/1971",
+          "confidence": 0.9821
+        },
+        "document_number": {
+          "value": "PA2206871",
+          "confidence": 0.9869
+        },
+        "expiry_date": {
+          "value": "23/07/2027",
+          "confidence": 0.9589
+        },
+        "residential_address": {
+          "value": "Unit 75, 388 Byrd Ridgeway Steps, Surry Hills NSW 2010",
+          "confidence": 0.9161
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Jennifer Cummings",
+          "confidence": 0.9402
+        },
+        "employer_name": {
+          "value": "Stone Ltd Pty Ltd",
+          "confidence": 0.9574
+        },
+        "abn": {
+          "value": "77 599 512 772",
+          "confidence": 0.9783
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9577
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9648
+        },
+        "gross_income": {
+          "value": "$4,864.88",
+          "confidence": 0.9675
+        },
+        "net_income": {
+          "value": "$3,379.08",
+          "confidence": 0.968
+        },
+        "tax_withheld": {
+          "value": "$1,202.46",
+          "confidence": 0.9892
+        },
+        "superannuation": {
+          "value": "$559.46",
+          "confidence": 0.9288
+        },
+        "ytd_gross_income": {
+          "value": "$131,351.76",
+          "confidence": 0.9732
+        },
+        "hecs_repayment": {
+          "value": "$283.35",
+          "confidence": 0.9534
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Jennifer Cummings",
+          "confidence": 0.9345
+        },
+        "employer_name": {
+          "value": "Stone Ltd Pty Ltd",
+          "confidence": 0.9517
+        },
+        "abn": {
+          "value": "77 599 512 772",
+          "confidence": 0.982
+        },
+        "job_title": {
+          "value": "Financial Analyst",
+          "confidence": 0.9029
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9203
+        },
+        "start_date": {
+          "value": "02/10/2024",
+          "confidence": 0.942
+        },
+        "gross_annual_salary": {
+          "value": "$126,487.00 p.a.",
+          "confidence": 0.9524
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9447
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8821
+        },
+        "signatory_name": {
+          "value": "Michael Lynch",
+          "confidence": 0.8504
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.9258
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Jennifer Cummings",
+          "confidence": 0.9765
+        },
+        "bsb": {
+          "value": "341-676",
+          "confidence": 0.9743
+        },
+        "account_number": {
+          "value": "1267 6438",
+          "confidence": 0.9869
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9222
+        },
+        "opening_balance": {
+          "value": "$17,656.75",
+          "confidence": 0.9533
+        },
+        "closing_balance": {
+          "value": "$14,168.08",
+          "confidence": 0.9568
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP STONE LTD PTY L PAYROLL",
+          "amount": "$3,379.08"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP STONE LTD PTY L PAYROLL",
+          "amount": "$3,379.08"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP STONE LTD PTY L PAYROLL",
+          "amount": "$3,379.08"
+        }
+      ]
+    }
+  ]
+}

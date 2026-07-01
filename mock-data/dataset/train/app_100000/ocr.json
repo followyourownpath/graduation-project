@@ -1,0 +1,174 @@
+{
+  "application_id": "100000",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Kyle Perez",
+          "confidence": 0.9665
+        },
+        "date_of_birth": {
+          "value": "07/06/1980",
+          "confidence": 0.9796
+        },
+        "document_number": {
+          "value": "PA9073827",
+          "confidence": 0.9889
+        },
+        "expiry_date": {
+          "value": "09/10/2028",
+          "confidence": 0.9877
+        },
+        "residential_address": {
+          "value": "424 Kelly Rue Triangle, Fitzroy VIC 3065",
+          "confidence": 0.9275
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Kyel Perez",
+          "confidence": 0.9402
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9626
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.983
+        },
+        "pay_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9505
+        },
+        "pay_period": {
+          "value": "18/06/2026 - 24/06/2026",
+          "confidence": 0.9354
+        },
+        "gross_income": {
+          "value": "$3,061.60",
+          "confidence": 0.9837
+        },
+        "net_income": {
+          "value": "$2,226.46",
+          "confidence": 0.9755
+        },
+        "tax_withheld": {
+          "value": "$835.14",
+          "confidence": 0.984
+        },
+        "superannuation": {
+          "value": "$352.08",
+          "confidence": 0.9369
+        },
+        "ytd_gross_income": {
+          "value": "$162,264.80",
+          "confidence": 0.9542
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Kyle Perez",
+          "confidence": 0.938
+        },
+        "employer_name": {
+          "value": "Gregory Ltd Ltd",
+          "confidence": 0.9871
+        },
+        "abn": {
+          "value": "65 435 933 731",
+          "confidence": 0.9699
+        },
+        "job_title": {
+          "value": "Senior Project Manager",
+          "confidence": 0.9307
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9387
+        },
+        "start_date": {
+          "value": "15/11/2021",
+          "confidence": 0.9628
+        },
+        "gross_annual_salary": {
+          "value": "$159,203.00 p.a.",
+          "confidence": 0.965
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9425
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9463
+        },
+        "signatory_name": {
+          "value": "Jesus Wilson",
+          "confidence": 0.9467
+        },
+        "signatory_title": {
+          "value": "People & Culture Lead",
+          "confidence": 0.8803
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Kyle Perez",
+          "confidence": 0.9535
+        },
+        "bsb": {
+          "value": "417-854",
+          "confidence": 0.9757
+        },
+        "account_number": {
+          "value": "5234 3008",
+          "confidence": 0.9846
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9539
+        },
+        "opening_balance": {
+          "value": "$13,213.63",
+          "confidence": 0.9872
+        },
+        "closing_balance": {
+          "value": "$6,956.72",
+          "confidence": 0.9891
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "11/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,226.46"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,226.46"
+        },
+        {
+          "date": "25/06/2026",
+          "description": "DIRECT DEP GREGORY LTD LTD PAYROLL",
+          "amount": "$2,226.46"
+        }
+      ]
+    }
+  ]
+}

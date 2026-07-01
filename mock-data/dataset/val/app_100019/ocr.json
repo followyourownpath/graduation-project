@@ -1,0 +1,174 @@
+{
+  "application_id": "100019",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Teresa Tammy Grimes",
+          "confidence": 0.9897
+        },
+        "date_of_birth": {
+          "value": "08/06/1962",
+          "confidence": 0.9873
+        },
+        "document_number": {
+          "value": "PA4853736",
+          "confidence": 0.9877
+        },
+        "expiry_date": {
+          "value": "24/11/2028",
+          "confidence": 0.9728
+        },
+        "residential_address": {
+          "value": "96 Thomas Circus Alleyway, South Brisbane QLD 4101",
+          "confidence": 0.9576
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Teresa Tammy Grimes",
+          "confidence": 0.9596
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9506
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9736
+        },
+        "pay_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9664
+        },
+        "pay_period": {
+          "value": "18/06/2026 - 24/06/2026",
+          "confidence": 0.9572
+        },
+        "gross_income": {
+          "value": "$2,309.37",
+          "confidence": 0.9872
+        },
+        "net_income": {
+          "value": "$1,747.52",
+          "confidence": 0.9774
+        },
+        "tax_withheld": {
+          "value": "$561.84",
+          "confidence": 0.9802
+        },
+        "superannuation": {
+          "value": "$265.58",
+          "confidence": 0.9537
+        },
+        "ytd_gross_income": {
+          "value": "$122,396.61",
+          "confidence": 0.9883
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Teresa Tammy Grimes",
+          "confidence": 0.9864
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9682
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9865
+        },
+        "job_title": {
+          "value": "Accountant",
+          "confidence": 0.9636
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9301
+        },
+        "start_date": {
+          "value": "06/06/2026",
+          "confidence": 0.9542
+        },
+        "gross_annual_salary": {
+          "value": "$120,087.00 p.a.",
+          "confidence": 0.9634
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9613
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9423
+        },
+        "signatory_name": {
+          "value": "Michael Gonzalez",
+          "confidence": 0.8579
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.8715
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Teresa Tammy Grimes",
+          "confidence": 0.9552
+        },
+        "bsb": {
+          "value": "728-170",
+          "confidence": 0.972
+        },
+        "account_number": {
+          "value": "5456 9411",
+          "confidence": 0.9731
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9521
+        },
+        "opening_balance": {
+          "value": "$16,347.63",
+          "confidence": 0.9726
+        },
+        "closing_balance": {
+          "value": "$9,230.74",
+          "confidence": 0.9601
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "11/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$1,747.52"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$1,747.52"
+        },
+        {
+          "date": "25/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$1,747.52"
+        }
+      ]
+    }
+  ]
+}
