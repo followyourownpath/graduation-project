@@ -20,7 +20,7 @@ export default function DashboardLayout({ children }) {
       <div className="w-64 bg-slate-900 text-white flex flex-col">
         <div className="h-16 flex items-center px-6 border-b border-slate-800">
           <ShieldCheck className="h-6 w-6 text-blue-400 mr-2" />
-          <span className="font-bold text-lg tracking-tight">ComplianceHQ</span>
+          <span className="font-bold text-lg tracking-tight">SmartFinn</span>
         </div>
         
         <nav className="flex-1 px-4 py-6 space-y-2">

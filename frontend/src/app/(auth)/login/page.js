@@ -17,7 +17,7 @@ export default function LoginPage() {
         
         <div className="relative z-10 flex items-center space-x-3">
           <ShieldCheck className="h-10 w-10 text-blue-400" />
-          <span className="text-3xl font-bold tracking-tight">ComplianceHQ</span>
+          <span className="text-3xl font-bold tracking-tight">SmartFinn</span>
         </div>
         
         <div className="relative z-10 max-w-md">
@@ -30,7 +30,7 @@ export default function LoginPage() {
         </div>
         
         <div className="relative z-10 text-sm text-slate-500">
-          © 2026 ComplianceHQ Inc.
+          © 2026 SmartFinn Inc.
         </div>
       </div>
 
