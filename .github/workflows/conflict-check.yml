@@ -1,0 +1,32 @@
+name: Conflict Check
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  check-conflict:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Detect merge conflicts with base branch
+        run: |
+          git fetch origin "${{ github.base_ref }}"
+          if git merge-tree "$(git merge-base HEAD "origin/${{ github.base_ref }}")" \
+               HEAD "origin/${{ github.base_ref }}" | grep -q '<<<<<<<'; then
+            echo "::error::This PR has merge conflicts with ${{ github.base_ref }}. Please rebase/merge and resolve them."
+            exit 1
+          fi
+          echo "No merge conflicts with ${{ github.base_ref }}"
+
+      - name: Fail if conflict markers left in files
+        run: |
+          if git grep -nE '^(<<<<<<<|=======|>>>>>>>)' -- . ':!.github' ; then
+            echo "::error::Conflict markers found in the repository"
+            exit 1
+          fi
+          echo "No conflict markers found"
