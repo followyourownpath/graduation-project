@@ -1,37 +1,19 @@
-'use client';
-
-import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, Clock, AlertTriangle, CheckCircle, ArrowRight, Loader2 } from "lucide-react";
+import { FileText, Clock, AlertTriangle, CheckCircle, ArrowRight } from "lucide-react";
 import Link from "next/link";
-import { api } from '@/lib/api';
+
+const mockApplications = [
+  { id: 'APP-2026-001', name: 'Alice Smith', type: 'Purchase', date: '2026-06-25', status: 'Pending', risk: 'High', score: 85 },
+  { id: 'APP-2026-002', name: 'Bob Johnson', type: 'Refinance', date: '2026-06-24', status: 'Approved', risk: 'Low', score: 12 },
+  { id: 'APP-2026-003', name: 'Charlie Davis', type: 'Purchase', date: '2026-06-24', status: 'Pending', risk: 'Medium', score: 45 },
+  { id: 'APP-2026-004', name: 'Diana Prince', type: 'Purchase', date: '2026-06-23', status: 'Pending', risk: 'Low', score: 22 },
+  { id: 'APP-2026-005', name: 'Evan Wright', type: 'Refinance', date: '2026-06-22', status: 'Rejected', risk: 'High', score: 92 },
+];
 
 export default function DashboardPage() {
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await api.getSubmissions({ limit: 5 });
-        setApplications(response.data || []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchApplications();
-  }, []);
-
-  const totalApps = applications.length;
-  const pendingApps = applications.filter(app => app.submission_status === 'in_review').length;
-  const highRiskApps = applications.filter(app => app.risk_level === 'High').length;
-  const approvedApps = applications.filter(app => app.submission_status === 'approved').length;
-
   return (
     <div className="p-8 space-y-8">
       {/* Metrics Cards */}
@@ -42,12 +24,8 @@ export default function DashboardPage() {
             <FileText className="h-4 w-4 text-slate-400" />
           </CardHeader>
           <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{totalApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Based on recent data</p>
-              </>
-            )}
+            <div className="text-2xl font-bold">1,248</div>
+            <p className="text-xs text-slate-400 mt-1">+12% from last month</p>
           </CardContent>
         </Card>
         <Card>
@@ -56,12 +34,8 @@ export default function DashboardPage() {
             <Clock className="h-4 w-4 text-amber-500" />
           </CardHeader>
           <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{pendingApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Requires action</p>
-              </>
-            )}
+            <div className="text-2xl font-bold">42</div>
+            <p className="text-xs text-slate-400 mt-1">18 require urgent action</p>
           </CardContent>
         </Card>
         <Card>
@@ -70,26 +44,18 @@ export default function DashboardPage() {
             <AlertTriangle className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold text-red-600">{highRiskApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Requires close attention</p>
-              </>
-            )}
+            <div className="text-2xl font-bold text-red-600">7</div>
+            <p className="text-xs text-slate-400 mt-1">Fraud flags detected</p>
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-500">Approved</CardTitle>
+            <CardTitle className="text-sm font-medium text-slate-500">Approved Today</CardTitle>
             <CheckCircle className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{approvedApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Ready for settlement</p>
-              </>
-            )}
+            <div className="text-2xl font-bold">24</div>
+            <p className="text-xs text-slate-400 mt-1">Avg processing time: 4h</p>
           </CardContent>
         </Card>
       </div>
@@ -100,61 +66,50 @@ export default function DashboardPage() {
           <CardTitle>Recent Applications</CardTitle>
         </CardHeader>
         <CardContent>
-          {loading ? (
-             <div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-blue-500" /></div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>App ID</TableHead>
-                  <TableHead>Applicant</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Risk Score</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>App ID</TableHead>
+                <TableHead>Applicant</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Date</TableHead>
+                <TableHead>Status</TableHead>
+                <TableHead>Risk Score</TableHead>
+                <TableHead className="text-right">Action</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {mockApplications.map((app) => (
+                <TableRow key={app.id}>
+                  <TableCell className="font-medium">{app.id}</TableCell>
+                  <TableCell>{app.name}</TableCell>
+                  <TableCell>{app.type}</TableCell>
+                  <TableCell>{app.date}</TableCell>
+                  <TableCell>
+                    <Badge variant={app.status === 'Approved' ? 'success' : app.status === 'Rejected' ? 'destructive' : 'secondary'}>
+                      {app.status}
+                    </Badge>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant="outline" className={
+                      app.risk === 'High' ? 'border-red-500 text-red-700 bg-red-50' : 
+                      app.risk === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
+                      'border-emerald-500 text-emerald-700 bg-emerald-50'
+                    }>
+                      {app.score} ({app.risk})
+                    </Badge>
+                  </TableCell>
+                  <TableCell className="text-right">
+                    <Link href={`/application/${app.id}`}>
+                      <Button variant="ghost" size="sm">
+                        Review <ArrowRight className="ml-2 h-4 w-4" />
+                      </Button>
+                    </Link>
+                  </TableCell>
                 </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell className="font-medium">{app.id}</TableCell>
-                    <TableCell>{app.customer_name}</TableCell>
-                    <TableCell className="capitalize">{app.loan_type}</TableCell>
-                    <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <Badge variant={app.submission_status === 'approved' ? 'success' : app.submission_status === 'rejected' ? 'destructive' : 'secondary'}>
-                        {app.submission_status.replace('_', ' ')}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={
-                        app.risk_level === 'High' ? 'border-red-500 text-red-700 bg-red-50' : 
-                        app.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
-                        'border-emerald-500 text-emerald-700 bg-emerald-50'
-                      }>
-                        {app.overall_risk_score} ({app.risk_level})
-                      </Badge>
-                    </TableCell>
-                    <TableCell className="text-right">
-                      <Link href={`/application/${app.id}`}>
-                        <Button variant="ghost" size="sm">
-                          Review <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {applications.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-6 text-slate-500">
-                      No applications found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          )}
+              ))}
+            </TableBody>
+          </Table>
         </CardContent>
       </Card>
     </div>

@@ -1,9 +1,4 @@
-# [DEPRECATED] 前端到后端 API 需求接口文档 (API Requirements for Backend)
-
-> [!CAUTION]
-> **This document is deprecated.** It is based on an outdated database design.
-> **Please refer to the new API contract: [API_Contract_v2_Demo_B.md](./API_Contract_v2_Demo_B.md)**
-> Which aligns with the current Supabase schema and frontend implementation.
+# 前端到后端 API 需求接口文档 (API Requirements for Backend)
 
 本文档根据当前已实现的前端页面逻辑，梳理了前端所需的各个接口以及涉及的请求 (Request) 与响应 (Response) 字段，供后端开发作为接口设计的参考。
 
