@@ -77,13 +77,8 @@ git commit -m "chore: resolve merge conflicts with main"
 git push
 ```
 
-解决后**不要留下**这些标记：
-
-```text
-<<<<<<<
-=======
->>>>>>>
-```
+解决后**不要留下**冲突标记（Git 自动插入的那种三行标记）。
+在编辑器里搜索：连续 7 个小于号、7 个等号、或 7 个大于号（即 conflict marker），确认文件里已经没有它们。
 
 ### Frontend CI 红了
 多半是 lint 或 build 失败。本地复现：
