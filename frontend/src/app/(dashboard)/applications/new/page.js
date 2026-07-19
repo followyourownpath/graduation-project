@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { CloudUpload, File as FileIcon, X, CheckCircle2, Loader2, AlertCircle, UploadCloud } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { api } from '@/lib/api';
 
 // Data Configuration
 const LOAN_TYPES = [
@@ -165,16 +166,30 @@ export default function NewApplicationPage() {
   const missingCategories = getMissingCategories();
   const isValid = missingCategories.length === 0 && applicantName.trim() !== '';
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid) return;
     
     setIsSubmitting(true);
-    // Simulate API call
-    setTimeout(() => {
+    try {
+      const formData = new FormData();
+      formData.append('customer_name', applicantName);
+      formData.append('loan_type', loanType);
+
+      for (const [categoryId, files] of Object.entries(categoryFiles)) {
+        for (const fileObj of files) {
+          formData.append('files', fileObj.file);
+          formData.append('document_types', categoryId);
+        }
+      }
+
+      const data = await api.createSubmission(formData);
+      router.push(`/application/${data.submission_id}`);
+    } catch (error) {
+      console.error('Upload failed:', error);
+    } finally {
       setIsSubmitting(false);
-      router.push('/applications');
-    }, 1500);
+    }
   };
 
   return (
