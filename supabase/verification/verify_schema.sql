@@ -1,4 +1,5 @@
--- Read-only, single-row verification for the SmartFinn schema.
+-- READ-ONLY VERIFICATION SCRIPT.
+-- Single-row verification for the SmartFinn schema.
 
 with expected_tables(table_name) as (
   values

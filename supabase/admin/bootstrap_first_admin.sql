@@ -1,9 +1,10 @@
+-- ADMIN-ONLY ONE-TIME OPERATIONAL SCRIPT.
 -- Run this once in the Supabase SQL Editor after creating the first Auth user.
 -- Enter the email once in admin_email before running.
 
 do $$
 declare
-  admin_email constant text := 'z5530509@ad.unsw.edu.au';
+  admin_email constant text := '';
   admin_user_id uuid;
 begin
   if nullif(trim(admin_email), '') is null or position('@' in admin_email) = 0 then

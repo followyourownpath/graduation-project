@@ -1,4 +1,5 @@
--- Read-only verification for the internal staff access model.
+-- READ-ONLY VERIFICATION SCRIPT.
+-- Verification for the internal staff access model.
 
 select
   (
