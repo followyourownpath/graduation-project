@@ -164,7 +164,9 @@ export default function NewApplicationPage() {
   };
   
   const missingCategories = getMissingCategories();
-  const isValid = missingCategories.length === 0 && applicantName.trim() !== '';
+  // Bypass missingCategories requirement for demo, just require a name and at least 1 file
+  const hasAnyFiles = Object.values(categoryFiles).flat().length > 0;
+  const isValid = applicantName.trim() !== '' && hasAnyFiles;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
