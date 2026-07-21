@@ -158,7 +158,7 @@ export default function ApplicationReviewPage({ params }) {
           </Tabs>
         </div>
         <div className="flex-1 overflow-hidden relative bg-slate-200/50">
-          {activeDoc?.processing_status === 'completed' && activeDoc?.storage_uri ? (
+          {activeDoc?.storage_uri ? (
             <iframe 
               src={activeDoc.storage_uri} 
               className="w-full h-full border-0" 
@@ -187,9 +187,9 @@ export default function ApplicationReviewPage({ params }) {
       </div>
 
       {/* Right Pane - OCR Data & Review Panel */}
-      <div className="w-1/2 flex flex-col bg-white">
-        <ScrollArea className="flex-1 p-6">
-          <div className="space-y-8">
+      <div className="w-1/2 flex flex-col bg-white overflow-hidden">
+        <ScrollArea className="flex-1 min-h-0 h-full p-6">
+          <div className="space-y-8 pb-12">
             
             {/* Header info */}
             <div>

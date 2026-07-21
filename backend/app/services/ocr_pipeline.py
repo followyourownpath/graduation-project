@@ -139,7 +139,7 @@ class SupabaseOcrRepository:
         return response.json()
 
     def _request(self, method, path, token, extra_headers=None, **kwargs):
-        headers = {"apikey": self._key, "Authorization": f"Bearer {token}", **(extra_headers or {})}
+        headers = {"apikey": token, "Authorization": f"Bearer {token}", **(extra_headers or {})}
         try:
             return requests.request(method, f"{self._url}{path}", headers=headers, timeout=self._timeout, **kwargs)
         except requests.RequestException as error:

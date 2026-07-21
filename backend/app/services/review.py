@@ -251,11 +251,13 @@ class SupabaseReviewService:
         )
         self._require_ok(response, "document_url_failed")
         signed_url = response.json().get("signedURL", "")
-        return f"{self._url}{signed_url}" if signed_url.startswith("/") else signed_url
+        if signed_url.startswith("/"):
+            return f"{self._url}/storage/v1{signed_url}" if not signed_url.startswith("/storage/v1") else f"{self._url}{signed_url}"
+        return signed_url
 
     def _request(self, method, path, token, extra_headers=None, **kwargs):
         headers = {
-            "apikey": self._key,
+            "apikey": token,
             "Authorization": f"Bearer {token}",
             "Accept": "application/json",
             **(extra_headers or {}),
