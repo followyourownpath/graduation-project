@@ -111,7 +111,11 @@ export default function ApplicationReviewPage({ params }) {
         await api.saveFieldReview(edit.id, edit);
       }
       
-      // Update local state to reflect saved status
+      // Fetch latest OCR data to reflect updates immediately
+      const updatedOcr = await api.getExtractedData(activeDocId);
+      setOcrData(updatedOcr);
+      
+      // Update local state to clear edits
       setEditedFields({});
       alert("Corrections saved successfully!");
     } catch (e) {
@@ -132,8 +136,10 @@ export default function ApplicationReviewPage({ params }) {
 
   const activeDoc = submission.documents?.find(d => d.doc_id === activeDocId);
 
-  // Group fields by section
-  const groupedFields = ocrData?.fields?.reduce((acc, field) => {
+  // Group fields by section and ensure deterministic sorting
+  const groupedFields = ocrData?.fields?.slice()
+    .sort((a, b) => (a.field_key || '').localeCompare(b.field_key || ''))
+    .reduce((acc, field) => {
     const section = field.section_name || 'General';
     (acc[section] = acc[section] || []).push(field);
     return acc;
@@ -187,9 +193,9 @@ export default function ApplicationReviewPage({ params }) {
       </div>
 
       {/* Right Pane - OCR Data & Review Panel */}
-      <div className="w-1/2 flex flex-col bg-white">
-        <ScrollArea className="flex-1 p-6">
-          <div className="space-y-8">
+      <div className="w-1/2 flex flex-col bg-white overflow-hidden">
+        <ScrollArea className="flex-1 min-h-0 h-full p-6">
+          <div className="space-y-8 pb-12">
             
             {/* Header info */}
             <div>
