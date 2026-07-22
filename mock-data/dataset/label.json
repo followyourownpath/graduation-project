@@ -1,0 +1,162 @@
+{
+  "100000": {
+    "application_id": "100000",
+    "is_fraud": true,
+    "fraud_type_id": 5,
+    "fraud_type_name": "Name Typo / Mismatch",
+    "fraud_description": "Name mismatch: Payslips list name as 'Kyel Perez', but ID and Bank Statement list 'Kyle Perez'.",
+    "risk_score": 97
+  },
+  "100001": {
+    "application_id": "100001",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 20
+  },
+  "100002": {
+    "application_id": "100002",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 10
+  },
+  "100003": {
+    "application_id": "100003",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 13
+  },
+  "100004": {
+    "application_id": "100004",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 9
+  },
+  "100005": {
+    "application_id": "100005",
+    "is_fraud": true,
+    "fraud_type_id": 3,
+    "fraud_type_name": "No Salary Credit",
+    "fraud_description": "No Salary Credit: Bank statement has no record of salary/payroll credits matching the payslip.",
+    "risk_score": 92
+  },
+  "100006": {
+    "application_id": "100006",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 7
+  },
+  "100007": {
+    "application_id": "100007",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 10
+  },
+  "100008": {
+    "application_id": "100008",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 17
+  },
+  "100009": {
+    "application_id": "100009",
+    "is_fraud": true,
+    "fraud_type_id": 13,
+    "fraud_type_name": "Cash Deposit Injection",
+    "fraud_description": "Large cash deposit injection: Bank statement shows a large cash deposit of $35,000 just before the application, which represents a potential unverified source of funds.",
+    "risk_score": 97
+  },
+  "100010": {
+    "application_id": "100010",
+    "is_fraud": true,
+    "fraud_type_id": 3,
+    "fraud_type_name": "No Salary Credit",
+    "fraud_description": "No Salary Credit: Bank statement has no record of salary/payroll credits matching the payslip.",
+    "risk_score": 83
+  },
+  "100011": {
+    "application_id": "100011",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 6
+  },
+  "100012": {
+    "application_id": "100012",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 9
+  },
+  "100013": {
+    "application_id": "100013",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 18
+  },
+  "100014": {
+    "application_id": "100014",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 15
+  },
+  "100015": {
+    "application_id": "100015",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 15
+  },
+  "100016": {
+    "application_id": "100016",
+    "is_fraud": true,
+    "fraud_type_id": 5,
+    "fraud_type_name": "Name Typo / Mismatch",
+    "fraud_description": "Name mismatch: Payslips list name as 'Catherien Brandt', but ID and Bank Statement list 'Catherine Brandt'.",
+    "risk_score": 84
+  },
+  "100017": {
+    "application_id": "100017",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 19
+  },
+  "100018": {
+    "application_id": "100018",
+    "is_fraud": false,
+    "fraud_type_id": 0,
+    "fraud_type_name": "None",
+    "fraud_description": "Clean application, no discrepancies detected.",
+    "risk_score": 9
+  },
+  "100019": {
+    "application_id": "100019",
+    "is_fraud": true,
+    "fraud_type_id": 11,
+    "fraud_type_name": "Tenure / Start Date Mismatch",
+    "fraud_description": "Tenure mismatch: Employment letter lists start date as 06/06/2026, but payslips showing active pay period begin prior to this date.",
+    "risk_score": 95
+  }
+}

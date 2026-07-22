@@ -1,8 +1,8 @@
 import { mockSubmissions, mockDocuments, mockExtractedData } from './mock-data';
 
 // Set this to true to use real API endpoints once the backend is ready
-const USE_REAL_API = false;
-const BASE_URL = '/api'; // Adjust to your actual backend URL later
+const USE_REAL_API = true;
+const BASE_URL = 'http://localhost:5000/api/v1'; // Adjust to your actual backend URL later
 
 // Delay helper to simulate network latency for mock data
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
@@ -14,12 +14,61 @@ export const api = {
    */
   async createSubmission(formData) {
     if (USE_REAL_API) {
-      const res = await fetch(`${BASE_URL}/submissions`, {
+      // Step 1: Create application
+      const customer_name = formData.get('customer_name');
+      const loan_type = formData.get('loan_type');
+      
+      const appRes = await fetch(`${BASE_URL}/applications`, {
         method: 'POST',
-        body: formData, // No Content-Type header needed for FormData
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ customer_name, loan_type, source_channel: 'frontend' })
       });
-      if (!res.ok) throw new Error('Failed to create submission');
-      return res.json();
+      
+      if (!appRes.ok) {
+        const err = await appRes.json().catch(() => ({}));
+        throw new Error(err.error?.message || 'Failed to create application');
+      }
+      
+      const appData = await appRes.json();
+      const submissionId = appData.submission_id;
+
+      // Step 2: Upload documents one by one
+      const files = formData.getAll('files');
+      const docTypes = formData.getAll('document_types');
+      const docIds = [];
+      
+      for (let i = 0; i < files.length; i++) {
+        const docFormData = new FormData();
+        docFormData.append('file', files[i]);
+        docFormData.append('document_type', docTypes[i]);
+        
+        const docRes = await fetch(`${BASE_URL}/submissions/${submissionId}/documents`, {
+          method: 'POST',
+          body: docFormData
+        });
+        
+        if (!docRes.ok) {
+           console.error(`Failed to upload ${files[i].name}`);
+        } else {
+           const docData = await docRes.json();
+           docIds.push({ id: docData.id, name: files[i].name });
+        }
+      }
+      
+      // Step 3: Trigger OCR parsing sequentially in the background
+      // This prevents Azure rate limiting (429) and backend thread pool exhaustion (503)
+      (async () => {
+        for (const doc of docIds) {
+          try {
+            const ocrRes = await fetch(`${BASE_URL}/documents/${doc.id}/ocr`, { method: 'POST' });
+            if (!ocrRes.ok) console.error(`OCR failed for ${doc.name} with status ${ocrRes.status}`);
+          } catch (err) {
+            console.error(`OCR request error for ${doc.name}:`, err);
+          }
+        }
+      })();
+      
+      return { submission_id: submissionId, message: 'Upload successful, OCR processing started' };
     } else {
       await delay(1500);
       // Simulate success and return a mock ID (using the first one to show data in review page)

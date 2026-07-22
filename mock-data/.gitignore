@@ -1,0 +1,19 @@
+# Python bytecode/cache
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Generated datasets (Keep code repository clean, datasets should be generated locally)
+# dataset/
+dataset_large/
+dataset_json_only/
+
+# Environments
+.venv/
+env/
+venv/
+ENV/
+
+# OS files
+.DS_Store
+Thumbs.db

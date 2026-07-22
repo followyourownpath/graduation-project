@@ -1,0 +1,174 @@
+{
+  "application_id": "100008",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Lucas Johnson",
+          "confidence": 0.9505
+        },
+        "date_of_birth": {
+          "value": "12/03/1983",
+          "confidence": 0.9714
+        },
+        "document_number": {
+          "value": "PA4659360",
+          "confidence": 0.9842
+        },
+        "expiry_date": {
+          "value": "13/03/2034",
+          "confidence": 0.983
+        },
+        "residential_address": {
+          "value": "277 Fisher Foreshore Strand, Sydney NSW 2000",
+          "confidence": 0.9171
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Lucas Johnson",
+          "confidence": 0.9603
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9604
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9885
+        },
+        "pay_date": {
+          "value": "02/06/2026",
+          "confidence": 0.9709
+        },
+        "pay_period": {
+          "value": "03/05/2026 - 01/06/2026",
+          "confidence": 0.9306
+        },
+        "gross_income": {
+          "value": "$12,235.08",
+          "confidence": 0.9767
+        },
+        "net_income": {
+          "value": "$9,018.57",
+          "confidence": 0.9504
+        },
+        "tax_withheld": {
+          "value": "$3,216.52",
+          "confidence": 0.9832
+        },
+        "superannuation": {
+          "value": "$1,407.03",
+          "confidence": 0.9279
+        },
+        "ytd_gross_income": {
+          "value": "$159,056.04",
+          "confidence": 0.9515
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Lucas Johnson",
+          "confidence": 0.9712
+        },
+        "employer_name": {
+          "value": "White LLC Group Pty Ltd",
+          "confidence": 0.9672
+        },
+        "abn": {
+          "value": "43 885 592 798",
+          "confidence": 0.9873
+        },
+        "job_title": {
+          "value": "Sales Director",
+          "confidence": 0.9568
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9511
+        },
+        "start_date": {
+          "value": "17/07/2024",
+          "confidence": 0.9734
+        },
+        "gross_annual_salary": {
+          "value": "$146,821.00 p.a.",
+          "confidence": 0.9724
+        },
+        "letter_date": {
+          "value": "27/06/2026",
+          "confidence": 0.9333
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9336
+        },
+        "signatory_name": {
+          "value": "Michael Gonzalez",
+          "confidence": 0.8783
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.8891
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Lucas Johnson",
+          "confidence": 0.9727
+        },
+        "bsb": {
+          "value": "338-940",
+          "confidence": 0.9879
+        },
+        "account_number": {
+          "value": "6481 9839",
+          "confidence": 0.9879
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9315
+        },
+        "opening_balance": {
+          "value": "$11,828.13",
+          "confidence": 0.9578
+        },
+        "closing_balance": {
+          "value": "$26,866.38",
+          "confidence": 0.9602
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "03/04/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$9,018.57"
+        },
+        {
+          "date": "03/05/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$9,018.57"
+        },
+        {
+          "date": "02/06/2026",
+          "description": "DIRECT DEP WHITE LLC GROUP PAYROLL",
+          "amount": "$9,018.57"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "application_id": "100003",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Anna Dixon",
+          "confidence": 0.9644
+        },
+        "date_of_birth": {
+          "value": "07/07/1993",
+          "confidence": 0.9821
+        },
+        "document_number": {
+          "value": "PA2029326",
+          "confidence": 0.9811
+        },
+        "expiry_date": {
+          "value": "29/12/2034",
+          "confidence": 0.9846
+        },
+        "residential_address": {
+          "value": "415 Cheryl Colonnade Place, Chatswood NSW 2067",
+          "confidence": 0.9064
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Anna Dixon",
+          "confidence": 0.9648
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9889
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.9707
+        },
+        "pay_date": {
+          "value": "25/06/2026",
+          "confidence": 0.9747
+        },
+        "pay_period": {
+          "value": "18/06/2026 - 24/06/2026",
+          "confidence": 0.9419
+        },
+        "gross_income": {
+          "value": "$1,640.81",
+          "confidence": 0.9828
+        },
+        "net_income": {
+          "value": "$1,292.90",
+          "confidence": 0.9523
+        },
+        "tax_withheld": {
+          "value": "$347.90",
+          "confidence": 0.9513
+        },
+        "superannuation": {
+          "value": "$188.69",
+          "confidence": 0.9706
+        },
+        "ytd_gross_income": {
+          "value": "$86,962.93",
+          "confidence": 0.9742
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Anna Dixon",
+          "confidence": 0.9779
+        },
+        "employer_name": {
+          "value": "Wolf Ltd Pty Ltd",
+          "confidence": 0.9519
+        },
+        "abn": {
+          "value": "66 396 710 463",
+          "confidence": 0.9732
+        },
+        "job_title": {
+          "value": "Registered Nurse",
+          "confidence": 0.9519
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9796
+        },
+        "start_date": {
+          "value": "26/03/2022",
+          "confidence": 0.9467
+        },
+        "gross_annual_salary": {
+          "value": "$85,322.00 p.a.",
+          "confidence": 0.9506
+        },
+        "letter_date": {
+          "value": "25/06/2026",
+          "confidence": 0.962
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8893
+        },
+        "signatory_name": {
+          "value": "Timothy Ingram",
+          "confidence": 0.9027
+        },
+        "signatory_title": {
+          "value": "Talent Acquisition Lead",
+          "confidence": 0.8817
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Anna Dixon",
+          "confidence": 0.9738
+        },
+        "bsb": {
+          "value": "560-774",
+          "confidence": 0.9716
+        },
+        "account_number": {
+          "value": "5956 6985",
+          "confidence": 0.9755
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9625
+        },
+        "opening_balance": {
+          "value": "$19,409.58",
+          "confidence": 0.9553
+        },
+        "closing_balance": {
+          "value": "$9,349.02",
+          "confidence": 0.9759
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "11/06/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$1,292.90"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$1,292.90"
+        },
+        {
+          "date": "25/06/2026",
+          "description": "DIRECT DEP WOLF LTD PTY LT PAYROLL",
+          "amount": "$1,292.90"
+        }
+      ]
+    }
+  ]
+}

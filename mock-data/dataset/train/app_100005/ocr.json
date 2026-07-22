@@ -1,0 +1,162 @@
+{
+  "application_id": "100005",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Ronnie James Erickson",
+          "confidence": 0.9682
+        },
+        "date_of_birth": {
+          "value": "27/10/1964",
+          "confidence": 0.9829
+        },
+        "document_number": {
+          "value": "PA7866499",
+          "confidence": 0.98
+        },
+        "expiry_date": {
+          "value": "14/04/2030",
+          "confidence": 0.9704
+        },
+        "residential_address": {
+          "value": "351 Rodriguez Lane Cross, Adelaide SA 5000",
+          "confidence": 0.9585
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Ronnie James Erickson",
+          "confidence": 0.9498
+        },
+        "employer_name": {
+          "value": "Rowe and Sons Pty Ltd",
+          "confidence": 0.9875
+        },
+        "abn": {
+          "value": "92 941 123 870",
+          "confidence": 0.9779
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9587
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9219
+        },
+        "gross_income": {
+          "value": "$3,424.62",
+          "confidence": 0.9591
+        },
+        "net_income": {
+          "value": "$2,547.71",
+          "confidence": 0.9655
+        },
+        "tax_withheld": {
+          "value": "$741.57",
+          "confidence": 0.9434
+        },
+        "superannuation": {
+          "value": "$393.83",
+          "confidence": 0.9726
+        },
+        "ytd_gross_income": {
+          "value": "$92,464.74",
+          "confidence": 0.9675
+        },
+        "hecs_repayment": {
+          "value": "$135.34",
+          "confidence": 0.9678
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Ronnie James Erickson",
+          "confidence": 0.9847
+        },
+        "employer_name": {
+          "value": "Rowe and Sons Pty Ltd",
+          "confidence": 0.9764
+        },
+        "abn": {
+          "value": "92 941 123 870",
+          "confidence": 0.9882
+        },
+        "job_title": {
+          "value": "Marketing Manager",
+          "confidence": 0.9413
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9743
+        },
+        "start_date": {
+          "value": "08/11/2024",
+          "confidence": 0.9403
+        },
+        "gross_annual_salary": {
+          "value": "$89,040.00 p.a.",
+          "confidence": 0.9729
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9563
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8945
+        },
+        "signatory_name": {
+          "value": "Rachel Faulkner",
+          "confidence": 0.9047
+        },
+        "signatory_title": {
+          "value": "Human Resources Director",
+          "confidence": 0.8704
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Ronnie James Erickson",
+          "confidence": 0.9441
+        },
+        "bsb": {
+          "value": "196-275",
+          "confidence": 0.9898
+        },
+        "account_number": {
+          "value": "4028 9290",
+          "confidence": 0.9725
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.946
+        },
+        "opening_balance": {
+          "value": "$11,849.11",
+          "confidence": 0.9521
+        },
+        "closing_balance": {
+          "value": "$338.39",
+          "confidence": 0.9634
+        }
+      },
+      "salary_credits": []
+    }
+  ]
+}

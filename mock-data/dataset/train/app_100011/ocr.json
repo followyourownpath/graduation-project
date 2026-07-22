@@ -1,0 +1,174 @@
+{
+  "application_id": "100011",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Erin Williamson",
+          "confidence": 0.9675
+        },
+        "date_of_birth": {
+          "value": "24/07/1988",
+          "confidence": 0.9706
+        },
+        "document_number": {
+          "value": "PA2363790",
+          "confidence": 0.9852
+        },
+        "expiry_date": {
+          "value": "16/07/2032",
+          "confidence": 0.9769
+        },
+        "residential_address": {
+          "value": "432 Kenneth Gardens Lane, Hurstville NSW 2220",
+          "confidence": 0.9228
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Erin Williamson",
+          "confidence": 0.9672
+        },
+        "employer_name": {
+          "value": "Oliver Inc Ltd",
+          "confidence": 0.9486
+        },
+        "abn": {
+          "value": "17 383 516 806",
+          "confidence": 0.986
+        },
+        "pay_date": {
+          "value": "18/06/2026",
+          "confidence": 0.9536
+        },
+        "pay_period": {
+          "value": "04/06/2026 - 17/06/2026",
+          "confidence": 0.9626
+        },
+        "gross_income": {
+          "value": "$4,289.23",
+          "confidence": 0.9567
+        },
+        "net_income": {
+          "value": "$3,270.98",
+          "confidence": 0.967
+        },
+        "tax_withheld": {
+          "value": "$1,018.25",
+          "confidence": 0.9733
+        },
+        "superannuation": {
+          "value": "$493.26",
+          "confidence": 0.973
+        },
+        "ytd_gross_income": {
+          "value": "$115,809.21",
+          "confidence": 0.9893
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Erin Williamson",
+          "confidence": 0.947
+        },
+        "employer_name": {
+          "value": "Oliver Inc Ltd",
+          "confidence": 0.951
+        },
+        "abn": {
+          "value": "17 383 516 806",
+          "confidence": 0.9784
+        },
+        "job_title": {
+          "value": "Marketing Manager",
+          "confidence": 0.9099
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9343
+        },
+        "start_date": {
+          "value": "06/08/2021",
+          "confidence": 0.9545
+        },
+        "gross_annual_salary": {
+          "value": "$111,520.00 p.a.",
+          "confidence": 0.9796
+        },
+        "letter_date": {
+          "value": "26/06/2026",
+          "confidence": 0.9452
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.8941
+        },
+        "signatory_name": {
+          "value": "Richard Hall",
+          "confidence": 0.8863
+        },
+        "signatory_title": {
+          "value": "HR Manager",
+          "confidence": 0.9022
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Erin Williamson",
+          "confidence": 0.9799
+        },
+        "bsb": {
+          "value": "179-346",
+          "confidence": 0.9825
+        },
+        "account_number": {
+          "value": "5859 5774",
+          "confidence": 0.9886
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9787
+        },
+        "opening_balance": {
+          "value": "$16,601.44",
+          "confidence": 0.9573
+        },
+        "closing_balance": {
+          "value": "$12,610.72",
+          "confidence": 0.9792
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "21/05/2026",
+          "description": "DIRECT DEP OLIVER INC LTD PAYROLL",
+          "amount": "$3,270.98"
+        },
+        {
+          "date": "04/06/2026",
+          "description": "DIRECT DEP OLIVER INC LTD PAYROLL",
+          "amount": "$3,270.98"
+        },
+        {
+          "date": "18/06/2026",
+          "description": "DIRECT DEP OLIVER INC LTD PAYROLL",
+          "amount": "$3,270.98"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,174 @@
+{
+  "application_id": "100009",
+  "documents": [
+    {
+      "document_type": "Identification Document",
+      "filename": "id.pdf",
+      "extracted_fields": {
+        "full_legal_name": {
+          "value": "Jodi Moore",
+          "confidence": 0.9785
+        },
+        "date_of_birth": {
+          "value": "14/11/1968",
+          "confidence": 0.9666
+        },
+        "document_number": {
+          "value": "PA6463409",
+          "confidence": 0.9893
+        },
+        "expiry_date": {
+          "value": "08/10/2032",
+          "confidence": 0.9554
+        },
+        "residential_address": {
+          "value": "Unit 46, 152 Julie Estate Bridge, Carlton VIC 3053",
+          "confidence": 0.9666
+        }
+      }
+    },
+    {
+      "document_type": "Payslip",
+      "filename": "payslip.pdf",
+      "extracted_fields": {
+        "employee_name": {
+          "value": "Jodi Moore",
+          "confidence": 0.9858
+        },
+        "employer_name": {
+          "value": "Jackson, Guzman and Patel Ltd",
+          "confidence": 0.9799
+        },
+        "abn": {
+          "value": "86 175 770 762",
+          "confidence": 0.9798
+        },
+        "pay_date": {
+          "value": "02/06/2026",
+          "confidence": 0.966
+        },
+        "pay_period": {
+          "value": "03/05/2026 - 01/06/2026",
+          "confidence": 0.9537
+        },
+        "gross_income": {
+          "value": "$8,390.67",
+          "confidence": 0.962
+        },
+        "net_income": {
+          "value": "$6,473.32",
+          "confidence": 0.9534
+        },
+        "tax_withheld": {
+          "value": "$1,917.35",
+          "confidence": 0.9445
+        },
+        "superannuation": {
+          "value": "$964.93",
+          "confidence": 0.9778
+        },
+        "ytd_gross_income": {
+          "value": "$109,078.71",
+          "confidence": 0.9637
+        }
+      }
+    },
+    {
+      "document_type": "Employment Letter",
+      "filename": "employment_letter.pdf",
+      "extracted_fields": {
+        "employee_full_name": {
+          "value": "Jodi Moore",
+          "confidence": 0.9682
+        },
+        "employer_name": {
+          "value": "Jackson, Guzman and Patel Ltd",
+          "confidence": 0.9639
+        },
+        "abn": {
+          "value": "86 175 770 762",
+          "confidence": 0.9761
+        },
+        "job_title": {
+          "value": "Financial Analyst",
+          "confidence": 0.9459
+        },
+        "employment_type": {
+          "value": "Permanent full-time",
+          "confidence": 0.9362
+        },
+        "start_date": {
+          "value": "04/12/2024",
+          "confidence": 0.9793
+        },
+        "gross_annual_salary": {
+          "value": "$100,688.00 p.a.",
+          "confidence": 0.9512
+        },
+        "letter_date": {
+          "value": "24/06/2026",
+          "confidence": 0.9435
+        },
+        "probation_status": {
+          "value": "Not on probation",
+          "confidence": 0.9042
+        },
+        "signatory_name": {
+          "value": "Robert Alvarez",
+          "confidence": 0.9082
+        },
+        "signatory_title": {
+          "value": "Human Resources Director",
+          "confidence": 0.8546
+        }
+      }
+    },
+    {
+      "document_type": "Bank Statement",
+      "filename": "bank_statement.pdf",
+      "extracted_fields": {
+        "account_holder_name": {
+          "value": "Jodi Moore",
+          "confidence": 0.9812
+        },
+        "bsb": {
+          "value": "761-180",
+          "confidence": 0.9825
+        },
+        "account_number": {
+          "value": "7751 8244",
+          "confidence": 0.9715
+        },
+        "statement_period": {
+          "value": "01/04/2026 - 30/06/2026",
+          "confidence": 0.9555
+        },
+        "opening_balance": {
+          "value": "$20,545.55",
+          "confidence": 0.9719
+        },
+        "closing_balance": {
+          "value": "$61,426.99",
+          "confidence": 0.9717
+        }
+      },
+      "salary_credits": [
+        {
+          "date": "03/04/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$6,473.32"
+        },
+        {
+          "date": "03/05/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$6,473.32"
+        },
+        {
+          "date": "02/06/2026",
+          "description": "DIRECT DEP JACKSON, GUZMAN PAYROLL",
+          "amount": "$6,473.32"
+        }
+      ]
+    }
+  ]
+}

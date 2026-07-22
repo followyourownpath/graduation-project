@@ -164,7 +164,7 @@ export default function ApplicationReviewPage({ params }) {
           </Tabs>
         </div>
         <div className="flex-1 overflow-hidden relative bg-slate-200/50">
-          {activeDoc?.processing_status === 'completed' && activeDoc?.storage_uri ? (
+          {activeDoc?.storage_uri ? (
             <iframe 
               src={activeDoc.storage_uri} 
               className="w-full h-full border-0" 
