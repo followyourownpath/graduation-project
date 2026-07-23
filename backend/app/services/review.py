@@ -194,6 +194,15 @@ class SupabaseReviewService:
         self._require_ok(audit, "field_review_audit_failed")
         return {"message": "Updated successfully"}
 
+    def update_submission_status(self, token, submission_id, status):
+        response = self._request(
+            "patch", "/rest/v1/fact_find_submission", token,
+            params={"id": f"eq.{submission_id}"},
+            json={"submission_status": status},
+        )
+        self._require_ok(response, "submission_status_update_failed")
+        return {"message": "Status updated successfully"}
+
     def _documents(self, token, submission_id):
         response = self._request(
             "get", "/rest/v1/source_document", token,

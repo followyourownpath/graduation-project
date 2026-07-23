@@ -9,6 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle, Save, XCircle, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { api } from '@/lib/api';
 
 export default function ApplicationReviewPage({ params }) {
@@ -20,6 +21,8 @@ export default function ApplicationReviewPage({ params }) {
   const [ocrData, setOcrData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
+  const [updatingStatus, setUpdatingStatus] = useState(false);
+  const router = useRouter();
   
   // Track edited values
   const [editedFields, setEditedFields] = useState({});
@@ -111,7 +114,11 @@ export default function ApplicationReviewPage({ params }) {
         await api.saveFieldReview(edit.id, edit);
       }
       
-      // Update local state to reflect saved status
+      // Fetch latest OCR data to reflect updates immediately
+      const updatedOcr = await api.getExtractedData(activeDocId);
+      setOcrData(updatedOcr);
+      
+      // Update local state to clear edits
       setEditedFields({});
       alert("Corrections saved successfully!");
     } catch (e) {
@@ -119,6 +126,19 @@ export default function ApplicationReviewPage({ params }) {
       alert("Failed to save corrections.");
     } finally {
       setSaving(false);
+    }
+  };
+
+  const handleStatusUpdate = async (status) => {
+    setUpdatingStatus(true);
+    try {
+      await api.updateSubmissionStatus(appId, status);
+      alert(`Application successfully ${status}!`);
+      router.push('/applications');
+    } catch (e) {
+      console.error(e);
+      alert(`Failed to ${status} application.`);
+      setUpdatingStatus(false);
     }
   };
 
@@ -132,8 +152,10 @@ export default function ApplicationReviewPage({ params }) {
 
   const activeDoc = submission.documents?.find(d => d.doc_id === activeDocId);
 
-  // Group fields by section
-  const groupedFields = ocrData?.fields?.reduce((acc, field) => {
+  // Group fields by section and ensure deterministic sorting
+  const groupedFields = ocrData?.fields?.slice()
+    .sort((a, b) => (a.field_key || '').localeCompare(b.field_key || ''))
+    .reduce((acc, field) => {
     const section = field.section_name || 'General';
     (acc[section] = acc[section] || []).push(field);
     return acc;
@@ -289,14 +311,24 @@ export default function ApplicationReviewPage({ params }) {
 
         {/* Bottom Action Bar */}
         <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
-          <Button variant="outline" className="text-slate-600">Cancel Review</Button>
+          <Button variant="outline" className="text-slate-600" onClick={() => router.push('/applications')}>
+            Cancel Review
+          </Button>
           <div className="space-x-3">
-            <Button variant="destructive">
-              <XCircle className="h-4 w-4 mr-2" />
+            <Button 
+              variant="destructive"
+              disabled={updatingStatus}
+              onClick={() => handleStatusUpdate('rejected')}
+            >
+              {updatingStatus ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <XCircle className="h-4 w-4 mr-2" />}
               Reject
             </Button>
-            <Button className="bg-emerald-600 hover:bg-emerald-700">
-              <CheckCircle className="h-4 w-4 mr-2" />
+            <Button 
+              className="bg-emerald-600 hover:bg-emerald-700"
+              disabled={updatingStatus}
+              onClick={() => handleStatusUpdate('approved')}
+            >
+              {updatingStatus ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <CheckCircle className="h-4 w-4 mr-2" />}
               Approve
             </Button>
           </div>

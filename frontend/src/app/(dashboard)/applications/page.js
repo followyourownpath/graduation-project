@@ -9,10 +9,15 @@ import { Input } from "@/components/ui/input";
 import { ArrowRight, Plus, Search, Filter, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { api } from '@/lib/api';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 export default function ApplicationsPage() {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [statusFilter, setStatusFilter] = useState('all');
+  const [loanTypeFilter, setLoanTypeFilter] = useState('all');
+  const [dateSortOrder, setDateSortOrder] = useState('desc');
 
   useEffect(() => {
     const fetchApplications = async () => {
@@ -27,6 +32,21 @@ export default function ApplicationsPage() {
     };
     fetchApplications();
   }, []);
+
+  const filteredApplications = applications.filter(app => {
+    const matchesSearch = 
+      app.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
+      (app.customer_name && app.customer_name.toLowerCase().includes(searchQuery.toLowerCase()));
+    
+    const matchesStatus = statusFilter === 'all' || app.submission_status === statusFilter;
+    const matchesLoanType = loanTypeFilter === 'all' || app.loan_type === loanTypeFilter;
+
+    return matchesSearch && matchesStatus && matchesLoanType;
+  }).sort((a, b) => {
+    const dateA = new Date(a.created_at).getTime();
+    const dateB = new Date(b.created_at).getTime();
+    return dateSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
+  });
 
   return (
     <div className="p-8 space-y-6">
@@ -51,12 +71,49 @@ export default function ApplicationsPage() {
               <Input
                 placeholder="Search by Applicant or ID..."
                 className="pl-9"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
             </div>
-            <Button variant="outline" className="w-full sm:w-auto">
-              <Filter className="mr-2 h-4 w-4" />
-              Filters
-            </Button>
+            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
+              <Select value={loanTypeFilter} onValueChange={setLoanTypeFilter}>
+                <SelectTrigger className="w-full sm:w-[240px]">
+                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
+                  <SelectValue placeholder="Loan Type" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Loan Type</SelectItem>
+                  <SelectItem value="purchase">Owner-Occupier Purchase</SelectItem>
+                  <SelectItem value="investment">Investment Purchase</SelectItem>
+                  <SelectItem value="refinance">Refinance</SelectItem>
+                  <SelectItem value="first_home">First Home Buyer</SelectItem>
+                  <SelectItem value="self_employed">Self-Employed (any)</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={statusFilter} onValueChange={setStatusFilter}>
+                <SelectTrigger className="w-full sm:w-[150px]">
+                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">Statuses</SelectItem>
+                  <SelectItem value="draft">Draft</SelectItem>
+                  <SelectItem value="in_review">In Review</SelectItem>
+                  <SelectItem value="approved">Approved</SelectItem>
+                  <SelectItem value="rejected">Rejected</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={dateSortOrder} onValueChange={setDateSortOrder}>
+                <SelectTrigger className="w-full sm:w-[220px]">
+                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
+                  <SelectValue placeholder="Sort Date" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="desc">Sort by Date: Descending</SelectItem>
+                  <SelectItem value="asc">Sort by Date: Ascending</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </CardHeader>
         <CardContent className="pt-6">
@@ -78,11 +135,19 @@ export default function ApplicationsPage() {
                 </TableRow>
               </TableHeader>
               <TableBody>
-                {applications.map((app) => (
+                {filteredApplications.map((app) => (
                   <TableRow key={app.id}>
                     <TableCell className="font-medium">{app.id}</TableCell>
                     <TableCell>{app.customer_name}</TableCell>
-                    <TableCell className="capitalize">{app.loan_type}</TableCell>
+                    <TableCell>{
+                      {
+                        'purchase': 'Owner-Occupier Purchase',
+                        'investment': 'Investment Purchase',
+                        'refinance': 'Refinance',
+                        'first_home': 'First Home Buyer',
+                        'self_employed': 'Self-Employed (any)'
+                      }[app.loan_type] || app.loan_type
+                    }</TableCell>
                     <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Badge variant={app.submission_status === 'approved' ? 'success' : app.submission_status === 'rejected' ? 'destructive' : 'secondary'}>
@@ -95,7 +160,7 @@ export default function ApplicationsPage() {
                         app.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
                         'border-emerald-500 text-emerald-700 bg-emerald-50'
                       }>
-                        {app.overall_risk_score} ({app.risk_level})
+                        {app.overall_risk_score} {app.risk_level && `(${app.risk_level})`}
                       </Badge>
                     </TableCell>
                     <TableCell className="text-right">
@@ -107,10 +172,10 @@ export default function ApplicationsPage() {
                     </TableCell>
                   </TableRow>
                 ))}
-                {applications.length === 0 && (
+                {filteredApplications.length === 0 && (
                   <TableRow>
                     <TableCell colSpan={7} className="text-center py-6 text-slate-500">
-                      No applications found.
+                      No applications found matching your criteria.
                     </TableCell>
                   </TableRow>
                 )}
