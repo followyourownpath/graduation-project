@@ -4,6 +4,19 @@ import { mockSubmissions, mockDocuments, mockExtractedData } from './mock-data';
 const USE_REAL_API = true;
 const BASE_URL = 'http://localhost:5000/api/v1'; // Adjust to your actual backend URL later
 
+import { supabase } from './supabase';
+
+const getAuthHeaders = async (existingHeaders = {}) => {
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) {
+    return {
+      ...existingHeaders,
+      'Authorization': `Bearer ${session.access_token}`
+    };
+  }
+  return existingHeaders;
+};
+
 // Delay helper to simulate network latency for mock data
 const delay = (ms) => new Promise(resolve => setTimeout(resolve, ms));
 
@@ -20,7 +33,7 @@ export const api = {
       
       const appRes = await fetch(`${BASE_URL}/applications`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: await getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ customer_name, loan_type, source_channel: 'frontend' })
       });
       
@@ -44,6 +57,7 @@ export const api = {
         
         const docRes = await fetch(`${BASE_URL}/submissions/${submissionId}/documents`, {
           method: 'POST',
+          headers: await getAuthHeaders(),
           body: docFormData
         });
         
@@ -60,7 +74,10 @@ export const api = {
       (async () => {
         for (const doc of docIds) {
           try {
-            const ocrRes = await fetch(`${BASE_URL}/documents/${doc.id}/ocr`, { method: 'POST' });
+            const ocrRes = await fetch(`${BASE_URL}/documents/${doc.id}/ocr`, { 
+              method: 'POST',
+              headers: await getAuthHeaders()
+            });
             if (!ocrRes.ok) console.error(`OCR failed for ${doc.name} with status ${ocrRes.status}`);
           } catch (err) {
             console.error(`OCR request error for ${doc.name}:`, err);
@@ -85,7 +102,9 @@ export const api = {
    */
   async getSubmission(id) {
     if (USE_REAL_API) {
-      const res = await fetch(`${BASE_URL}/submissions/${id}`);
+      const res = await fetch(`${BASE_URL}/submissions/${id}`, {
+        headers: await getAuthHeaders()
+      });
       if (!res.ok) throw new Error('Failed to fetch submission');
       return res.json();
     } else {
@@ -107,7 +126,9 @@ export const api = {
   async getSubmissions(params = {}) {
     if (USE_REAL_API) {
       const queryString = new URLSearchParams(params).toString();
-      const res = await fetch(`${BASE_URL}/submissions?${queryString}`);
+      const res = await fetch(`${BASE_URL}/submissions?${queryString}`, {
+        headers: await getAuthHeaders()
+      });
       if (!res.ok) throw new Error('Failed to fetch submissions');
       return res.json();
     } else {
@@ -125,7 +146,9 @@ export const api = {
    */
   async getExtractedData(docId) {
     if (USE_REAL_API) {
-      const res = await fetch(`${BASE_URL}/documents/${docId}/extracted-data`);
+      const res = await fetch(`${BASE_URL}/documents/${docId}/extracted-data`, {
+        headers: await getAuthHeaders()
+      });
       if (!res.ok) throw new Error('Failed to fetch extracted data');
       return res.json();
     } else {
@@ -143,7 +166,7 @@ export const api = {
     if (USE_REAL_API) {
       const res = await fetch(`${BASE_URL}/fields/${fieldId}/review`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: await getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify(data),
       });
       if (!res.ok) throw new Error('Failed to save field review');
@@ -164,7 +187,7 @@ export const api = {
     if (USE_REAL_API) {
       const res = await fetch(`${BASE_URL}/submissions/${submissionId}/status`, {
         method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
+        headers: await getAuthHeaders({ 'Content-Type': 'application/json' }),
         body: JSON.stringify({ status }),
       });
       if (!res.ok) throw new Error('Failed to update submission status');
