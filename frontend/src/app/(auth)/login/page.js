@@ -1,11 +1,77 @@
+"use client";
+
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { ShieldCheck } from "lucide-react";
+import { ShieldCheck, Loader2 } from "lucide-react";
 import Link from "next/link";
+import { supabase } from "@/lib/supabase";
 
 export default function LoginPage() {
+  const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Check if there is a session already or if we are returning from an invite link
+    const checkSession = async () => {
+      // Supabase automatically parses the hash fragment and establishes a session
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session) {
+        // If we got here with an invite link, redirect to update password
+        const hash = window.location.hash;
+        if (hash && hash.includes("type=invite")) {
+          router.push("/update-password");
+        } else {
+          // Already logged in normally
+          router.push("/dashboard");
+        }
+      }
+    };
+    
+    checkSession();
+
+    // Also listen to auth changes in case the session is established after mount
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
+        if (session) {
+           const hash = window.location.hash;
+           if (hash && hash.includes("type=invite")) {
+             router.push("/update-password");
+           } else {
+             router.push("/dashboard");
+           }
+        }
+      }
+    });
+
+    return () => subscription.unsubscribe();
+  }, [router]);
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    setError(null);
+
+    const { error } = await supabase.auth.signInWithPassword({
+      email,
+      password,
+    });
+
+    if (error) {
+      setError("Invalid username or password. Please try again.");
+      setLoading(false);
+    } else {
+      // Success - router will push via the onAuthStateChange listener
+    }
+  };
+
   return (
     <div className="w-full h-screen grid lg:grid-cols-2">
       {/* Left Pane - Branding */}
@@ -46,7 +112,13 @@ export default function LoginPage() {
             </p>
           </div>
 
-          <form className="space-y-6" action="/dashboard">
+          <form className="space-y-6" onSubmit={handleLogin}>
+            {error && (
+              <div className="p-3 rounded-md bg-red-50 border border-red-200 text-sm text-red-600">
+                {error}
+              </div>
+            )}
+            
             <div className="space-y-2">
               <Label htmlFor="email">Email Address / Username</Label>
               <Input 
@@ -55,6 +127,9 @@ export default function LoginPage() {
                 placeholder="john.doe@enterprise.com" 
                 required 
                 className="h-12"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                disabled={loading}
               />
             </div>
 
@@ -66,12 +141,15 @@ export default function LoginPage() {
                 placeholder="••••••••" 
                 required 
                 className="h-12"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                disabled={loading}
               />
             </div>
 
             <div className="flex items-center justify-between">
               <div className="flex items-center space-x-2">
-                <Checkbox id="remember" />
+                <Checkbox id="remember" disabled={loading} />
                 <label 
                   htmlFor="remember" 
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
@@ -84,8 +162,15 @@ export default function LoginPage() {
               </Link>
             </div>
 
-            <Button type="submit" className="w-full h-12 text-base font-medium bg-blue-600 hover:bg-blue-700">
-              Sign In
+            <Button type="submit" disabled={loading} className="w-full h-12 text-base font-medium bg-blue-600 hover:bg-blue-700">
+              {loading ? (
+                <>
+                  <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                  Signing In...
+                </>
+              ) : (
+                "Sign In"
+              )}
             </Button>
           </form>
 

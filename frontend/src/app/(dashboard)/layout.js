@@ -1,12 +1,44 @@
 'use client';
 
 import Link from 'next/link';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { LayoutDashboard, FileText, Settings, LogOut, ShieldCheck } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { supabase } from '@/lib/supabase';
+import { useEffect, useState } from 'react';
 
 export default function DashboardLayout({ children }) {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isChecking, setIsChecking] = useState(true);
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (!session) {
+        router.push('/login');
+      } else {
+        setIsChecking(false);
+      }
+    };
+    checkAuth();
+  }, [router]);
+
+  const handleSignOut = async () => {
+    await supabase.auth.signOut();
+    router.push('/login');
+  };
+
+  if (isChecking) {
+    return (
+      <div className="flex h-screen w-full items-center justify-center bg-slate-50">
+        <div className="animate-pulse flex flex-col items-center">
+          <ShieldCheck className="h-12 w-12 text-blue-400 mb-4 opacity-50" />
+          <p className="text-slate-400 font-medium">Verifying session...</p>
+        </div>
+      </div>
+    );
+  }
 
   const navItems = [
     { name: 'Dashboard', href: '/dashboard', icon: LayoutDashboard },
@@ -46,13 +78,13 @@ export default function DashboardLayout({ children }) {
         </nav>
 
         <div className="p-4 border-t border-slate-800">
-          <Link
-            href="/login"
-            className="flex items-center px-4 py-3 text-sm font-medium text-slate-400 hover:text-white transition-colors"
+          <button
+            onClick={handleSignOut}
+            className="flex items-center w-full px-4 py-3 text-sm font-medium text-slate-400 hover:text-white transition-colors text-left"
           >
             <LogOut className="h-5 w-5 mr-3" />
             Sign Out
-          </Link>
+          </button>
         </div>
       </div>
 
