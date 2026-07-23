@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { CloudUpload, File as FileIcon, X, CheckCircle2, Loader2, AlertCircle, UploadCloud } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CloudUpload, File as FileIcon, X, CheckCircle2, Loader2, AlertCircle, UploadCloud, Database, Mail } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
@@ -69,6 +70,10 @@ export default function NewApplicationPage() {
   const [applicantName, setApplicantName] = useState('');
   const [categoryFiles, setCategoryFiles] = useState({}); // { categoryId: [fileObj, ...] }
   const [isSubmitting, setIsSubmitting] = useState(false);
+  
+  // Fact Find state
+  const [factFindSource, setFactFindSource] = useState('manual');
+  const [factFindImported, setFactFindImported] = useState(false);
 
   const activeRequirements = DOCUMENT_REQUIREMENTS[loanType] || [];
 
@@ -164,9 +169,13 @@ export default function NewApplicationPage() {
   };
   
   const missingCategories = getMissingCategories();
-  // Bypass missingCategories requirement for demo, just require a name and at least 1 file
-  const hasAnyFiles = Object.values(categoryFiles).flat().length > 0;
-  const isValid = applicantName.trim() !== '' && hasAnyFiles;
+  
+  const hasManualFactFind = categoryFiles['fact_find'] && categoryFiles['fact_find'].length > 0;
+  const isFactFindSatisfied = factFindImported || hasManualFactFind;
+
+  // Bypass missingCategories requirement for demo, just require a name, at least 1 file, and fact find satisfied
+  const hasAnyFiles = Object.values(categoryFiles).flat().length > 0 || factFindImported;
+  const isValid = applicantName.trim() !== '' && hasAnyFiles && isFactFindSatisfied;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -228,6 +237,138 @@ export default function NewApplicationPage() {
                 </SelectContent>
               </Select>
             </div>
+          </CardContent>
+        </Card>
+
+        {/* Fact Find Intake */}
+        <Card className="border-t-4 border-t-indigo-500 shadow-sm">
+          <CardContent className="pt-6">
+            <div className="mb-6 flex items-center justify-between">
+              <div>
+                <h3 className="text-lg font-semibold text-slate-800 flex items-center">
+                  Fact Find Intake
+                  {isFactFindSatisfied && (
+                    <span className="ml-3 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200 flex items-center">
+                      <CheckCircle2 className="w-3 h-3 mr-1" />
+                      Satisfied
+                    </span>
+                  )}
+                </h3>
+                <p className="text-sm text-slate-500 mt-1">Required for all loan types. How would you like to provide the Fact Find data?</p>
+              </div>
+            </div>
+
+            <Tabs value={factFindSource} onValueChange={setFactFindSource} className="w-full">
+              <TabsList className="grid w-full grid-cols-3 mb-6 bg-slate-100/80 p-1">
+                <TabsTrigger value="manual" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <UploadCloud className="w-4 h-4 mr-2" /> Manual Upload
+                </TabsTrigger>
+                <TabsTrigger value="crm" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Database className="w-4 h-4 mr-2" /> Mercury CRM
+                </TabsTrigger>
+                <TabsTrigger value="email" className="data-[state=active]:bg-white data-[state=active]:shadow-sm">
+                  <Mail className="w-4 h-4 mr-2" /> Email Sync
+                </TabsTrigger>
+              </TabsList>
+              
+              <TabsContent value="manual" className="mt-0">
+                <div className="bg-slate-50 rounded-lg border border-slate-200 p-6 flex flex-col md:flex-row md:items-center justify-between gap-4">
+                  <div className="flex-1">
+                    <h4 className="font-semibold text-slate-800 text-sm">Upload Fact Find PDF</h4>
+                    <p className="text-xs text-slate-500 mt-1">Upload a scanned or digital Fact Find PDF sheet to be processed by OCR.</p>
+                    
+                    {categoryFiles['fact_find']?.length > 0 && (
+                      <div className="mt-4 space-y-2">
+                        {categoryFiles['fact_find'].map(fileObj => (
+                          <div key={fileObj.id} className="bg-white border border-slate-200 rounded-md p-3 flex items-center justify-between shadow-sm">
+                            <div className="flex items-center space-x-3">
+                              <FileIcon className="h-4 w-4 text-slate-400" />
+                              <span className="text-sm font-medium text-slate-700 truncate max-w-[200px]">{fileObj.file.name}</span>
+                            </div>
+                            <div className="flex items-center space-x-3">
+                              {fileObj.status === 'completed' ? (
+                                <CheckCircle2 className="h-4 w-4 text-emerald-500" />
+                              ) : (
+                                <Loader2 className="h-4 w-4 text-blue-500 animate-spin" />
+                              )}
+                              <button 
+                                type="button" 
+                                onClick={() => removeFile('fact_find', fileObj.id)}
+                                className="text-slate-400 hover:text-red-500 transition-colors p-1"
+                              >
+                                <X className="h-4 w-4" />
+                              </button>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                  
+                  <div className="flex-shrink-0">
+                    <input 
+                      type="file" 
+                      className="hidden" 
+                      id="fact-find-upload" 
+                      onChange={(e) => {
+                        handleFileInput(e, 'fact_find');
+                        setFactFindImported(false);
+                      }}
+                      accept=".pdf,.jpg,.jpeg,.png,.tiff"
+                    />
+                    <Label 
+                      htmlFor="fact-find-upload" 
+                      className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border-2 border-dashed border-indigo-200 bg-white hover:bg-indigo-50/50 hover:border-indigo-300 h-24 w-full md:w-48 text-indigo-600"
+                    >
+                      <div className="flex flex-col items-center justify-center space-y-2">
+                        <UploadCloud className="w-6 h-6 text-indigo-400" />
+                        <span>Select File</span>
+                      </div>
+                    </Label>
+                  </div>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="crm" className="mt-0">
+                <div className="bg-slate-50 rounded-lg border border-slate-200 p-6">
+                  <h4 className="font-semibold text-slate-800 text-sm mb-4">Import from Mercury CRM</h4>
+                  <div className="flex gap-3">
+                    <Input placeholder="Enter CRM Client ID or Opportunity ID..." className="bg-white flex-1 max-w-md" />
+                    <Button 
+                      type="button" 
+                      variant="secondary" 
+                      onClick={() => setFactFindImported(true)}
+                      className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+                    >
+                      Connect & Import
+                    </Button>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-4">Note: CRM integration is a preview stub. Clicking import will simulate a successful pull.</p>
+                </div>
+              </TabsContent>
+              
+              <TabsContent value="email" className="mt-0">
+                <div className="bg-slate-50 rounded-lg border border-slate-200 p-6">
+                  <h4 className="font-semibold text-slate-800 text-sm mb-4">Email Intake Link</h4>
+                  <div className="flex flex-col space-y-4">
+                    <div className="bg-white px-4 py-3 border border-slate-200 rounded-md font-mono text-sm text-slate-600 max-w-md break-all selection:bg-indigo-100">
+                      intake-req-7782@smartfinn.app
+                    </div>
+                    <div>
+                      <Button 
+                        type="button" 
+                        variant="secondary" 
+                        onClick={() => setFactFindImported(true)}
+                        className="bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+                      >
+                        Check Inbox & Sync
+                      </Button>
+                    </div>
+                    <p className="text-xs text-slate-500">Note: Email sync is a preview stub. Clicking sync will simulate finding the Fact Find attachment in the inbox.</p>
+                  </div>
+                </div>
+              </TabsContent>
+            </Tabs>
           </CardContent>
         </Card>
 

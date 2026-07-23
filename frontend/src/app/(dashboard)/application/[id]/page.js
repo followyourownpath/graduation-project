@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle, Save, XCircle, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from '@/lib/api';
+import { toast } from "sonner";
 
 export default function ApplicationReviewPage({ params }) {
   const unwrappedParams = use(params);
@@ -120,10 +121,11 @@ export default function ApplicationReviewPage({ params }) {
       
       // Update local state to clear edits
       setEditedFields({});
-      alert("Corrections saved successfully!");
-    } catch (e) {
-      console.error(e);
-      alert("Failed to save corrections.");
+      // Reset edit state
+      setEditedFields({});
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to save corrections.");
     } finally {
       setSaving(false);
     }
@@ -133,11 +135,11 @@ export default function ApplicationReviewPage({ params }) {
     setUpdatingStatus(true);
     try {
       await api.updateSubmissionStatus(appId, status);
-      alert(`Application successfully ${status}!`);
       router.push('/applications');
-    } catch (e) {
-      console.error(e);
-      alert(`Failed to ${status} application.`);
+    } catch (error) {
+      console.error(error);
+      toast.error(`Failed to ${status} application.`);
+    } finally {
       setUpdatingStatus(false);
     }
   };

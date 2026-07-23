@@ -131,7 +131,7 @@ export default function ApplicationsPage() {
                   <TableHead>Date</TableHead>
                   <TableHead>Status</TableHead>
                   <TableHead>Risk Score</TableHead>
-                  <TableHead className="text-right">Action</TableHead>
+                  <TableHead>Action</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -150,8 +150,13 @@ export default function ApplicationsPage() {
                     }</TableCell>
                     <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
-                      <Badge variant={app.submission_status === 'approved' ? 'success' : app.submission_status === 'rejected' ? 'destructive' : 'secondary'}>
-                        {app.submission_status.replace('_', ' ')}
+                      <Badge variant="outline" className={
+                        app.submission_status === 'rejected' ? 'border-red-500 text-red-700 bg-red-50' : 
+                        app.submission_status === 'approved' ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 
+                        app.submission_status === 'in_review' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
+                        'bg-slate-100 text-slate-700'
+                      }>
+                        {app.submission_status.toUpperCase().replace('_', ' ')}
                       </Badge>
                     </TableCell>
                     <TableCell>
@@ -163,9 +168,9 @@ export default function ApplicationsPage() {
                         {app.overall_risk_score} {app.risk_level && `(${app.risk_level})`}
                       </Badge>
                     </TableCell>
-                    <TableCell className="text-right">
+                    <TableCell>
                       <Link href={`/application/${app.id}`}>
-                        <Button variant="ghost" size="sm">
+                        <Button variant="ghost" size="sm" className="-ml-3">
                           Review <ArrowRight className="ml-2 h-4 w-4" />
                         </Button>
                       </Link>
