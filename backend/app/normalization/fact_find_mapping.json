@@ -1,0 +1,3800 @@
+{
+ "ignored_widgets": [
+  "Button1",
+  "Button2"
+ ],
+ "fields": {
+  "Customer Name": {
+   "field_key": "cover_customer_name",
+   "field_label": "Customer Name",
+   "section_name": "cover",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "fact_find_submission",
+   "mapped_column": "customer_name",
+   "enum_map": null,
+   "context": {}
+  },
+  "Date": {
+   "field_key": "cover_form_date",
+   "field_label": "Form Date",
+   "section_name": "cover",
+   "applicant_number": null,
+   "data_type": "date",
+   "mapped_table": "fact_find_submission",
+   "mapped_column": "form_date",
+   "enum_map": null,
+   "context": {}
+  },
+  "title": {
+   "field_key": "applicant_1_title",
+   "field_label": "Applicant 1 Title",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant",
+   "mapped_column": "title",
+   "enum_map": null,
+   "context": {}
+  },
+  "title2": {
+   "field_key": "applicant_2_title",
+   "field_label": "Applicant 2 Title",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant",
+   "mapped_column": "title",
+   "enum_map": null,
+   "context": {}
+  },
+  "Name": {
+   "field_key": "applicant_1_full_name",
+   "field_label": "Applicant 1 Name",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant",
+   "mapped_column": "full_name",
+   "enum_map": null,
+   "context": {}
+  },
+  "Mobile": {
+   "field_key": "applicant_1_mobile",
+   "field_label": "Applicant 1 Mobile",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "phone",
+   "mapped_table": "applicant",
+   "mapped_column": "mobile",
+   "enum_map": null,
+   "context": {}
+  },
+  "Email": {
+   "field_key": "applicant_1_email",
+   "field_label": "Applicant 1 Email",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "email",
+   "mapped_table": "applicant",
+   "mapped_column": "email",
+   "enum_map": null,
+   "context": {}
+  },
+  "Name_2": {
+   "field_key": "applicant_2_full_name",
+   "field_label": "Applicant 2 Name",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant",
+   "mapped_column": "full_name",
+   "enum_map": null,
+   "context": {}
+  },
+  "Mobile_2": {
+   "field_key": "applicant_2_mobile",
+   "field_label": "Applicant 2 Mobile",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "phone",
+   "mapped_table": "applicant",
+   "mapped_column": "mobile",
+   "enum_map": null,
+   "context": {}
+  },
+  "Email_2": {
+   "field_key": "applicant_2_email",
+   "field_label": "Applicant 2 Email",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "email",
+   "mapped_table": "applicant",
+   "mapped_column": "email",
+   "enum_map": null,
+   "context": {}
+  },
+  "Group1": {
+   "field_key": "applicant_1_marital_status",
+   "field_label": "Applicant 1 Marital Status",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant",
+   "mapped_column": "marital_status",
+   "enum_map": {
+    "Choice1": "single",
+    "Choice2": "married",
+    "Choice3": "defacto",
+    "Choice4": "divorced",
+    "Choice5": "other"
+   },
+   "context": {}
+  },
+  "Group2": {
+   "field_key": "applicant_2_marital_status",
+   "field_label": "Applicant 2 Marital Status",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant",
+   "mapped_column": "marital_status",
+   "enum_map": {
+    "Choice1": "single",
+    "Choice2": "married",
+    "Choice3": "defacto",
+    "Choice4": "divorced",
+    "Choice5": "other"
+   },
+   "context": {}
+  },
+  "Dependants NameRow1": {
+   "field_key": "applicant_1_dependant_1_name",
+   "field_label": "Applicant 1 Dependant 1 Name",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 1
+   }
+  },
+  "Dependants AgeRow1": {
+   "field_key": "applicant_1_dependant_1_age",
+   "field_label": "Applicant 1 Dependant 1 Age",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 1
+   }
+  },
+  "Dependants NameRow1_2": {
+   "field_key": "applicant_2_dependant_1_name",
+   "field_label": "Applicant 2 Dependant 1 Name",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 1
+   }
+  },
+  "Dependants AgeRow1_2": {
+   "field_key": "applicant_2_dependant_1_age",
+   "field_label": "Applicant 2 Dependant 1 Age",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 1
+   }
+  },
+  "Dependants NameRow2": {
+   "field_key": "applicant_1_dependant_2_name",
+   "field_label": "Applicant 1 Dependant 2 Name",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 2
+   }
+  },
+  "Dependants AgeRow2": {
+   "field_key": "applicant_1_dependant_2_age",
+   "field_label": "Applicant 1 Dependant 2 Age",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 2
+   }
+  },
+  "Dependants NameRow2_2": {
+   "field_key": "applicant_2_dependant_2_name",
+   "field_label": "Applicant 2 Dependant 2 Name",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 2
+   }
+  },
+  "Dependants AgeRow2_2": {
+   "field_key": "applicant_2_dependant_2_age",
+   "field_label": "Applicant 2 Dependant 2 Age",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 2
+   }
+  },
+  "Dependants NameRow3": {
+   "field_key": "applicant_1_dependant_3_name",
+   "field_label": "Applicant 1 Dependant 3 Name",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 3
+   }
+  },
+  "Dependants AgeRow3": {
+   "field_key": "applicant_1_dependant_3_age",
+   "field_label": "Applicant 1 Dependant 3 Age",
+   "section_name": "personal_details",
+   "applicant_number": 1,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 3
+   }
+  },
+  "Dependants NameRow3_2": {
+   "field_key": "applicant_2_dependant_3_name",
+   "field_label": "Applicant 2 Dependant 3 Name",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_name",
+   "enum_map": null,
+   "context": {
+    "row": 3
+   }
+  },
+  "Dependants AgeRow3_2": {
+   "field_key": "applicant_2_dependant_3_age",
+   "field_label": "Applicant 2 Dependant 3 Age",
+   "section_name": "personal_details",
+   "applicant_number": 2,
+   "data_type": "integer",
+   "mapped_table": "applicant_dependant",
+   "mapped_column": "dependant_age",
+   "enum_map": null,
+   "context": {
+    "row": 3
+   }
+  },
+  "Street": {
+   "field_key": "applicant_1_current_address_street",
+   "field_label": "Applicant 1 Current Address Street",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Suburb": {
+   "field_key": "applicant_1_current_address_suburb",
+   "field_label": "Applicant 1 Current Address Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "State": {
+   "field_key": "applicant_1_current_address_state",
+   "field_label": "Applicant 1 Current Address State",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Postcode": {
+   "field_key": "applicant_1_current_address_postcode",
+   "field_label": "Applicant 1 Current Address Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Group3": {
+   "field_key": "applicant_1_current_address_ownership_status",
+   "field_label": "Applicant 1 Current Address Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "From Date": {
+   "field_key": "applicant_1_current_address_from_date",
+   "field_label": "Applicant 1 Current Address From Date",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Street_2": {
+   "field_key": "applicant_2_current_address_street",
+   "field_label": "Applicant 2 Current Address Street",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Suburb_2": {
+   "field_key": "applicant_2_current_address_suburb",
+   "field_label": "Applicant 2 Current Address Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "State_2": {
+   "field_key": "applicant_2_current_address_state",
+   "field_label": "Applicant 2 Current Address State",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Postcode_2": {
+   "field_key": "applicant_2_current_address_postcode",
+   "field_label": "Applicant 2 Current Address Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Group4": {
+   "field_key": "applicant_2_current_address_ownership_status",
+   "field_label": "Applicant 2 Current Address Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "From Date_2": {
+   "field_key": "applicant_2_current_address_from_date",
+   "field_label": "Applicant 2 Current Address From Date",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "CheckBox1": {
+   "field_key": "applicant_2_current_address_same_as_applicant_1",
+   "field_label": "Current Address Same as Applicant 1",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "boolean",
+   "mapped_table": "applicant_address",
+   "mapped_column": "same_as_applicant_1",
+   "enum_map": null,
+   "context": {
+    "address_type": "current"
+   }
+  },
+  "Street_3": {
+   "field_key": "applicant_1_previous_address_1_street",
+   "field_label": "Applicant 1 Previous Address 1 Street",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Suburb_3": {
+   "field_key": "applicant_1_previous_address_1_suburb",
+   "field_label": "Applicant 1 Previous Address 1 Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "State_3": {
+   "field_key": "applicant_1_previous_address_1_state",
+   "field_label": "Applicant 1 Previous Address 1 State",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Postcode_3": {
+   "field_key": "applicant_1_previous_address_1_postcode",
+   "field_label": "Applicant 1 Previous Address 1 Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Group5": {
+   "field_key": "applicant_1_previous_address_1_ownership_status",
+   "field_label": "Applicant 1 Previous Address 1 Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "From Date_3": {
+   "field_key": "applicant_1_previous_address_1_from_date",
+   "field_label": "Applicant 1 Previous Address 1 From Date",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "To Date": {
+   "field_key": "applicant_1_previous_address_1_to_date",
+   "field_label": "Applicant 1 Previous Address 1 To Date",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "to_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Street_4": {
+   "field_key": "applicant_2_previous_address_1_street",
+   "field_label": "Applicant 2 Previous Address 1 Street",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Suburb_4": {
+   "field_key": "applicant_2_previous_address_1_suburb",
+   "field_label": "Applicant 2 Previous Address 1 Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "State_4": {
+   "field_key": "applicant_2_previous_address_1_state",
+   "field_label": "Applicant 2 Previous Address 1 State",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Postcode_4": {
+   "field_key": "applicant_2_previous_address_1_postcode",
+   "field_label": "Applicant 2 Previous Address 1 Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Group6": {
+   "field_key": "applicant_2_previous_address_1_ownership_status",
+   "field_label": "Applicant 2 Previous Address 1 Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "From Date_4": {
+   "field_key": "applicant_2_previous_address_1_from_date",
+   "field_label": "Applicant 2 Previous Address 1 From Date",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "To Date_2": {
+   "field_key": "applicant_2_previous_address_1_to_date",
+   "field_label": "Applicant 2 Previous Address 1 To Date",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "to_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "CheckBox2": {
+   "field_key": "applicant_2_previous_address_1_same_as_applicant_1",
+   "field_label": "Previous Address 1 Same as Applicant 1",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "boolean",
+   "mapped_table": "applicant_address",
+   "mapped_column": "same_as_applicant_1",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Street_5": {
+   "field_key": "applicant_1_previous_address_2_street",
+   "field_label": "Applicant 1 Previous Address 2 Street",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Suburb_5": {
+   "field_key": "applicant_1_previous_address_2_suburb",
+   "field_label": "Applicant 1 Previous Address 2 Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "State_5": {
+   "field_key": "applicant_1_previous_address_2_state",
+   "field_label": "Applicant 1 Previous Address 2 State",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Postcode_5": {
+   "field_key": "applicant_1_previous_address_2_postcode",
+   "field_label": "Applicant 1 Previous Address 2 Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Group7": {
+   "field_key": "applicant_1_previous_address_2_ownership_status",
+   "field_label": "Applicant 1 Previous Address 2 Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "From Date_5": {
+   "field_key": "applicant_1_previous_address_2_from_date",
+   "field_label": "Applicant 1 Previous Address 2 From Date",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "To Date_3": {
+   "field_key": "applicant_1_previous_address_2_to_date",
+   "field_label": "Applicant 1 Previous Address 2 To Date",
+   "section_name": "residential_address",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "to_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Street_6": {
+   "field_key": "applicant_2_previous_address_2_street",
+   "field_label": "Applicant 2 Previous Address 2 Street",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "street",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Suburb_6": {
+   "field_key": "applicant_2_previous_address_2_suburb",
+   "field_label": "Applicant 2 Previous Address 2 Suburb",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "suburb",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "State_6": {
+   "field_key": "applicant_2_previous_address_2_state",
+   "field_label": "Applicant 2 Previous Address 2 State",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "state",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Postcode_6": {
+   "field_key": "applicant_2_previous_address_2_postcode",
+   "field_label": "Applicant 2 Previous Address 2 Postcode",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_address",
+   "mapped_column": "postcode",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Group8": {
+   "field_key": "applicant_2_previous_address_2_ownership_status",
+   "field_label": "Applicant 2 Previous Address 2 Ownership",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_address",
+   "mapped_column": "ownership_status",
+   "enum_map": {
+    "Choice1": "own_home",
+    "Choice2": "mortgage",
+    "Choice3": "renting",
+    "Choice4": "boarding",
+    "Choice5": "with_parents"
+   },
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "From Date_6": {
+   "field_key": "applicant_2_previous_address_2_from_date",
+   "field_label": "Applicant 2 Previous Address 2 From Date",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "from_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "To Date_4": {
+   "field_key": "applicant_2_previous_address_2_to_date",
+   "field_label": "Applicant 2 Previous Address 2 To Date",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_address",
+   "mapped_column": "to_date",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "CheckBox3": {
+   "field_key": "applicant_2_previous_address_2_same_as_applicant_1",
+   "field_label": "Previous Address 2 Same as Applicant 1",
+   "section_name": "residential_address",
+   "applicant_number": 2,
+   "data_type": "boolean",
+   "mapped_table": "applicant_address",
+   "mapped_column": "same_as_applicant_1",
+   "enum_map": null,
+   "context": {
+    "address_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Employer Name": {
+   "field_key": "applicant_1_current_employment_employer_name",
+   "field_label": "Applicant 1 Current Employment Employer Name",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Group9": {
+   "field_key": "applicant_1_current_employment_basis",
+   "field_label": "Applicant 1 Current Employment Basis",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Position": {
+   "field_key": "applicant_1_current_employment_position",
+   "field_label": "Applicant 1 Current Employment Position",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Start Date": {
+   "field_key": "applicant_1_current_employment_start_date",
+   "field_label": "Applicant 1 Current Employment Start Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "AddressRow1": {
+   "field_key": "applicant_1_current_employment_employer_address_line1",
+   "field_label": "Applicant 1 Current Employment Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current",
+    "address_line": 1
+   }
+  },
+  "AddressRow2": {
+   "field_key": "applicant_1_current_employment_employer_address_line2",
+   "field_label": "Applicant 1 Current Employment Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current",
+    "address_line": 2
+   }
+  },
+  "Phone": {
+   "field_key": "applicant_1_current_employment_employer_phone",
+   "field_label": "Applicant 1 Current Employment Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Employer Name_2": {
+   "field_key": "applicant_2_current_employment_employer_name",
+   "field_label": "Applicant 2 Current Employment Employer Name",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Group10": {
+   "field_key": "applicant_2_current_employment_basis",
+   "field_label": "Applicant 2 Current Employment Basis",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Position2": {
+   "field_key": "applicant_2_current_employment_position",
+   "field_label": "Applicant 2 Current Employment Position",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Start Date2": {
+   "field_key": "applicant_2_current_employment_start_date",
+   "field_label": "Applicant 2 Current Employment Start Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "AddressRow3": {
+   "field_key": "applicant_2_current_employment_employer_address_line1",
+   "field_label": "Applicant 2 Current Employment Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current",
+    "address_line": 1
+   }
+  },
+  "AddressRow4": {
+   "field_key": "applicant_2_current_employment_employer_address_line2",
+   "field_label": "Applicant 2 Current Employment Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current",
+    "address_line": 2
+   }
+  },
+  "Phone_2": {
+   "field_key": "applicant_2_current_employment_employer_phone",
+   "field_label": "Applicant 2 Current Employment Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "current"
+   }
+  },
+  "Employer Name_3": {
+   "field_key": "applicant_1_secondary_employment_employer_name",
+   "field_label": "Applicant 1 Secondary Employment Employer Name",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Group11": {
+   "field_key": "applicant_1_secondary_employment_basis",
+   "field_label": "Applicant 1 Secondary Employment Basis",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Position3": {
+   "field_key": "applicant_1_secondary_employment_position",
+   "field_label": "Applicant 1 Secondary Employment Position",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Start Date3": {
+   "field_key": "applicant_1_secondary_employment_start_date",
+   "field_label": "Applicant 1 Secondary Employment Start Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "AddressRow5": {
+   "field_key": "applicant_1_secondary_employment_employer_address_line1",
+   "field_label": "Applicant 1 Secondary Employment Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1,
+    "address_line": 1
+   }
+  },
+  "AddressRow6": {
+   "field_key": "applicant_1_secondary_employment_employer_address_line2",
+   "field_label": "Applicant 1 Secondary Employment Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1,
+    "address_line": 2
+   }
+  },
+  "Phone_3": {
+   "field_key": "applicant_1_secondary_employment_employer_phone",
+   "field_label": "Applicant 1 Secondary Employment Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Employer Name_4": {
+   "field_key": "applicant_2_secondary_employment_employer_name",
+   "field_label": "Applicant 2 Secondary Employment Employer Name",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Group12": {
+   "field_key": "applicant_2_secondary_employment_basis",
+   "field_label": "Applicant 2 Secondary Employment Basis",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Position4": {
+   "field_key": "applicant_2_secondary_employment_position",
+   "field_label": "Applicant 2 Secondary Employment Position",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Start Date4": {
+   "field_key": "applicant_2_secondary_employment_start_date",
+   "field_label": "Applicant 2 Secondary Employment Start Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "AddressRow7": {
+   "field_key": "applicant_2_secondary_employment_employer_address_line1",
+   "field_label": "Applicant 2 Secondary Employment Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1,
+    "address_line": 1
+   }
+  },
+  "AddressRow8": {
+   "field_key": "applicant_2_secondary_employment_employer_address_line2",
+   "field_label": "Applicant 2 Secondary Employment Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1,
+    "address_line": 2
+   }
+  },
+  "Phone_4": {
+   "field_key": "applicant_2_secondary_employment_employer_phone",
+   "field_label": "Applicant 2 Secondary Employment Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "secondary",
+    "sequence_number": 1
+   }
+  },
+  "Employer Name_5": {
+   "field_key": "applicant_1_previous_employment_1_employer_name",
+   "field_label": "Applicant 1 Previous Employment 1 Employer Name",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Group13": {
+   "field_key": "applicant_1_previous_employment_1_basis",
+   "field_label": "Applicant 1 Previous Employment 1 Basis",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Position5": {
+   "field_key": "applicant_1_previous_employment_1_position",
+   "field_label": "Applicant 1 Previous Employment 1 Position",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Start Date5": {
+   "field_key": "applicant_1_previous_employment_1_start_date",
+   "field_label": "Applicant 1 Previous Employment 1 Start Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "End Date": {
+   "field_key": "applicant_1_previous_employment_1_end_date",
+   "field_label": "Applicant 1 Previous Employment 1 End Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "end_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "AddressRow9": {
+   "field_key": "applicant_1_previous_employment_1_employer_address_line1",
+   "field_label": "Applicant 1 Previous Employment 1 Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1,
+    "address_line": 1
+   }
+  },
+  "AddressRow10": {
+   "field_key": "applicant_1_previous_employment_1_employer_address_line2",
+   "field_label": "Applicant 1 Previous Employment 1 Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1,
+    "address_line": 2
+   }
+  },
+  "Phone_5": {
+   "field_key": "applicant_1_previous_employment_1_employer_phone",
+   "field_label": "Applicant 1 Previous Employment 1 Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Employer Name_6": {
+   "field_key": "applicant_2_previous_employment_1_employer_name",
+   "field_label": "Applicant 2 Previous Employment 1 Employer Name",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Group14": {
+   "field_key": "applicant_2_previous_employment_1_basis",
+   "field_label": "Applicant 2 Previous Employment 1 Basis",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Position6": {
+   "field_key": "applicant_2_previous_employment_1_position",
+   "field_label": "Applicant 2 Previous Employment 1 Position",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Start Date6": {
+   "field_key": "applicant_2_previous_employment_1_start_date",
+   "field_label": "Applicant 2 Previous Employment 1 Start Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "End Date2": {
+   "field_key": "applicant_2_previous_employment_1_end_date",
+   "field_label": "Applicant 2 Previous Employment 1 End Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "end_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "AddressRow11": {
+   "field_key": "applicant_2_previous_employment_1_employer_address_line1",
+   "field_label": "Applicant 2 Previous Employment 1 Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1,
+    "address_line": 1
+   }
+  },
+  "AddressRow12": {
+   "field_key": "applicant_2_previous_employment_1_employer_address_line2",
+   "field_label": "Applicant 2 Previous Employment 1 Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1,
+    "address_line": 2
+   }
+  },
+  "Phone_6": {
+   "field_key": "applicant_2_previous_employment_1_employer_phone",
+   "field_label": "Applicant 2 Previous Employment 1 Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 1
+   }
+  },
+  "Employer Name_7": {
+   "field_key": "applicant_1_previous_employment_2_employer_name",
+   "field_label": "Applicant 1 Previous Employment 2 Employer Name",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Group15": {
+   "field_key": "applicant_1_previous_employment_2_basis",
+   "field_label": "Applicant 1 Previous Employment 2 Basis",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Position7": {
+   "field_key": "applicant_1_previous_employment_2_position",
+   "field_label": "Applicant 1 Previous Employment 2 Position",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Start Date7": {
+   "field_key": "applicant_1_previous_employment_2_start_date",
+   "field_label": "Applicant 1 Previous Employment 2 Start Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "End Date3": {
+   "field_key": "applicant_1_previous_employment_2_end_date",
+   "field_label": "Applicant 1 Previous Employment 2 End Date",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "end_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "AddressRow13": {
+   "field_key": "applicant_1_previous_employment_2_employer_address_line1",
+   "field_label": "Applicant 1 Previous Employment 2 Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2,
+    "address_line": 1
+   }
+  },
+  "AddressRow14": {
+   "field_key": "applicant_1_previous_employment_2_employer_address_line2",
+   "field_label": "Applicant 1 Previous Employment 2 Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2,
+    "address_line": 2
+   }
+  },
+  "Phone_7": {
+   "field_key": "applicant_1_previous_employment_2_employer_phone",
+   "field_label": "Applicant 1 Previous Employment 2 Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 1,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Employer Name_8": {
+   "field_key": "applicant_2_previous_employment_2_employer_name",
+   "field_label": "Applicant 2 Previous Employment 2 Employer Name",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_name",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Group16": {
+   "field_key": "applicant_2_previous_employment_2_basis",
+   "field_label": "Applicant 2 Previous Employment 2 Basis",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "enum",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employment_basis",
+   "enum_map": {
+    "Choice1": "full_time",
+    "Choice2": "part_time",
+    "Choice3": "casual",
+    "Choice4": "self_employed",
+    "Choice5": "contract",
+    "Choice6": "payg"
+   },
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Position8": {
+   "field_key": "applicant_2_previous_employment_2_position",
+   "field_label": "Applicant 2 Previous Employment 2 Position",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "position_title",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "Start Date8": {
+   "field_key": "applicant_2_previous_employment_2_start_date",
+   "field_label": "Applicant 2 Previous Employment 2 Start Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "start_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "End Date4": {
+   "field_key": "applicant_2_previous_employment_2_end_date",
+   "field_label": "Applicant 2 Previous Employment 2 End Date",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "date",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "end_date",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "AddressRow15": {
+   "field_key": "applicant_2_previous_employment_2_employer_address_line1",
+   "field_label": "Applicant 2 Previous Employment 2 Employer Address (line 1)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2,
+    "address_line": 1
+   }
+  },
+  "AddressRow16": {
+   "field_key": "applicant_2_previous_employment_2_employer_address_line2",
+   "field_label": "Applicant 2 Previous Employment 2 Employer Address (line 2)",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_address",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2,
+    "address_line": 2
+   }
+  },
+  "Phone_8": {
+   "field_key": "applicant_2_previous_employment_2_employer_phone",
+   "field_label": "Applicant 2 Previous Employment 2 Employer Phone",
+   "section_name": "employment",
+   "applicant_number": 2,
+   "data_type": "phone",
+   "mapped_table": "applicant_employment",
+   "mapped_column": "employer_phone",
+   "enum_map": null,
+   "context": {
+    "employment_type": "previous",
+    "sequence_number": 2
+   }
+  },
+  "fill": {
+   "field_key": "loan_specific_goals",
+   "field_label": "Loan Goals / Objectives",
+   "section_name": "requirements_objectives",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "loan_requirements",
+   "mapped_column": "specific_goals_or_objectives",
+   "enum_map": null,
+   "context": {}
+  },
+  "Group17": {
+   "field_key": "preferred_repayment_frequency",
+   "field_label": "Preferred Repayment Frequency",
+   "section_name": "requirements_objectives",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "loan_requirements",
+   "mapped_column": "preferred_repayment_frequency",
+   "enum_map": {
+    "Choice1": "monthly",
+    "Choice2": "fortnightly",
+    "Choice3": "weekly"
+   },
+   "context": {}
+  },
+  "Account Name": {
+   "field_key": "repayment_account_name",
+   "field_label": "Repayment Account Name",
+   "section_name": "requirements_objectives",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "repayment_account",
+   "mapped_column": "account_name",
+   "enum_map": null,
+   "context": {}
+  },
+  "BSB": {
+   "field_key": "repayment_account_bsb",
+   "field_label": "Repayment Account BSB",
+   "section_name": "requirements_objectives",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "repayment_account",
+   "mapped_column": "bsb",
+   "enum_map": null,
+   "context": {}
+  },
+  "Account Number": {
+   "field_key": "repayment_account_number",
+   "field_label": "Repayment Account Number",
+   "section_name": "requirements_objectives",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "repayment_account",
+   "mapped_column": "account_number",
+   "enum_map": null,
+   "context": {}
+  },
+  "Property Address": {
+   "field_key": "property_asset_1_address",
+   "field_label": "Property 1 Address",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_address",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Estimated Value": {
+   "field_key": "property_asset_1_estimated_value",
+   "field_label": "Property 1 Estimated Value",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "estimated_value",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Loan Balance": {
+   "field_key": "property_asset_1_loan_balance",
+   "field_label": "Property 1 Loan Balance",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "loan_balance",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Lender": {
+   "field_key": "property_asset_1_lender",
+   "field_label": "Property 1 Lender",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "lender",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Group18": {
+   "field_key": "property_asset_1_type",
+   "field_label": "Property 1 Type",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_type",
+   "enum_map": {
+    "Choice1": "owner_occupied",
+    "Choice3": "investment"
+   },
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Group23": {
+   "field_key": "property_asset_1_ownership",
+   "field_label": "Property 1 Ownership",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Choice1": "applicant_1",
+    "Choice2": "applicant_2",
+    "Choice3": "both"
+   },
+   "context": {
+    "sequence_number": 1
+   }
+  },
+  "Property Address2": {
+   "field_key": "property_asset_2_address",
+   "field_label": "Property 2 Address",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_address",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Estimated Value2": {
+   "field_key": "property_asset_2_estimated_value",
+   "field_label": "Property 2 Estimated Value",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "estimated_value",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Loan Balance2": {
+   "field_key": "property_asset_2_loan_balance",
+   "field_label": "Property 2 Loan Balance",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "loan_balance",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Lender2": {
+   "field_key": "property_asset_2_lender",
+   "field_label": "Property 2 Lender",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "lender",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Group19": {
+   "field_key": "property_asset_2_type",
+   "field_label": "Property 2 Type",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_type",
+   "enum_map": {
+    "Choice1": "owner_occupied",
+    "Choice2": "investment"
+   },
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Group24": {
+   "field_key": "property_asset_2_ownership",
+   "field_label": "Property 2 Ownership",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Choice1": "applicant_1",
+    "Choice2": "applicant_2",
+    "Choice3": "both"
+   },
+   "context": {
+    "sequence_number": 2
+   }
+  },
+  "Property Address3": {
+   "field_key": "property_asset_3_address",
+   "field_label": "Property 3 Address",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_address",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Estimated Value3": {
+   "field_key": "property_asset_3_estimated_value",
+   "field_label": "Property 3 Estimated Value",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "estimated_value",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Loan Balance3": {
+   "field_key": "property_asset_3_loan_balance",
+   "field_label": "Property 3 Loan Balance",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "loan_balance",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Lender3": {
+   "field_key": "property_asset_3_lender",
+   "field_label": "Property 3 Lender",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "lender",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Group20": {
+   "field_key": "property_asset_3_type",
+   "field_label": "Property 3 Type",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_type",
+   "enum_map": {
+    "Choice1": "owner_occupied",
+    "Choice2": "investment"
+   },
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Group25": {
+   "field_key": "property_asset_3_ownership",
+   "field_label": "Property 3 Ownership",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Choice1": "applicant_1",
+    "Choice2": "applicant_2",
+    "Choice3": "both"
+   },
+   "context": {
+    "sequence_number": 3
+   }
+  },
+  "Property Address4": {
+   "field_key": "property_asset_4_address",
+   "field_label": "Property 4 Address",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_address",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Estimated Value4": {
+   "field_key": "property_asset_4_estimated_value",
+   "field_label": "Property 4 Estimated Value",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "estimated_value",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Loan Balance4": {
+   "field_key": "property_asset_4_loan_balance",
+   "field_label": "Property 4 Loan Balance",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "loan_balance",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Lender4": {
+   "field_key": "property_asset_4_lender",
+   "field_label": "Property 4 Lender",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "lender",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Group21": {
+   "field_key": "property_asset_4_type",
+   "field_label": "Property 4 Type",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_type",
+   "enum_map": {
+    "Choice1": "owner_occupied",
+    "Choice2": "investment"
+   },
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Group26": {
+   "field_key": "property_asset_4_ownership",
+   "field_label": "Property 4 Ownership",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Choice1": "applicant_1",
+    "Choice2": "applicant_2",
+    "Choice3": "both"
+   },
+   "context": {
+    "sequence_number": 4
+   }
+  },
+  "Property Address5": {
+   "field_key": "property_asset_5_address",
+   "field_label": "Property 5 Address",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_address",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Estimated Value5": {
+   "field_key": "property_asset_5_estimated_value",
+   "field_label": "Property 5 Estimated Value",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "estimated_value",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Loan Balance5": {
+   "field_key": "property_asset_5_loan_balance",
+   "field_label": "Property 5 Loan Balance",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "property_asset",
+   "mapped_column": "loan_balance",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Lender5": {
+   "field_key": "property_asset_5_lender",
+   "field_label": "Property 5 Lender",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "property_asset",
+   "mapped_column": "lender",
+   "enum_map": null,
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Group27": {
+   "field_key": "property_asset_5_type",
+   "field_label": "Property 5 Type",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "property_type",
+   "enum_map": {
+    "Choice1": "owner_occupied",
+    "Choice2": "investment"
+   },
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Group28": {
+   "field_key": "property_asset_5_ownership",
+   "field_label": "Property 5 Ownership",
+   "section_name": "property_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "property_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Choice1": "applicant_1",
+    "Choice2": "applicant_2",
+    "Choice3": "both"
+   },
+   "context": {
+    "sequence_number": 5
+   }
+  },
+  "Account 1Asset Type": {
+   "field_key": "savings_term_deposit_1_asset_type",
+   "field_label": "Savings/Term Deposit Account 1 Asset Type",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "asset_type",
+   "enum_map": null,
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_1"
+   }
+  },
+  "Value": {
+   "field_key": "savings_term_deposit_1_value",
+   "field_label": "Savings/Term Deposit Account 1 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_1"
+   }
+  },
+  "ownership": {
+   "field_key": "savings_term_deposit_1_ownership",
+   "field_label": "Savings/Term Deposit Account 1 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_1"
+   }
+  },
+  "Account 2Asset Type": {
+   "field_key": "savings_term_deposit_2_asset_type",
+   "field_label": "Savings/Term Deposit Account 2 Asset Type",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "asset_type",
+   "enum_map": null,
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_2"
+   }
+  },
+  "Value2": {
+   "field_key": "savings_term_deposit_2_value",
+   "field_label": "Savings/Term Deposit Account 2 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_2"
+   }
+  },
+  "ownership2": {
+   "field_key": "savings_term_deposit_2_ownership",
+   "field_label": "Savings/Term Deposit Account 2 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "savings_term_deposit",
+    "account_label": "account_2"
+   }
+  },
+  "Account 1Provider": {
+   "field_key": "superannuation_1_provider",
+   "field_label": "Superannuation Account 1 Provider",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "provider",
+   "enum_map": null,
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_1"
+   }
+  },
+  "Value3": {
+   "field_key": "superannuation_1_value",
+   "field_label": "Superannuation Account 1 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_1"
+   }
+  },
+  "ownership3": {
+   "field_key": "superannuation_1_ownership",
+   "field_label": "Superannuation Account 1 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_1"
+   }
+  },
+  "Account 2Provider": {
+   "field_key": "superannuation_2_provider",
+   "field_label": "Superannuation Account 2 Provider",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "provider",
+   "enum_map": null,
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_2"
+   }
+  },
+  "Value4": {
+   "field_key": "superannuation_2_value",
+   "field_label": "Superannuation Account 2 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_2"
+   }
+  },
+  "ownership4": {
+   "field_key": "superannuation_2_ownership",
+   "field_label": "Superannuation Account 2 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "superannuation",
+    "account_label": "account_2"
+   }
+  },
+  "Account 1Name": {
+   "field_key": "shares_or_trusts_1_provider",
+   "field_label": "Shares/Trusts Account 1 Provider",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "provider",
+   "enum_map": null,
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_1"
+   }
+  },
+  "Value5": {
+   "field_key": "shares_or_trusts_1_value",
+   "field_label": "Shares/Trusts Account 1 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_1"
+   }
+  },
+  "ownership5": {
+   "field_key": "shares_or_trusts_1_ownership",
+   "field_label": "Shares/Trusts Account 1 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_1"
+   }
+  },
+  "Account 2Name": {
+   "field_key": "shares_or_trusts_2_provider",
+   "field_label": "Shares/Trusts Account 2 Provider",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "financial_asset",
+   "mapped_column": "provider",
+   "enum_map": null,
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_2"
+   }
+  },
+  "Value6": {
+   "field_key": "shares_or_trusts_2_value",
+   "field_label": "Shares/Trusts Account 2 Value",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "financial_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_2"
+   }
+  },
+  "ownership6": {
+   "field_key": "shares_or_trusts_2_ownership",
+   "field_label": "Shares/Trusts Account 2 Ownership",
+   "section_name": "financial_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "financial_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "asset_category": "shares_or_trusts",
+    "account_label": "account_2"
+   }
+  },
+  "Make/Model": {
+   "field_key": "vehicle_1_make_model",
+   "field_label": "Vehicle 1 Make/Model",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "make_model",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 1
+   }
+  },
+  "Value7": {
+   "field_key": "vehicle_1_value",
+   "field_label": "Vehicle 1 Value",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 1
+   }
+  },
+  "Year": {
+   "field_key": "vehicle_1_year",
+   "field_label": "Vehicle 1 Year",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "integer",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "vehicle_year",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 1
+   }
+  },
+  "ownership7": {
+   "field_key": "vehicle_1_ownership",
+   "field_label": "Vehicle 1 Ownership",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "vehicle_number": 1
+   }
+  },
+  "Make/Model2": {
+   "field_key": "vehicle_2_make_model",
+   "field_label": "Vehicle 2 Make/Model",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "make_model",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 2
+   }
+  },
+  "Value8": {
+   "field_key": "vehicle_2_value",
+   "field_label": "Vehicle 2 Value",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 2
+   }
+  },
+  "Year_2": {
+   "field_key": "vehicle_2_year",
+   "field_label": "Vehicle 2 Year",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "integer",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "vehicle_year",
+   "enum_map": null,
+   "context": {
+    "vehicle_number": 2
+   }
+  },
+  "ownership8": {
+   "field_key": "vehicle_2_ownership",
+   "field_label": "Vehicle 2 Ownership",
+   "section_name": "vehicle_assets",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "vehicle_asset",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "vehicle_number": 2
+   }
+  },
+  "Type": {
+   "field_key": "other_asset_applicant_1_type",
+   "field_label": "Other Asset (Applicant 1) Type",
+   "section_name": "other_assets",
+   "applicant_number": 1,
+   "data_type": "text",
+   "mapped_table": "other_asset",
+   "mapped_column": "asset_type",
+   "enum_map": null,
+   "context": {}
+  },
+  "Value9": {
+   "field_key": "other_asset_applicant_1_value",
+   "field_label": "Other Asset (Applicant 1) Value",
+   "section_name": "other_assets",
+   "applicant_number": 1,
+   "data_type": "money",
+   "mapped_table": "other_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {}
+  },
+  "Type2": {
+   "field_key": "other_asset_applicant_2_type",
+   "field_label": "Other Asset (Applicant 2) Type",
+   "section_name": "other_assets",
+   "applicant_number": 2,
+   "data_type": "text",
+   "mapped_table": "other_asset",
+   "mapped_column": "asset_type",
+   "enum_map": null,
+   "context": {}
+  },
+  "Value10": {
+   "field_key": "other_asset_applicant_2_value",
+   "field_label": "Other Asset (Applicant 2) Value",
+   "section_name": "other_assets",
+   "applicant_number": 2,
+   "data_type": "money",
+   "mapped_table": "other_asset",
+   "mapped_column": "value",
+   "enum_map": null,
+   "context": {}
+  },
+  "Balance": {
+   "field_key": "liability_credit_card_1_balance",
+   "field_label": "Credit Card/Store Card 1 Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Limit": {
+   "field_key": "liability_credit_card_1_credit_limit",
+   "field_label": "Credit Card/Store Card 1 Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Creditor": {
+   "field_key": "liability_credit_card_1_creditor",
+   "field_label": "Credit Card/Store Card 1 Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "R1": {
+   "field_key": "liability_credit_card_1_repayment_amount",
+   "field_label": "Credit Card/Store Card 1 Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Repayment": {
+   "field_key": "liability_credit_card_1_repayment_frequency",
+   "field_label": "Credit Card/Store Card 1 Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Paying Out": {
+   "field_key": "liability_credit_card_1_paying_out",
+   "field_label": "Credit Card/Store Card 1 Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Ownership": {
+   "field_key": "liability_credit_card_1_ownership",
+   "field_label": "Credit Card/Store Card 1 Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 1
+   }
+  },
+  "Balance2": {
+   "field_key": "liability_credit_card_2_balance",
+   "field_label": "Credit Card/Store Card 2 Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Limit2": {
+   "field_key": "liability_credit_card_2_credit_limit",
+   "field_label": "Credit Card/Store Card 2 Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Creditor2": {
+   "field_key": "liability_credit_card_2_creditor",
+   "field_label": "Credit Card/Store Card 2 Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "R2": {
+   "field_key": "liability_credit_card_2_repayment_amount",
+   "field_label": "Credit Card/Store Card 2 Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Repayment2": {
+   "field_key": "liability_credit_card_2_repayment_frequency",
+   "field_label": "Credit Card/Store Card 2 Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Paying Out2": {
+   "field_key": "liability_credit_card_2_paying_out",
+   "field_label": "Credit Card/Store Card 2 Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Ownership2": {
+   "field_key": "liability_credit_card_2_ownership",
+   "field_label": "Credit Card/Store Card 2 Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 2
+   }
+  },
+  "Balance3": {
+   "field_key": "liability_credit_card_3_balance",
+   "field_label": "Credit Card/Store Card 3 Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Limit3": {
+   "field_key": "liability_credit_card_3_credit_limit",
+   "field_label": "Credit Card/Store Card 3 Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Creditor3": {
+   "field_key": "liability_credit_card_3_creditor",
+   "field_label": "Credit Card/Store Card 3 Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "R3": {
+   "field_key": "liability_credit_card_3_repayment_amount",
+   "field_label": "Credit Card/Store Card 3 Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Repayment3": {
+   "field_key": "liability_credit_card_3_repayment_frequency",
+   "field_label": "Credit Card/Store Card 3 Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Paying Out3": {
+   "field_key": "liability_credit_card_3_paying_out",
+   "field_label": "Credit Card/Store Card 3 Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Ownership3": {
+   "field_key": "liability_credit_card_3_ownership",
+   "field_label": "Credit Card/Store Card 3 Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "credit_card_store_card",
+    "sequence_number": 3
+   }
+  },
+  "Balance4": {
+   "field_key": "liability_personal_loan_balance",
+   "field_label": "Personal Loan Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Limit4": {
+   "field_key": "liability_personal_loan_credit_limit",
+   "field_label": "Personal Loan Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Creditor4": {
+   "field_key": "liability_personal_loan_creditor",
+   "field_label": "Personal Loan Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "R4": {
+   "field_key": "liability_personal_loan_repayment_amount",
+   "field_label": "Personal Loan Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Repayment4": {
+   "field_key": "liability_personal_loan_repayment_frequency",
+   "field_label": "Personal Loan Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Paying Out4": {
+   "field_key": "liability_personal_loan_paying_out",
+   "field_label": "Personal Loan Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Ownership4": {
+   "field_key": "liability_personal_loan_ownership",
+   "field_label": "Personal Loan Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "personal_loan"
+   }
+  },
+  "Balance5": {
+   "field_key": "liability_car_loan_balance",
+   "field_label": "Car Loan Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Limit5": {
+   "field_key": "liability_car_loan_credit_limit",
+   "field_label": "Car Loan Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Creditor5": {
+   "field_key": "liability_car_loan_creditor",
+   "field_label": "Car Loan Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "R5": {
+   "field_key": "liability_car_loan_repayment_amount",
+   "field_label": "Car Loan Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Repayment5": {
+   "field_key": "liability_car_loan_repayment_frequency",
+   "field_label": "Car Loan Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Paying Out5": {
+   "field_key": "liability_car_loan_paying_out",
+   "field_label": "Car Loan Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Ownership5": {
+   "field_key": "liability_car_loan_ownership",
+   "field_label": "Car Loan Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "car_loan"
+   }
+  },
+  "Balance6": {
+   "field_key": "liability_student_loan_balance",
+   "field_label": "Student Loan Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Limit6": {
+   "field_key": "liability_student_loan_credit_limit",
+   "field_label": "Student Loan Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Creditor6": {
+   "field_key": "liability_student_loan_creditor",
+   "field_label": "Student Loan Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "R6": {
+   "field_key": "liability_student_loan_repayment_amount",
+   "field_label": "Student Loan Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Repayment6": {
+   "field_key": "liability_student_loan_repayment_frequency",
+   "field_label": "Student Loan Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Paying Out6": {
+   "field_key": "liability_student_loan_paying_out",
+   "field_label": "Student Loan Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Ownership6": {
+   "field_key": "liability_student_loan_ownership",
+   "field_label": "Student Loan Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "student_loan"
+   }
+  },
+  "Balance7": {
+   "field_key": "liability_government_tax_balance",
+   "field_label": "Government Tax Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Limit7": {
+   "field_key": "liability_government_tax_credit_limit",
+   "field_label": "Government Tax Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Creditor7": {
+   "field_key": "liability_government_tax_creditor",
+   "field_label": "Government Tax Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "R7": {
+   "field_key": "liability_government_tax_repayment_amount",
+   "field_label": "Government Tax Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Repayment7": {
+   "field_key": "liability_government_tax_repayment_frequency",
+   "field_label": "Government Tax Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Paying Out7": {
+   "field_key": "liability_government_tax_paying_out",
+   "field_label": "Government Tax Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Ownership7": {
+   "field_key": "liability_government_tax_ownership",
+   "field_label": "Government Tax Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "government_tax"
+   }
+  },
+  "Balance8": {
+   "field_key": "liability_other_balance",
+   "field_label": "Other Liability Balance",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "balance",
+   "enum_map": null,
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Limit8": {
+   "field_key": "liability_other_credit_limit",
+   "field_label": "Other Liability Limit",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "credit_limit",
+   "enum_map": null,
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Creditor8": {
+   "field_key": "liability_other_creditor",
+   "field_label": "Other Liability Creditor",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "creditor",
+   "enum_map": null,
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "R8": {
+   "field_key": "liability_other_repayment_amount",
+   "field_label": "Other Liability Repayment Amount",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_amount",
+   "enum_map": null,
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Repayment8": {
+   "field_key": "liability_other_repayment_frequency",
+   "field_label": "Other Liability Repayment Frequency",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "repayment_frequency",
+   "enum_map": {
+    "W": "weekly",
+    "F": "fortnightly",
+    "M": "monthly",
+    "Y": "yearly"
+   },
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Paying Out8": {
+   "field_key": "liability_other_paying_out",
+   "field_label": "Other Liability Paying Out",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "boolean",
+   "mapped_table": "liability",
+   "mapped_column": "paying_out",
+   "enum_map": {
+    "Yes": "true",
+    "No": "false"
+   },
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Ownership8": {
+   "field_key": "liability_other_ownership",
+   "field_label": "Other Liability Ownership",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "enum",
+   "mapped_table": "liability",
+   "mapped_column": "ownership",
+   "enum_map": {
+    "Applicant 1": "applicant_1",
+    "Applicant 2": "applicant_2",
+    "Both": "both"
+   },
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "othertext": {
+   "field_key": "liability_other_description",
+   "field_label": "Other Liability Description",
+   "section_name": "liabilities",
+   "applicant_number": null,
+   "data_type": "text",
+   "mapped_table": "liability",
+   "mapped_column": "description",
+   "enum_map": null,
+   "context": {
+    "liability_type": "other"
+   }
+  },
+  "Monthly Amount": {
+   "field_key": "expense_private_health_insurance_monthly_amount",
+   "field_label": "Monthly Expense: Private Health Insurance",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "private_health_insurance"
+   }
+  },
+  "Monthly Amount2": {
+   "field_key": "expense_private_education_fee_monthly_amount",
+   "field_label": "Monthly Expense: Private Education Fee",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "private_education_fee"
+   }
+  },
+  "Monthly Amount3": {
+   "field_key": "expense_childcare_monthly_amount",
+   "field_label": "Monthly Expense: Childcare",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "childcare"
+   }
+  },
+  "Monthly Amount4": {
+   "field_key": "expense_clothing_personal_care_monthly_amount",
+   "field_label": "Monthly Expense: Clothing Personal Care",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "clothing_personal_care"
+   }
+  },
+  "Monthly Amount5": {
+   "field_key": "expense_education_monthly_amount",
+   "field_label": "Monthly Expense: Education",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "education"
+   }
+  },
+  "Monthly Amount6": {
+   "field_key": "expense_groceries_monthly_amount",
+   "field_label": "Monthly Expense: Groceries",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "groceries"
+   }
+  },
+  "Monthly Amount7": {
+   "field_key": "expense_insurances_monthly_amount",
+   "field_label": "Monthly Expense: Insurances",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "insurances"
+   }
+  },
+  "Monthly Amount8": {
+   "field_key": "expense_investment_property_utilities_monthly_amount",
+   "field_label": "Monthly Expense: Investment Property Utilities",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "investment_property_utilities"
+   }
+  },
+  "Monthly Amount9": {
+   "field_key": "expense_medical_health_costs_monthly_amount",
+   "field_label": "Monthly Expense: Medical Health Costs",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "medical_health_costs"
+   }
+  },
+  "Monthly Amount10": {
+   "field_key": "expense_other_monthly_amount",
+   "field_label": "Monthly Expense: Other",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "other"
+   }
+  },
+  "Monthly Amount11": {
+   "field_key": "expense_owner_occupied_property_utilities_monthly_amount",
+   "field_label": "Monthly Expense: Owner Occupied Property Utilities",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "owner_occupied_property_utilities"
+   }
+  },
+  "Monthly Amount12": {
+   "field_key": "expense_recreation_entertainment_monthly_amount",
+   "field_label": "Monthly Expense: Recreation Entertainment",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "recreation_entertainment"
+   }
+  },
+  "Monthly Amount13": {
+   "field_key": "expense_connections_phone_internet_tv_monthly_amount",
+   "field_label": "Monthly Expense: Connections Phone Internet Tv",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "connections_phone_internet_tv"
+   }
+  },
+  "Monthly Amount14": {
+   "field_key": "expense_transport_monthly_amount",
+   "field_label": "Monthly Expense: Transport",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "transport"
+   }
+  },
+  "Monthly Amount15": {
+   "field_key": "expense_rent_or_boarding_monthly_amount",
+   "field_label": "Monthly Expense: Rent Or Boarding",
+   "section_name": "monthly_expenses",
+   "applicant_number": null,
+   "data_type": "money",
+   "mapped_table": "monthly_expense",
+   "mapped_column": "monthly_amount",
+   "enum_map": null,
+   "context": {
+    "expense_category": "rent_or_boarding"
+   }
+  }
+ }
+}

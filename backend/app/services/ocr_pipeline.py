@@ -7,7 +7,10 @@ from urllib.parse import quote
 import requests
 
 from app.services.azure_document_intelligence import DocumentIntelligenceError
+from app.services.azure_paging import analyze_pdf_in_page_chunks
 from app.services.intake import IntakeError
+from app.normalization.fact_find import extract_fact_find_acroform
+from app.normalization.fact_find_ocr import extract_fact_find_ocr_fields
 from app.normalization.payslip import extract_payslip_fields
 
 
@@ -117,7 +120,11 @@ class SupabaseOcrRepository:
                 self._insert(token, "extracted_table_cell", cells)
             table_count += 1
             cell_count += len(cells)
-        extracted_fields = extract_payslip_fields(result) if document_type == "payslip" else []
+        extracted_fields = []
+        if document_type == "payslip":
+            extracted_fields = extract_payslip_fields(result)
+        elif document_type == "fact_find":
+            extracted_fields = extract_fact_find_ocr_fields(result)
         for field in extracted_fields:
             field.update({
                 "ocr_extraction_job_id": job_id,
@@ -129,6 +136,38 @@ class SupabaseOcrRepository:
             "pages": len(pages), "tables": table_count,
             "cells": cell_count, "fields": len(extracted_fields),
         }
+
+    def persist_acroform(self, token, document_id, job_id, extraction):
+        """Persist fields read directly from a fillable PDF (no OCR involved)."""
+        page_ids = {}
+        pages = []
+        for page in extraction["pages"]:
+            page_id = str(uuid.uuid4())
+            page_ids[page["page_number"]] = page_id
+            pages.append({
+                "id": page_id,
+                "source_document_id": document_id,
+                "page_number": page["page_number"],
+                "page_label": str(page["page_number"]),
+                "width": page["width"],
+                "height": page["height"],
+                "raw_text": page["raw_text"],
+            })
+        if pages:
+            self._insert(token, "document_page", pages)
+
+        fields = []
+        for field in extraction["fields"]:
+            field = dict(field)
+            field["document_page_id"] = page_ids.get(field.pop("page_number", None))
+            field.update({
+                "ocr_extraction_job_id": job_id,
+                "source_document_id": document_id,
+            })
+            fields.append(field)
+        if fields:
+            self._insert(token, "extracted_field", fields)
+        return {"pages": len(pages), "tables": 0, "cells": 0, "fields": len(fields)}
 
     def _insert(self, token, table, payload):
         response = self._request(
@@ -169,7 +208,42 @@ class OcrPipelineService:
         self._repository.update(token, "source_document", document_id, {"processing_status": "processing"})
         try:
             content = self._repository.download(token, document["storage_uri"])
-            result = self._azure.analyze(content, document["mime_type"])
+
+            # Fact-find forms filled electronically carry their values as
+            # AcroForm widget data; read them directly and skip Azure OCR.
+            if document.get("document_type") == "fact_find" and document.get("mime_type") == "application/pdf":
+                extraction = extract_fact_find_acroform(content)
+                if extraction["fields"]:
+                    counts = self._repository.persist_acroform(token, document_id, job_id, extraction)
+                    raw_uri = self._repository.upload_raw_response(
+                        token, document_id, job_id,
+                        {"source": "acroform_direct_read", "fields": extraction["fields"]},
+                    )
+                    self._repository.update(token, "ocr_extraction_job", job_id, {
+                        "provider": "acroform_direct_read", "model_name": "pymupdf",
+                        "job_status": "completed", "completed_at": _now(), "raw_response_uri": raw_uri,
+                    })
+                    self._repository.update(token, "source_document", document_id, {
+                        "processing_status": "extracted", "page_count": counts["pages"],
+                    })
+                    return {"job_id": job_id, "document_id": document_id, "status": "completed", **counts}
+                if extraction["has_form"]:
+                    # A fillable form with no values entered: OCR would only
+                    # see the blank template, so reject instead of wasting quota.
+                    raise IntakeError(
+                        "fact_find_blank_form",
+                        "The fact find form contains no filled-in values. Please upload a completed copy.",
+                        422,
+                    )
+                # No widgets at all (scanned or flattened copy): fall through
+                # to the regular Azure OCR route below.
+
+            mime_type = document.get("mime_type") or "application/pdf"
+            if mime_type == "application/pdf":
+                # F0 (and similar tiers) allow only 2 pages per analyze call.
+                result = analyze_pdf_in_page_chunks(self._azure, content)
+            else:
+                result = self._azure.analyze(content, mime_type)
             raw_uri = self._repository.upload_raw_response(token, document_id, job_id, result)
             counts = self._repository.persist_analysis(
                 token, document_id, job_id, document.get("document_type"), result
