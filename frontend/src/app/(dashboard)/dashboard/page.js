@@ -120,7 +120,15 @@ export default function DashboardPage() {
                   <TableRow key={app.id}>
                     <TableCell className="font-medium">{app.id}</TableCell>
                     <TableCell>{app.customer_name}</TableCell>
-                    <TableCell className="capitalize">{app.loan_type}</TableCell>
+                    <TableCell>{
+                      {
+                        'purchase': 'Owner-Occupier Purchase',
+                        'investment': 'Investment Purchase',
+                        'refinance': 'Refinance',
+                        'first_home': 'First Home Buyer',
+                        'self_employed': 'Self-Employed (any)'
+                      }[app.loan_type] || app.loan_type
+                    }</TableCell>
                     <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Badge variant={app.submission_status === 'approved' ? 'success' : app.submission_status === 'rejected' ? 'destructive' : 'secondary'}>

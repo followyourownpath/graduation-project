@@ -153,5 +153,25 @@ export const api = {
       // In mock mode, we just return success
       return { message: 'Updated successfully' };
     }
+  },
+
+  /**
+   * Update the status of a submission (Approve/Reject)
+   * @param {string} submissionId - Submission ID
+   * @param {string} status - 'approved' or 'rejected'
+   */
+  async updateSubmissionStatus(submissionId, status) {
+    if (USE_REAL_API) {
+      const res = await fetch(`${BASE_URL}/submissions/${submissionId}/status`, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ status }),
+      });
+      if (!res.ok) throw new Error('Failed to update submission status');
+      return res.json();
+    } else {
+      await delay(500);
+      return { message: 'Updated successfully' };
+    }
   }
 };

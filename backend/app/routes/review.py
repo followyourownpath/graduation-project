@@ -93,3 +93,22 @@ def review_field(field_id):
     except IntakeError as error:
         return _error(error.code, error.message, error.status)
     return jsonify(result)
+
+@review_bp.put("/submissions/<submission_id>/status")
+@require_staff
+def update_submission_status(submission_id):
+    invalid = _uuid(submission_id, "submission_id")
+    if invalid:
+        return invalid
+    payload = request.get_json(silent=True) or {}
+    status = str(payload.get("status", "")).strip().lower()
+    if status not in {"approved", "rejected"}:
+        return _error("invalid_status", "status must be approved or rejected.")
+    
+    try:
+        result = current_app.extensions["review_service"].update_submission_status(
+            g.access_token, submission_id, status
+        )
+    except IntakeError as error:
+        return _error(error.code, error.message, error.status)
+    return jsonify(result)
