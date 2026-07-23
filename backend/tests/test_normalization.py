@@ -1,5 +1,5 @@
 from app.normalization.payslip import extract_payslip_fields
-from app.normalization.values import australian_date, digits, money
+from app.normalization.values import australian_date, digits, money, phone
 
 
 def test_value_normalizers():
@@ -8,6 +8,7 @@ def test_value_normalizers():
     assert money("($25.00)") == "-25.00"
     assert australian_date("02/06/2026") == "2026-06-02"
     assert digits("66 396 710 463") == "66396710463"
+    assert phone("0412 345 678") == "+61412345678"
 
 
 def test_extract_payslip_fields_from_layout_tables():

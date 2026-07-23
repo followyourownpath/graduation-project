@@ -15,6 +15,7 @@ DOCUMENT_TYPES = {
     "payslip", "bank_statement_3m", "id_100", "contract_of_sale",
     "property_valuation", "rental_appraisal", "existing_loan_statements",
     "first_home_grant", "tax_return", "ato_notice", "profit_loss",
+    "fact_find",
 }
 
 
