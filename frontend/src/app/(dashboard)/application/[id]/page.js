@@ -216,20 +216,48 @@ export default function ApplicationReviewPage({ params }) {
           <div className="space-y-8 pb-12">
             
             {/* Header info */}
-            <div>
-              <div className="flex items-center space-x-3 mb-2">
-                <h2 className="text-2xl font-bold">Review: {appId}</h2>
-                <Badge variant="outline" className={
-                      submission.risk_level === 'High' ? 'border-red-500 text-red-700 bg-red-50' : 
-                      submission.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
-                      'border-emerald-500 text-emerald-700 bg-emerald-50'
-                    }>
-                  Risk Score: {submission.overall_risk_score} ({submission.risk_level})
+            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+                <div className="flex items-center space-x-2.5">
+                  <h2 className="text-xl font-bold text-slate-900">Application Review</h2>
+                  <Badge variant="outline" className={
+                        submission.risk_level === 'High' ? 'border-red-500 text-red-700 bg-red-50 font-medium' : 
+                        submission.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50 font-medium' : 
+                        'border-emerald-500 text-emerald-700 bg-emerald-50 font-medium'
+                      }>
+                    Risk: {submission.overall_risk_score || 'N/A'} {submission.risk_level && `(${submission.risk_level})`}
+                  </Badge>
+                </div>
+                <Badge variant="secondary" className="w-fit text-xs px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 font-medium">
+                  Source: {submission.source_channel === 'crm' ? 'Mercury CRM Channel' : 'Manual Intake Channel'}
                 </Badge>
               </div>
-              <p className="text-sm text-slate-500">
-                Applicant: {submission.customer_name} • Submitted: {new Date(submission.created_at).toLocaleDateString()}
-              </p>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-3 pt-2 border-t border-slate-200/80 text-xs">
+                <div>
+                  <span className="text-slate-400 block mb-1 font-medium">Applicant Name</span>
+                  <span className="font-semibold text-slate-800 text-sm">{submission.customer_name}</span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block mb-1 font-medium">Local Application ID (SmartFINN)</span>
+                  <span className="font-mono font-medium text-slate-700 bg-white px-2 py-1 rounded border border-slate-200 block truncate shadow-2xs" title={submission.local_application_id || appId}>
+                    {submission.local_application_id || appId}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-slate-400 block mb-1 font-medium">Mercury CRM External ID</span>
+                  {submission.crm_application_id ? (
+                    <span className="font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 flex items-center gap-1.5 shadow-2xs" title={submission.crm_application_id}>
+                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                      {submission.crm_application_id}
+                    </span>
+                  ) : (
+                    <span className="font-mono text-slate-400 bg-slate-100/80 px-2 py-1 rounded border border-slate-200 block italic">
+                      Pending Sync (Unmapped)
+                    </span>
+                  )}
+                </div>
+              </div>
             </div>
 
             {/* OCR Extracted Data Form */}
