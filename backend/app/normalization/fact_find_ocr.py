@@ -103,6 +103,13 @@ def _field(key, label, raw, normalised, data_type, section, applicant=1,
            table=None, column=None, confidence=None):
     if raw is None or text(raw) == "" or text(raw) == "--":
         return None
+    if confidence is None:
+        if data_type == "money" or any(k in key for k in ("value", "balance", "amount", "expense", "income", "liability", "limit", "tax")):
+            confidence = 0.76
+        elif any(k in key for k in ("address", "suburb", "street", "employer", "name", "goal")):
+            confidence = 0.88
+        else:
+            confidence = 0.94
     return {
         "section_name": section,
         "applicant_number": applicant,

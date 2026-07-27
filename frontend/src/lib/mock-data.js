@@ -1,9 +1,9 @@
 export const mockSubmissions = [
-  { id: 'sub-2026-001', customer_name: 'Alice Smith', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'completed', created_at: '2026-06-25T10:00:00Z', risk_level: 'High', overall_risk_score: 85 },
-  { id: 'sub-2026-002', customer_name: 'Bob Johnson', loan_type: 'refinance', submission_status: 'approved', extraction_status: 'completed', created_at: '2026-06-24T14:30:00Z', risk_level: 'Low', overall_risk_score: 12 },
-  { id: 'sub-2026-003', customer_name: 'Charlie Davis', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'completed', created_at: '2026-06-24T09:15:00Z', risk_level: 'Medium', overall_risk_score: 45 },
-  { id: 'sub-2026-004', customer_name: 'Diana Prince', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'processing', created_at: '2026-06-23T16:45:00Z', risk_level: 'Low', overall_risk_score: 22 },
-  { id: 'sub-2026-005', customer_name: 'Evan Wright', loan_type: 'refinance', submission_status: 'rejected', extraction_status: 'completed', created_at: '2026-06-22T11:20:00Z', risk_level: 'High', overall_risk_score: 92 },
+  { id: 'sub-2026-001', local_application_id: 'app-local-901', crm_application_id: 'MERC-88231', source_channel: 'crm', customer_name: 'Alice Smith', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'completed', created_at: '2026-06-25T10:00:00Z', risk_level: 'High', overall_risk_score: 85 },
+  { id: 'sub-2026-002', local_application_id: 'app-local-902', crm_application_id: null, source_channel: 'manual', customer_name: 'Bob Johnson', loan_type: 'refinance', submission_status: 'approved', extraction_status: 'completed', created_at: '2026-06-24T14:30:00Z', risk_level: 'Low', overall_risk_score: 12 },
+  { id: 'sub-2026-003', local_application_id: 'app-local-903', crm_application_id: 'MERC-88245', source_channel: 'crm', customer_name: 'Charlie Davis', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'completed', created_at: '2026-06-24T09:15:00Z', risk_level: 'Medium', overall_risk_score: 45 },
+  { id: 'sub-2026-004', local_application_id: 'app-local-904', crm_application_id: null, source_channel: 'manual', customer_name: 'Diana Prince', loan_type: 'purchase', submission_status: 'in_review', extraction_status: 'processing', created_at: '2026-06-23T16:45:00Z', risk_level: 'Low', overall_risk_score: 22 },
+  { id: 'sub-2026-005', local_application_id: 'app-local-905', crm_application_id: 'MERC-88290', source_channel: 'crm', customer_name: 'Evan Wright', loan_type: 'refinance', submission_status: 'rejected', extraction_status: 'completed', created_at: '2026-06-22T11:20:00Z', risk_level: 'High', overall_risk_score: 92 },
 ];
 
 export const mockDocuments = {
