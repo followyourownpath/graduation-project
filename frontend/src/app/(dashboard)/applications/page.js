@@ -125,7 +125,7 @@ export default function ApplicationsPage() {
             <Table>
               <TableHeader>
                 <TableRow>
-                  <TableHead>App ID</TableHead>
+                  <TableHead>Application ID & Source</TableHead>
                   <TableHead>Applicant</TableHead>
                   <TableHead>Type</TableHead>
                   <TableHead>Date</TableHead>
@@ -137,7 +137,26 @@ export default function ApplicationsPage() {
               <TableBody>
                 {filteredApplications.map((app) => (
                   <TableRow key={app.id}>
-                    <TableCell className="font-medium">{app.id}</TableCell>
+                    <TableCell className="font-medium py-3">
+                      <div className="flex flex-col gap-1.5">
+                        <div className="flex items-center gap-2">
+                          <span className="font-mono text-xs text-slate-900 font-semibold">{app.local_application_id || app.id}</span>
+                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-blue-50 text-blue-700 border border-blue-200 font-medium whitespace-nowrap">
+                            {app.source_channel === 'crm' ? 'Mercury CRM' : 'Manual Intake'}
+                          </Badge>
+                        </div>
+                        {app.crm_application_id ? (
+                          <span className="text-[11px] font-mono text-emerald-700 font-medium flex items-center gap-1.5 bg-emerald-50 px-1.5 py-0.5 rounded w-fit border border-emerald-200">
+                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
+                            CRM ID: {app.crm_application_id}
+                          </span>
+                        ) : (
+                          <span className="text-[11px] text-slate-400 italic bg-slate-100/80 px-1.5 py-0.5 rounded w-fit border border-slate-200">
+                            CRM ID: Pending Sync
+                          </span>
+                        )}
+                      </div>
+                    </TableCell>
                     <TableCell>{app.customer_name}</TableCell>
                     <TableCell>{
                       {

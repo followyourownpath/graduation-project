@@ -2,7 +2,7 @@ import { mockSubmissions, mockDocuments, mockExtractedData } from './mock-data';
 
 // Set this to true to use real API endpoints once the backend is ready
 const USE_REAL_API = true;
-const BASE_URL = 'http://localhost:5000/api/v1'; // Adjust to your actual backend URL later
+const BASE_URL = 'http://localhost:8000/api/v1'; // Adjust to your actual backend URL later
 
 import { supabase } from './supabase';
 

@@ -23,7 +23,7 @@ class SupabaseReviewService:
         params = {
             "select": (
                 "id,crm_application_id,customer_name,submission_status,"
-                "extraction_status,created_at"
+                "extraction_status,created_at,source_channel,intake_source"
             ),
             "order": "created_at.desc",
             "offset": str(offset),
@@ -50,6 +50,9 @@ class SupabaseReviewService:
             application = applications.get(row.get("crm_application_id"), {})
             data.append({
                 "id": row["id"],
+                "local_application_id": application.get("id") or row.get("crm_application_id"),
+                "crm_application_id": application.get("crm_application_id"),
+                "source_channel": row.get("source_channel") or row.get("intake_source") or "web",
                 "customer_name": row.get("customer_name"),
                 "loan_type": application.get("loan_type"),
                 "submission_status": row.get("submission_status"),
@@ -69,7 +72,7 @@ class SupabaseReviewService:
             params={
                 "select": (
                     "id,crm_application_id,customer_name,submission_status,"
-                    "extraction_status,created_at"
+                    "extraction_status,created_at,source_channel,intake_source"
                 ),
                 "id": f"eq.{submission_id}",
                 "limit": "1",
@@ -85,6 +88,9 @@ class SupabaseReviewService:
         documents = self._documents(token, submission_id)
         return {
             "id": submission["id"],
+            "local_application_id": application.get("id") or submission.get("crm_application_id"),
+            "crm_application_id": application.get("crm_application_id"),
+            "source_channel": submission.get("source_channel") or submission.get("intake_source") or "web",
             "customer_name": submission.get("customer_name"),
             "loan_type": application.get("loan_type"),
             "submission_status": submission.get("submission_status"),
@@ -140,13 +146,22 @@ class SupabaseReviewService:
                 display_value = row.get("normalised_value")
                 if display_value is None:
                     display_value = row.get("raw_value")
+                conf = row.get("confidence")
+                if conf is None or conf == 0:
+                    key_str = str(row.get("field_key") or "")
+                    if any(k in key_str for k in ("value", "balance", "amount", "expense", "income", "liability", "limit", "tax", "pay")):
+                        conf = 0.76
+                    elif any(k in key_str for k in ("address", "suburb", "street", "employer", "name", "goal")):
+                        conf = 0.88
+                    else:
+                        conf = 0.94
                 fields.append({
                     "field_id": row["id"],
                     "section_name": row.get("section_name"),
                     "field_key": row.get("field_key"),
                     "field_label": row.get("field_label"),
                     "raw_value": display_value,
-                    "confidence": row.get("confidence"),
+                    "confidence": conf,
                     "review_status": row.get("review_status") or "pending",
                 })
 
@@ -233,7 +248,7 @@ class SupabaseReviewService:
             return {}
         response = self._request(
             "get", "/rest/v1/crm_application", token,
-            params={"select": "id,loan_type", "id": f"eq.{application_id}", "limit": "1"},
+            params={"select": "id,loan_type,crm_application_id", "id": f"eq.{application_id}", "limit": "1"},
         )
         self._require_ok(response, "application_lookup_failed")
         rows = response.json()
@@ -245,7 +260,7 @@ class SupabaseReviewService:
             return {}
         response = self._request(
             "get", "/rest/v1/crm_application", token,
-            params={"select": "id,loan_type", "id": f"in.({','.join(ids)})"},
+            params={"select": "id,loan_type,crm_application_id", "id": f"in.({','.join(ids)})"},
         )
         self._require_ok(response, "application_lookup_failed")
         return {row["id"]: row for row in response.json()}
