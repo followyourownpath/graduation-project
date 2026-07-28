@@ -66,3 +66,32 @@ def test_extract_bank_statement_fields():
     assert fields["opening_balance"]["normalised_value"] == "14296.97"
     assert fields["closing_balance"]["normalised_value"] == "21766.91"
 
+
+def test_extract_bank_statement_fields_header_table():
+    result = {"analyzeResult": {
+        "content": "SMARTFINN MUTUAL BANK Jessica Nicole Ramirez Unit 72, 442 Williams Ring Steps, Glenelg SA 5045 BSB: 866-259 Account No: 1073 6022 Statement Period: 01/04/2026 - 30/06/2026",
+        "tables": [
+            {
+                "rowCount": 2,
+                "columnCount": 4,
+                "cells": [
+                    {"rowIndex": 0, "columnIndex": 0, "content": "Opening Balance"},
+                    {"rowIndex": 0, "columnIndex": 1, "content": "Total Credits"},
+                    {"rowIndex": 0, "columnIndex": 2, "content": "Total Debits"},
+                    {"rowIndex": 0, "columnIndex": 3, "content": "Closing Balance"},
+                    {"rowIndex": 1, "columnIndex": 0, "content": "$13,170.81"},
+                    {"rowIndex": 1, "columnIndex": 1, "content": "+$7,414.53"},
+                    {"rowIndex": 1, "columnIndex": 2, "content": "-$13,572.03"},
+                    {"rowIndex": 1, "columnIndex": 3, "content": "$7,013.31"},
+                ]
+            }
+        ]
+    }}
+    fields = {field["field_key"]: field for field in extract_bank_statement_fields(result)}
+    assert fields["account_holder_name"]["normalised_value"] == "Jessica Nicole Ramirez"
+    assert fields["bsb"]["normalised_value"] == "866-259"
+    assert fields["account_number"]["normalised_value"] == "10736022"
+    assert fields["opening_balance"]["normalised_value"] == "13170.81"
+    assert fields["closing_balance"]["normalised_value"] == "7013.31"
+
+

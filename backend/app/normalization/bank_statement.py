@@ -38,7 +38,17 @@ def extract_bank_statement_fields(result):
     fields = []
 
     # Text / Regex extraction
-    holder_match = re.search(r"(?:Account\s*Holder\s*Name|Account\s*Holder|Account\s*Name)\s*:\s*([A-Za-z\s'-]+?)(?=\s+(?:BSB|Account|Statement|Opening|Closing|\b[A-Z][a-z]+:)|$)", content, re.I)
+    holder_match = re.search(
+        r"(?:Account\s*Holder\s*Name|Account\s*Holder|Account\s*Name)\s*:\s*([A-Za-z\s'-]+?)(?=\s+(?:BSB|Account|Statement|Opening|Closing|\b[A-Z][a-z]+:)|$)",
+        content, re.I
+    )
+    if not holder_match:
+        # Fallback for bank statements where holder name is placed at the top without "Account Holder Name:" label
+        holder_match = re.search(
+            r"\b([A-Z][a-z]+(?:\s+(?:(?!Unit|BSB|Account|Statement|Bank|Suite|PO|Box)[A-Z][a-z]+))+)\b(?=\s+(?:Unit|\d+|BSB:|[A-Z][a-z]+\s+(?:Street|St|Road|Rd|Way|Lane|Ln|Drive|Dr|Ring|Steps|Tarn|Foreshore|Strand)))",
+            content
+        )
+
     bsb_match = re.search(r"\bBSB\s*:\s*([\d-]{6,7})", content, re.I)
     acc_match = re.search(
         r"(?:Account\s*Number|Acc|Account\s*No\.?)\s*:\s*([\d ]{6,12}?)(?=\s+(?:Statement|Opening|Closing|\b[A-Z][a-z]+:)|$)",
@@ -73,7 +83,6 @@ def extract_bank_statement_fields(result):
                money(closing_match.group(1)) if closing_match else None, "money"),
     ])
 
-    # Table layout key-value extraction fallback
     label_map = {
         "account holder name": ("account_holder_name", "Account Holder Name", "text", "applicant", "full_name"),
         "account holder": ("account_holder_name", "Account Holder Name", "text", "applicant", "full_name"),
@@ -83,9 +92,25 @@ def extract_bank_statement_fields(result):
         "acc": ("account_number", "Account Number", "identifier", None, None),
         "opening balance": ("opening_balance", "Opening Balance", "money", None, None),
         "closing balance": ("closing_balance", "Closing Balance", "money", None, None),
+        "total credits": ("total_credits", "Total Credits", "money", None, None),
+        "total debits": ("total_debits", "Total Debits", "money", None, None),
     }
 
     for matrix in _tables(analysis):
+        # 1) Handle Summary tables with Header row (row 0) and Value row (row 1)
+        if len(matrix) >= 2:
+            row0_labels = [col.rstrip(":").lower() for col in matrix[0]]
+            # If row 0 contains header labels like "opening balance" or "closing balance"
+            if any(lbl in label_map for lbl in row0_labels):
+                for col_idx, label in enumerate(row0_labels):
+                    if label in label_map and col_idx < len(matrix[1]):
+                        key, display, data_type, table, column = label_map[label]
+                        val = matrix[1][col_idx]
+                        norm = money(val) if data_type == "money" else text(val)
+                        fields.append(_field(key, display, val, norm, data_type, table, column))
+                continue
+
+        # 2) Handle Key-Value side-by-side tables (2-column key-value pairs per row)
         for row in matrix:
             for index in range(0, len(row) - 1, 2):
                 label = row[index].rstrip(":").lower()
