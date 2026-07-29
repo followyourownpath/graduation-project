@@ -1,55 +1,69 @@
-# 功能实现状态追踪报告 (Feature Status Report)
+# Feature Implementation Status Report
 
-本文档整理自 `/project requirement` 文件夹中的各类需求说明书、会议纪要及功能表格，对比了当前前端项目的开发进度，明确了已实现和尚未实现的功能模块。
+This document compares the current frontend implementation with the specifications, meeting
+minutes, and feature tables in the `/project requirement` folder. It records which modules are
+implemented and which remain outstanding.
 
-## 1. 目前在前端 **已经做出 (实现视觉/交互骨架)** 的功能
+## 1. Implemented Frontend UI and Interaction Foundations
 
-得益于近期的基础架构搭建与页面开发，以下核心业务流的 **前端页面 UI、组件库交互** 已经完成（使用 mock 数据运行）：
+The following core workflows have a working frontend UI and component interactions backed by
+mock data:
 
-- [x] **身份认证界面**: 实现了现代化的全屏登录页面 (`/login`)，包含邮箱/密码表单、记住我功能，以及品牌几何背景。
-- [x] **合规审查控制台 (Dashboard)**: 
-  - 实现了带有侧边栏导航和顶部用户信息的全局 Layout。
-  - 实现了关键指标统计卡片（总申请量、待处理、高风险预警数量等）。
-  - 实现了房贷申请列表数据表格，并对“状态 (Pending/Approved)”和“风险等级 (High/Medium/Low)”进行了直观的颜色高亮区分。
-- [x] **申请详情与双屏审查页 (Review Page)**: 
-  - 实现了复杂的左右分屏布局 (`/application/[id]`)。
-  - 左侧：实现了多文件切换的 Tabs 导航（工资单、护照、银行流水）以及文件预览区域占位图。
-  - 右侧：实现了提取出的结构化数据表单（OCR 数据提取展示区），并且表单支持审查员手动编辑。
-  - 右侧：实现了“合规预警面板 (Compliance Alerts)”，清晰展示跨文件不一致性（如收入不符、雇佣时间不符），并提供了“添加备注”和“标记解决”的交互动作。
-  - 底部：实现了决断审批条，包含 Approve、Reject 和 Cancel 动作。
-- [x] **申请管理列表页 (Applications)**: 
-  - 实现了全局申请单列表 `/applications`。
-  - 包含了全局的新建入口 `+ New Application`。
-- [x] **新建申请与文件上传页 (Upload Flow)**: 
-  - 实现了支持交互的拖拽上传区域 (`/applications/new`)。
-  - 包含了模拟假上传进度的动态进度条反馈。
-
----
-
-## 2. 尚未在前端实现 **(待开发/Missing)** 的功能
-
-尽管核心骨架已完成，但距离完全覆盖需求文档的要求，前端还需要开发以下页面/功能区块：
-
-### 2.1 尚未编写 UI 的页面
-*(核心 MVP 所需的关键前端页面均已初步搭建完成。)*
-
-### 2.2 Out of Scope (MVP 阶段已明确暂不开发)
-> 根据《AI_Mortgage_Project_Meeting_Minutes_2026-06-22》会议纪要，以下功能在 MVP 阶段明确被标记为 Out of Scope：
-- [~] **审计日志与历史记录页 (Audit Trail)**: 
-  - 需求要求有 Audit Trail，但会议纪要明确：“Audit Log 暂时可以标记为 Out of Scope”。
-- [~] **系统设置与复杂权限管理 (RBAC)**:
-  - 需求要求区分 Admin 和 Reviewer，但会议纪要明确：“复杂权限管理和完整 RBAC 暂时可以标记为 Out of Scope，先集中完成核心文件处理流程”。
-
-### 2.3 尚未完善的前端功能细节
-- [ ] **真实的 PDF/图像渲染引擎**: 目前 Review 页面的左侧是占位图。需要引入 `react-pdf` 或原生 iframe 来实现多页 PDF 的滚动查看与缩放。
-- [ ] **表格的高级交互**: 现有的 Dashboard 列表需要补充完整的前端分页 (Pagination)、列头排序 (Sorting) 以及多维度过滤 (Filtering by Risk/Status) 组件联动。
-- [ ] **状态管理与全局通知**: 目前 UI 是纯静态展示，尚未接入 Zustand/Context。缺失真实全局 Loading 动画与 Toast（如“上传中...” 或“保存成功”的反馈）。
+- [x] **Authentication:** A full-screen `/login` page with email and password fields, a
+  remember-me option, and a branded geometric background.
+- [x] **Compliance dashboard:**
+  - Shared layout with sidebar navigation and user details in the header.
+  - Summary cards for total applications, pending cases, and high-risk alerts.
+  - A mortgage application table with clear colour coding for status and risk level.
+- [x] **Application review page:**
+  - Split-pane layout at `/application/[id]`.
+  - Document tabs and a preview placeholder for payslips, passports, and bank statements.
+  - Editable forms for structured OCR output.
+  - A compliance-alert panel for cross-document discrepancies, with note and resolution actions.
+  - Approval controls for Approve, Reject, and Cancel.
+- [x] **Application management:** A complete application list at `/applications` with a
+  `+ New Application` entry point.
+- [x] **Application creation and upload:**
+  - Interactive drag-and-drop upload area at `/applications/new`.
+  - Simulated upload progress feedback.
 
 ---
 
-## 3. 依赖后端进度的功能 (API Integration Blockers)
+## 2. Outstanding Frontend Work
 
-以下功能必须等待后端 (Docker/Backend) 完善接口后，前端才能进行最终的联调：
-- [ ] **真实的鉴权与 JWT 处理**: 连接 Login 接口，并基于 Token 保护路由。
-- [ ] **OCR 提取与 AI 评分计算**: 连接 Python 后端，在上传文件后执行长轮询或 WebSocket 接收异步解析的 JSON 结果和风险分数。
-- [ ] **数据库持久化存储**: 与数据库交互，真正保存审查员的手动修改和最终 Approve/Reject 决策。
+The core MVP pages have initial implementations, but several capabilities remain incomplete.
+
+### 2.1 Pages Without UI
+
+All key pages required for the core MVP have an initial UI.
+
+### 2.2 Explicitly Outside the MVP
+
+The meeting minutes dated 22 June 2026 mark the following items as outside the MVP:
+
+- [~] **Audit trail and history:** The broader requirements mention an audit trail, but the
+  meeting confirmed that the audit log can remain out of scope for now.
+- [~] **System settings and advanced RBAC:** The requirements distinguish administrators and
+  reviewers, but full role management is deferred while the team focuses on document processing.
+
+### 2.3 Incomplete Frontend Details
+
+- [ ] **PDF and image rendering:** The review pane still uses a placeholder. Add `react-pdf` or
+  a native iframe to support multi-page scrolling and zoom.
+- [ ] **Advanced table interactions:** Add pagination, column sorting, and coordinated filters
+  for risk and status.
+- [ ] **State and notifications:** Integrate Zustand or Context, global loading states, and
+  toast feedback for actions such as uploads and saves.
+
+---
+
+## 3. Backend-Dependent Work
+
+The following items require stable backend APIs before final integration:
+
+- [ ] **Authentication and JWT handling:** Connect the login endpoint and protect routes with
+  tokens.
+- [ ] **OCR extraction and automated risk scoring:** Connect the Python backend and receive
+  asynchronous parsing results and risk scores through polling or WebSocket updates.
+- [ ] **Persistence:** Store reviewer corrections and final approval or rejection decisions in
+  the database.
