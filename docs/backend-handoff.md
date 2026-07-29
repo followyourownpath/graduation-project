@@ -4,7 +4,7 @@ Last updated: 2026-07-19 (Australia/Sydney)
 
 ## 1. Purpose
 
-This document hands the completed Supabase database foundation to the backend implementation phase. It is intended for developers, teammates, and new Codex chats working in the same repository.
+This document hands the completed Supabase database foundation to the backend implementation phase. It is intended for developers and teammates working in the same repository.
 
 No Supabase URL, API key, database password, employee password, email address, access token, or other credential is stored in this document or in the committed SQL templates.
 
