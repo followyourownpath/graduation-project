@@ -39,6 +39,15 @@ docker run --rm -p 5000:5000 --env-file .env smartfinn-backend
 
 The versioned health endpoint is `GET /api/v1/health`.
 
+## Backend API contract
+
+The frontend/backend contract is maintained in
+[`API_CONTRACT.md`](./API_CONTRACT.md). It records the current endpoints,
+authentication requirement, request fields, response shapes, and common errors.
+
+Any pull request that adds, removes, or changes an endpoint must update the
+contract in the same pull request.
+
 ## Manual staff authentication check
 
 With the backend running locally, use the interactive verification script. It
