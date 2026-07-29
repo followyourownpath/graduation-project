@@ -6,9 +6,8 @@
 
 | File | Description |
 |------|-------------|
-| `database-schema.md` | Full schema document (中文) |
-| `database-schema-en.md` | Full schema document (English) |
-| `table-relationships-cn.md` | PK/FK cheat sheet (中文，一页速查) |
+| `database-schema.md` | Full schema document |
+| `table-relationships.md` | Concise PK/FK reference |
 | `ERD.drawio` | Entity Relationship Diagram — open in draw.io, export PNG |
 | `migrations/001_initial_schema.sql` | Initial PostgreSQL migration |
 | `samples/sample-extracted-data-payslip.json` | Sample OCR output for payslip |

@@ -4,7 +4,7 @@ Last updated: 2026-07-19 (Australia/Sydney)
 
 ## 1. Purpose
 
-This document hands the completed Supabase database foundation to the backend implementation phase. It is intended for developers, teammates, and new Codex chats working in the same repository.
+This document hands the completed Supabase database foundation to the backend implementation phase. It is intended for developers and teammates working in the same repository.
 
 No Supabase URL, API key, database password, employee password, email address, access token, or other credential is stored in this document or in the committed SQL templates.
 
@@ -214,7 +214,3 @@ Consequences:
 10. Implement review, approval, CRM mapping, CRM update tracking, and audit-event workflows.
 11. Add domain constraints, status definitions, `updated_at` triggers, and indexes based on real query patterns.
 12. Add automated database, RLS, API, and integration tests before production deployment.
-
-## 10. Suggested prompt for a new backend chat
-
-> Read `docs/backend-handoff.md` and both files under `supabase/migrations/` before making changes. Treat the hosted Supabase schema and RLS migrations as already applied manually. Inspect the repository, propose a backend architecture and phased implementation plan, and do not expose or commit any Supabase secrets. Preserve the existing database and create new migrations for future schema changes.
