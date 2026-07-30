@@ -12,6 +12,7 @@ from app.services.intake import IntakeError
 from app.normalization.fact_find import extract_fact_find_acroform
 from app.normalization.fact_find_ocr import extract_fact_find_ocr_fields
 from app.normalization.payslip import extract_payslip_fields
+from app.normalization.ato_notice import extract_ato_notice_fields
 from app.normalization.bank_statement import extract_bank_statement_fields
 from app.normalization.id_100 import extract_id_fields
 
@@ -131,6 +132,8 @@ class SupabaseOcrRepository:
             extracted_fields = extract_bank_statement_fields(result)
         elif document_type == "id_100":
             extracted_fields = extract_id_fields(result)
+        elif document_type == "ato_notice":
+            extracted_fields = extract_ato_notice_fields(result)
         for field in extracted_fields:
             field.update({
                 "ocr_extraction_job_id": job_id,
