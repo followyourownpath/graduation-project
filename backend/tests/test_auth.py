@@ -36,6 +36,15 @@ def test_me_rejects_non_bearer_authorization(client):
     assert response.get_json()["error"]["code"] == "bearer_token_required"
 
 
+def test_demo_bypass_environment_variable_cannot_disable_authentication(client, monkeypatch):
+    monkeypatch.setenv("AUTH_DEMO_BYPASS", "true")
+
+    response = client.get("/api/v1/auth/me")
+
+    assert response.status_code == 401
+    assert response.get_json()["error"]["code"] == "bearer_token_required"
+
+
 def test_me_returns_authenticated_active_staff():
     identity = {
         "user": {"id": "user-id", "email": "staff@example.test"},
