@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
-import { isPublicPath } from "@/lib/auth-utils";
+import { isPublicPath, withBasePath } from "@/lib/auth-utils";
 
 export async function updateSession(request) {
   let response = NextResponse.next({ request });
@@ -24,7 +24,7 @@ export async function updateSession(request) {
   const { data, error } = await supabase.auth.getClaims();
   if ((error || !data?.claims) && !isPublicPath(request.nextUrl.pathname)) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
+    loginUrl.pathname = withBasePath("/login");
     loginUrl.search = "";
     return NextResponse.redirect(loginUrl);
   }

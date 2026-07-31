@@ -20,6 +20,9 @@ Configure Supabase Auth redirect URLs for local development:
 - `http://localhost:3000/auth/confirm`
 - Password invitations/recovery should redirect to `http://localhost:3000/auth/confirm?next=/update-password`.
 
+For the production installation, set `NEXT_PUBLIC_BASE_PATH=/bread` and allow
+`https://aimeshlabs.au/bread/auth/confirm` in Supabase Auth URL Configuration.
+
 Run `npm test`, `npm run lint`, and `npm run build` before opening a PR.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.

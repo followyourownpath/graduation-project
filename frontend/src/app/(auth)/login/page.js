@@ -9,6 +9,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { ShieldCheck, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
+import { withBasePath } from "@/lib/auth-utils";
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
@@ -43,7 +44,7 @@ export default function LoginPage() {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error?.message || "This account is not authorised for staff access.");
       }
-      router.replace("/dashboard");
+      router.replace(withBasePath("/dashboard"));
       router.refresh();
     } catch (requestError) {
       await supabase.auth.signOut();
@@ -59,8 +60,11 @@ export default function LoginPage() {
     }
     setLoading(true);
     setError(null);
-    const redirectTo = `${window.location.origin}/auth/confirm?next=/update-password`;
-    const { error } = await createClient().auth.resetPasswordForEmail(email, { redirectTo });
+    const redirectTo = new URL(withBasePath("/auth/confirm"), window.location.origin);
+    redirectTo.searchParams.set("next", withBasePath("/update-password"));
+    const { error } = await createClient().auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo.toString(),
+    });
     setLoading(false);
     setError(error ? error.message : "If the account exists, a password reset link has been sent.");
   };

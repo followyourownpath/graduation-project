@@ -11,6 +11,7 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { CheckCircle, Save, XCircle, Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { api } from '@/lib/api';
+import { withBasePath } from '@/lib/auth-utils';
 import { toast } from "sonner";
 
 export default function ApplicationReviewPage({ params }) {
@@ -135,7 +136,7 @@ export default function ApplicationReviewPage({ params }) {
     setUpdatingStatus(true);
     try {
       await api.updateSubmissionStatus(appId, status);
-      router.push('/applications');
+      router.push(withBasePath('/applications'));
     } catch (error) {
       console.error(error);
       toast.error(`Failed to ${status} application.`);
@@ -341,7 +342,7 @@ export default function ApplicationReviewPage({ params }) {
 
         {/* Bottom Action Bar */}
         <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
-          <Button variant="outline" className="text-slate-600" onClick={() => router.push('/applications')}>
+          <Button variant="outline" className="text-slate-600" onClick={() => router.push(withBasePath('/applications'))}>
             Cancel Review
           </Button>
           <div className="space-x-3">

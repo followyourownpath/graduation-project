@@ -7,6 +7,7 @@ import { FileText, LayoutDashboard, Loader2, LogOut, Settings, ShieldCheck } fro
 import { api } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
+import { withBasePath } from "@/lib/auth-utils";
 
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
@@ -33,7 +34,7 @@ export function DashboardShell({ children }) {
       if (!active) return;
       setProfileError(error.message);
       await createClient().auth.signOut();
-      router.replace("/login");
+      router.replace(withBasePath("/login"));
       router.refresh();
     });
     return () => { active = false; };
@@ -42,7 +43,7 @@ export function DashboardShell({ children }) {
   async function handleSignOut() {
     setSigningOut(true);
     await createClient().auth.signOut();
-    router.replace("/login");
+    router.replace(withBasePath("/login"));
     router.refresh();
   }
 

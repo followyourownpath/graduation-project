@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { safeRedirectPath } from "@/lib/auth-utils";
+import { safeRedirectPath, withBasePath } from "@/lib/auth-utils";
 import { createClient } from "@/lib/supabase/server";
 
 export async function GET(request) {
@@ -19,8 +19,8 @@ export async function GET(request) {
     error = new Error("Missing confirmation token");
   }
 
-  if (!error) return NextResponse.redirect(new URL(next, request.url));
-  const loginUrl = new URL("/login", request.url);
+  if (!error) return NextResponse.redirect(new URL(withBasePath(next), request.url));
+  const loginUrl = new URL(withBasePath("/login"), request.url);
   loginUrl.searchParams.set("error", "invalid_or_expired_link");
   return NextResponse.redirect(loginUrl);
 }
