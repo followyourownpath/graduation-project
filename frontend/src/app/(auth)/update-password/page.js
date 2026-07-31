@@ -7,7 +7,6 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { withBasePath } from "@/lib/auth-utils";
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
@@ -23,7 +22,7 @@ export default function UpdatePasswordPage() {
       const { data: { session } } = await createClient().auth.getSession();
       if (!session) {
         // If no session is found, they probably navigated here directly without an invite token
-        router.push(withBasePath("/login"));
+        router.push("/login");
       }
     };
     checkSession();
@@ -55,7 +54,7 @@ export default function UpdatePasswordPage() {
       setSuccess(true);
       // Wait a moment to show the success message, then redirect to dashboard
       setTimeout(() => {
-        router.push(withBasePath("/dashboard"));
+        router.push("/dashboard");
       }, 2000);
     }
   };
