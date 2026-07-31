@@ -281,7 +281,7 @@ class SupabaseReviewService:
 
     def _request(self, method, path, token, extra_headers=None, **kwargs):
         headers = {
-            "apikey": token,
+            "apikey": self._key,
             "Authorization": f"Bearer {token}",
             "Accept": "application/json",
             **(extra_headers or {}),
