@@ -11,6 +11,7 @@ import { CloudUpload, File as FileIcon, X, CheckCircle2, Loader2, AlertCircle, U
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import { withBasePath } from '@/lib/auth-utils';
 
 // Data Configuration
 const LOAN_TYPES = [
@@ -195,7 +196,7 @@ export default function NewApplicationPage() {
       }
 
       const data = await api.createSubmission(formData);
-      router.push(`/application/${data.submission_id}`);
+      router.push(withBasePath(`/application/${data.submission_id}`));
     } catch (error) {
       console.error('Upload failed:', error);
     } finally {

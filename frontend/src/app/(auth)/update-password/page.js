@@ -6,7 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShieldCheck, Loader2, CheckCircle2 } from "lucide-react";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { withBasePath } from "@/lib/auth-utils";
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
@@ -19,10 +20,10 @@ export default function UpdatePasswordPage() {
   useEffect(() => {
     // Ensure the user actually has a session (they must be authenticated via the invite link to update their password)
     const checkSession = async () => {
-      const { data: { session } } = await supabase.auth.getSession();
+      const { data: { session } } = await createClient().auth.getSession();
       if (!session) {
         // If no session is found, they probably navigated here directly without an invite token
-        router.push("/login");
+        router.push(withBasePath("/login"));
       }
     };
     checkSession();
@@ -43,7 +44,7 @@ export default function UpdatePasswordPage() {
 
     setLoading(true);
 
-    const { error } = await supabase.auth.updateUser({
+    const { error } = await createClient().auth.updateUser({
       password: password
     });
 
@@ -54,7 +55,7 @@ export default function UpdatePasswordPage() {
       setSuccess(true);
       // Wait a moment to show the success message, then redirect to dashboard
       setTimeout(() => {
-        router.push("/dashboard");
+        router.push(withBasePath("/dashboard"));
       }, 2000);
     }
   };

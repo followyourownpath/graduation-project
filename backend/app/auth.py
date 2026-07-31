@@ -1,4 +1,3 @@
-import os
 from functools import wraps
 
 from flask import current_app, g, jsonify, request
@@ -15,20 +14,6 @@ def require_staff(view):
 
     @wraps(view)
     def wrapped(*args, **kwargs):
-        # DEMO BYPASS: We skip verifying the token and just inject a dummy user.
-        # This is controlled by the AUTH_DEMO_BYPASS environment variable.
-        bypass_env = os.getenv("AUTH_DEMO_BYPASS", "false").lower()
-        if bypass_env == "true" or bypass_env == "1":
-            g.current_user = {"id": "demo_user", "email": "demo@smartfinn.com"}
-            g.staff_profile = {"id": "demo_profile"}
-            
-            secret = current_app.config.get("SUPABASE_SECRET_KEY", "")
-            pub = current_app.config.get("SUPABASE_PUBLISHABLE_KEY", "")
-            g.access_token = secret if secret else pub
-            
-            return view(*args, **kwargs)
-
-        # Real Auth logic
         auth_header = request.headers.get("Authorization")
         if not auth_header or not auth_header.startswith("Bearer "):
             error = AuthenticationError("bearer_token_required", "Missing or invalid Authorization header", 401)

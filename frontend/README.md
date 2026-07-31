@@ -1,22 +1,29 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# SmartFinn frontend
+
+Next.js frontend for authenticated SmartFinn staff. Supabase provides the browser/SSR session; the Flask API independently validates every bearer token and requires an active `staff_profile`.
+
+Copy `.env.example` to `.env.local` and set the three public values. Never place a Supabase secret/service-role key in the frontend.
 
 ## Getting Started
 
-First, run the development server:
+Install dependencies and run the development server:
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+Configure Supabase Auth redirect URLs for local development:
+
+- `http://localhost:3000/auth/confirm`
+- Password invitations/recovery should redirect to `http://localhost:3000/auth/confirm?next=/update-password`.
+
+For the production installation, set `NEXT_PUBLIC_BASE_PATH=/bread` and allow
+`https://aimeshlabs.au/bread/auth/confirm` in Supabase Auth URL Configuration.
+
+Run `npm test`, `npm run lint`, and `npm run build` before opening a PR.
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 

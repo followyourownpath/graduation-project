@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -8,7 +8,10 @@ import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { ShieldCheck, Loader2 } from "lucide-react";
 import Link from "next/link";
-import { supabase } from "@/lib/supabase";
+import { createClient } from "@/lib/supabase/client";
+import { withBasePath } from "@/lib/auth-utils";
+
+const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
 export default function LoginPage() {
   const router = useRouter();
@@ -17,59 +20,53 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Check if there is a session already or if we are returning from an invite link
-    const checkSession = async () => {
-      // Supabase automatically parses the hash fragment and establishes a session
-      const { data: { session } } = await supabase.auth.getSession();
-      
-      if (session) {
-        // If we got here with an invite link, redirect to update password
-        const hash = window.location.hash;
-        if (hash && hash.includes("type=invite")) {
-          router.push("/update-password");
-        } else {
-          // Already logged in normally
-          router.push("/dashboard");
-        }
-      }
-    };
-    
-    checkSession();
-
-    // Also listen to auth changes in case the session is established after mount
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
-      if (event === "SIGNED_IN" || event === "INITIAL_SESSION") {
-        if (session) {
-           const hash = window.location.hash;
-           if (hash && hash.includes("type=invite")) {
-             router.push("/update-password");
-           } else {
-             router.push("/dashboard");
-           }
-        }
-      }
-    });
-
-    return () => subscription.unsubscribe();
-  }, [router]);
-
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
 
-    const { error } = await supabase.auth.signInWithPassword({
+    const supabase = createClient();
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
 
-    if (error) {
+    if (error || !data.session?.access_token) {
       setError("Invalid username or password. Please try again.");
       setLoading(false);
-    } else {
-      // Success - router will push via the onAuthStateChange listener
+      return;
     }
+    try {
+      const response = await fetch(`${API_URL}/auth/me`, {
+        headers: { Authorization: `Bearer ${data.session.access_token}` },
+      });
+      if (!response.ok) {
+        const body = await response.json().catch(() => ({}));
+        throw new Error(body.error?.message || "This account is not authorised for staff access.");
+      }
+      router.replace(withBasePath("/dashboard"));
+      router.refresh();
+    } catch (requestError) {
+      await supabase.auth.signOut();
+      setError(requestError.message || "The SmartFinn API is unavailable.");
+      setLoading(false);
+    }
+  };
+
+  const handleForgotPassword = async () => {
+    if (!email) {
+      setError("Enter your email address first.");
+      return;
+    }
+    setLoading(true);
+    setError(null);
+    const redirectTo = new URL(withBasePath("/auth/confirm"), window.location.origin);
+    redirectTo.searchParams.set("next", withBasePath("/update-password"));
+    const { error } = await createClient().auth.resetPasswordForEmail(email, {
+      redirectTo: redirectTo.toString(),
+    });
+    setLoading(false);
+    setError(error ? error.message : "If the account exists, a password reset link has been sent.");
   };
 
   return (
@@ -157,9 +154,9 @@ export default function LoginPage() {
                   Remember Me
                 </label>
               </div>
-              <Link href="#" className="text-sm font-medium text-blue-600 hover:text-blue-500">
+              <button type="button" onClick={handleForgotPassword} className="text-sm font-medium text-blue-600 hover:text-blue-500">
                 Forgot Password?
-              </Link>
+              </button>
             </div>
 
             <Button type="submit" disabled={loading} className="w-full h-12 text-base font-medium bg-blue-600 hover:bg-blue-700">
