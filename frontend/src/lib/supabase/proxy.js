@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse } from "next/server";
-import { isPublicPath, withBasePath } from "@/lib/auth-utils";
+import { isPublicPath } from "@/lib/auth-utils";
 
 export async function updateSession(request) {
   let response = NextResponse.next({ request });
@@ -24,7 +24,8 @@ export async function updateSession(request) {
   const { data, error } = await supabase.auth.getClaims();
   if ((error || !data?.claims) && !isPublicPath(request.nextUrl.pathname)) {
     const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = withBasePath("/login");
+    // Next.js applies basePath to middleware redirects automatically.
+    loginUrl.pathname = "/login";
     loginUrl.search = "";
     return NextResponse.redirect(loginUrl);
   }

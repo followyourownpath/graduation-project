@@ -44,7 +44,7 @@ export default function LoginPage() {
         const body = await response.json().catch(() => ({}));
         throw new Error(body.error?.message || "This account is not authorised for staff access.");
       }
-      router.replace(withBasePath("/dashboard"));
+      router.replace("/dashboard");
       router.refresh();
     } catch (requestError) {
       await supabase.auth.signOut();

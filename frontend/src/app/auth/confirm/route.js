@@ -8,6 +8,11 @@ export async function GET(request) {
   const tokenHash = url.searchParams.get("token_hash");
   const type = url.searchParams.get("type");
   const next = safeRedirectPath(url.searchParams.get("next"));
+  const forwardedHost = request.headers.get("x-forwarded-host") || request.headers.get("host");
+  const forwardedProto = request.headers.get("x-forwarded-proto") || "https";
+  const publicOrigin = forwardedHost
+    ? `${forwardedProto}://${forwardedHost}`
+    : new URL(request.url).origin;
   const supabase = await createClient();
 
   let error;
@@ -19,8 +24,8 @@ export async function GET(request) {
     error = new Error("Missing confirmation token");
   }
 
-  if (!error) return NextResponse.redirect(new URL(withBasePath(next), request.url));
-  const loginUrl = new URL(withBasePath("/login"), request.url);
+  if (!error) return NextResponse.redirect(new URL(withBasePath(next), publicOrigin));
+  const loginUrl = new URL(withBasePath("/login"), publicOrigin);
   loginUrl.searchParams.set("error", "invalid_or_expired_link");
   return NextResponse.redirect(loginUrl);
 }
