@@ -1,0 +1,46 @@
+name: bread
+
+services:
+  backend:
+    build:
+      context: ./backend
+      target: production
+    env_file:
+      - ${APP_ENV_FILE:-.env}
+    environment:
+      CORS_ORIGINS: https://aimeshlabs.au
+    ports:
+      - "127.0.0.1:5001:5000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/api/v1/health', timeout=5)"
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./frontend
+      target: production
+      args:
+        NEXT_PUBLIC_BASE_PATH: /bread
+        NEXT_PUBLIC_API_URL: /bread/api/v1
+        NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_BASE_PATH: /bread
+      NEXT_PUBLIC_API_URL: /bread/api/v1
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
+    ports:
+      - "127.0.0.1:3001:3000"
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
