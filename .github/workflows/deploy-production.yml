@@ -80,8 +80,8 @@ jobs:
           ssh -o BatchMode=yes -o StrictHostKeyChecking=yes "$VPS_USER@$VPS_HOST" '
             set -euo pipefail
             cd /home/interndev/bread
-            git fetch origin main
-            git checkout main
-            git pull --ff-only origin main
+            git config remote.origin.fetch "+refs/heads/main:refs/remotes/origin/main"
+            git fetch --prune origin
+            git checkout -B main origin/main
             ./deploy/deploy.sh
           '
