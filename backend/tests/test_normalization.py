@@ -41,16 +41,35 @@ def test_extract_payslip_fields_from_layout_tables():
     assert fields["ytd_gross_income"]["normalised_value"] == "113558.25"
 
 
-def test_extract_id_fields():
+def test_extract_id_fields_nsw_licence():
     result = {"analyzeResult": {
-        "content": "DRIVER LICENCE Full Name: April Kidd DOB: 13/09/1966 Licence No: PA4953156 Expiry: 20/08/2030 Residential Address: Unit 69, 86 Travis Tarn Lower, Richmond VIC 3121",
+        "content": (
+            "Driver Licence\n"
+            "New South Wales, Australia\n"
+            "Junhong ZHONG\n"
+            "150 TODMAN AVE\n"
+            "KENSINGTON NSW 2033\n"
+            "Licence No.\n"
+            "11208313\n"
+            "Licence Class\n"
+            "C\n"
+            "Date of Birth\n"
+            "08 JAN 1992\n"
+            "2 042 604 436\n"
+            "Expiry Date\n"
+            "12 DEC 2023\n"
+        ),
     }}
     fields = {field["field_key"]: field for field in extract_id_fields(result)}
-    assert fields["full_legal_name"]["normalised_value"] == "April Kidd"
-    assert fields["date_of_birth"]["normalised_value"] == "1966-09-13"
-    assert fields["document_number"]["normalised_value"] == "PA4953156"
-    assert fields["expiry_date"]["normalised_value"] == "2030-08-20"
-    assert fields["residential_address"]["normalised_value"] == "Unit 69, 86 Travis Tarn Lower, Richmond VIC 3121"
+    assert fields["document_type"]["normalised_value"] == "Driver Licence"
+    assert fields["jurisdiction"]["normalised_value"] == "New South Wales, Australia"
+    assert fields["full_legal_name"]["normalised_value"] == "Junhong ZHONG"
+    assert fields["residential_address"]["normalised_value"] == "150 TODMAN AVE, KENSINGTON NSW 2033"
+    assert fields["licence_number"]["normalised_value"] == "11208313"
+    assert fields["licence_class"]["normalised_value"] == "C"
+    assert fields["date_of_birth"]["normalised_value"] == "1992-01-08"
+    assert fields["card_number"]["normalised_value"] == "2042604436"
+    assert fields["expiry_date"]["normalised_value"] == "2023-12-12"
 
 
 def test_extract_bank_statement_fields():
@@ -95,42 +114,84 @@ def test_extract_bank_statement_fields_header_table():
     assert fields["closing_balance"]["normalised_value"] == "7013.31"
 
 
-def test_extract_id_fields_with_table():
-    """Test id_100 parser against a 2-column table (the actual PDF layout)."""
+def test_extract_ato_notice_fields():
+    from app.normalization.ato_notice import REQUIRED_KEYS, extract_ato_notice_fields
+
     result = {"analyzeResult": {
-        "content": "AUSTRALIAN PASSPORT / IDENTITY DOCUMENT VERIFICATION",
+        "content": (
+            "Australian Taxation Office\n"
+            "MR DAVID R THOMPSON\n"
+            "45 WATTLE CRESCENT\n"
+            "PARRAMATTA NSW 2150\n"
+            "Tax File Number 748 219 356\n"
+            "Date of issue 3 October 2022\n"
+            "Our reference 417 936 205 8871\n"
+            "Notice of assessment - year ended 30 June 2022\n"
+            "Your taxable income is $85,321\n"
+            "Tax on your taxable income or net income 18,742.15\n"
+            "Assessed tax payable $18,742.15 DR\n"
+            "Medicare levy 1,706.42\n"
+            "Less tax offset refunds 0.00\n"
+            "PAYG withholding (eg tax deducted by your employer or bank) 21,500.00\n"
+            "Result of this notice 1,051.43 CR\n"
+            "Outcome of this notice $1,051.43 CR\n"
+            "1,051.43 CR has been forwarded to your nominated financial institution\n"
+            "Transaction Reference Number ATO0007744921038562\n"
+        ),
         "tables": [
             {
-                "rowCount": 7,
-                "columnCount": 2,
+                "rowCount": 6,
+                "columnCount": 3,
                 "cells": [
-                    {"rowIndex": 0, "columnIndex": 0, "content": "Document Type:"},
-                    {"rowIndex": 0, "columnIndex": 1, "content": "Passport"},
-                    {"rowIndex": 1, "columnIndex": 0, "content": "Full Legal Name:"},
-                    {"rowIndex": 1, "columnIndex": 1, "content": "April Kidd"},
-                    {"rowIndex": 2, "columnIndex": 0, "content": "Date of Birth:"},
-                    {"rowIndex": 2, "columnIndex": 1, "content": "13/09/1966"},
-                    {"rowIndex": 3, "columnIndex": 0, "content": "Document Number:"},
-                    {"rowIndex": 3, "columnIndex": 1, "content": "PA4953156"},
-                    {"rowIndex": 4, "columnIndex": 0, "content": "Expiry Date:"},
-                    {"rowIndex": 4, "columnIndex": 1, "content": "20/08/2030"},
-                    {"rowIndex": 5, "columnIndex": 0, "content": "Residential Address:"},
-                    {"rowIndex": 5, "columnIndex": 1, "content": "Unit 69, 86 Travis Tarn Lower, Richmond VIC 3121"},
-                    {"rowIndex": 6, "columnIndex": 0, "content": "Driver Licence Link:"},
-                    {"rowIndex": 6, "columnIndex": 1, "content": "Licence No: DL123456 (Expiry: 31/12/2028)"},
-                ]
+                    {"rowIndex": 0, "columnIndex": 0, "content": "Description"},
+                    {"rowIndex": 0, "columnIndex": 1, "content": "Debits $"},
+                    {"rowIndex": 0, "columnIndex": 2, "content": "Credits $"},
+                    {"rowIndex": 1, "columnIndex": 0, "content": "Tax on your taxable income or net income"},
+                    {"rowIndex": 1, "columnIndex": 1, "content": "18,742.15"},
+                    {"rowIndex": 1, "columnIndex": 2, "content": ""},
+                    {"rowIndex": 2, "columnIndex": 0, "content": "Medicare levy"},
+                    {"rowIndex": 2, "columnIndex": 1, "content": "1,706.42"},
+                    {"rowIndex": 2, "columnIndex": 2, "content": ""},
+                    {"rowIndex": 3, "columnIndex": 0, "content": "Less tax offset refunds"},
+                    {"rowIndex": 3, "columnIndex": 1, "content": "0.00"},
+                    {"rowIndex": 3, "columnIndex": 2, "content": ""},
+                    {"rowIndex": 4, "columnIndex": 0, "content": "PAYG withholding (eg tax deducted by your employer or bank)"},
+                    {"rowIndex": 4, "columnIndex": 1, "content": ""},
+                    {"rowIndex": 4, "columnIndex": 2, "content": "21,500.00"},
+                    {"rowIndex": 5, "columnIndex": 0, "content": "Result of this notice"},
+                    {"rowIndex": 5, "columnIndex": 1, "content": ""},
+                    {"rowIndex": 5, "columnIndex": 2, "content": "1,051.43"},
+                ],
             }
-        ]
+        ],
     }}
-    fields = {field["field_key"]: field for field in extract_id_fields(result)}
-    assert fields["document_type"]["normalised_value"] == "Passport"
-    assert fields["full_legal_name"]["normalised_value"] == "April Kidd"
-    assert fields["date_of_birth"]["normalised_value"] == "1966-09-13"
-    assert fields["document_number"]["normalised_value"] == "PA4953156"
-    assert fields["expiry_date"]["normalised_value"] == "2030-08-20"
-    assert fields["driver_licence_link"]["normalised_value"] == "Licence No: DL123456 (Expiry: 31/12/2028)"
-    assert fields["driver_licence_number"]["normalised_value"] == "DL123456"
-    assert fields["driver_licence_expiry"]["normalised_value"] == "2028-12-31"
+    fields = {field["field_key"]: field for field in extract_ato_notice_fields(result)}
+    assert list(fields) == list(REQUIRED_KEYS) or set(fields) == set(REQUIRED_KEYS)
+    assert len(fields) == len(REQUIRED_KEYS)
+    assert fields["taxpayer_name"]["normalised_value"] == "MR DAVID R THOMPSON"
+    assert fields["taxpayer_address"]["normalised_value"] == "45 WATTLE CRESCENT, PARRAMATTA NSW 2150"
+    assert fields["tfn"]["normalised_value"] == "748219356"
+    assert fields["ato_reference"]["normalised_value"] == "4179362058871"
+    assert fields["year_ended"]["normalised_value"] == "2022-06-30"
+    assert fields["income_year"]["normalised_value"] == "2021–2022"
+    assert fields["date_of_issue"]["normalised_value"] == "2022-10-03"
+    assert fields["taxable_income"]["normalised_value"] == "85321.00"
+    assert fields["tax_on_taxable_income"]["normalised_value"] == "18742.15"
+    assert fields["low_income_tax_offset"]["normalised_value"] is None
+    assert fields["non_refundable_tax_offsets"]["normalised_value"] is None
+    assert fields["other_liabilities"]["normalised_value"] is None
+    assert fields["payg_credits_and_entitlements"]["normalised_value"] is None
+    assert fields["assessed_tax_payable"]["normalised_value"] == "18742.15"
+    assert fields["medicare_levy"]["normalised_value"] == "1706.42"
+    assert fields["tax_offset_refunds"]["normalised_value"] == "0.00"
+    assert fields["payg_withholding_credits"]["normalised_value"] == "21500.00"
+    assert fields["result_of_notice_amount"]["normalised_value"] == "1051.43"
+    assert fields["result_of_notice_direction"]["normalised_value"] == "CR"
+    assert fields["outcome_amount"]["normalised_value"] == "1051.43"
+    assert fields["outcome_direction"]["normalised_value"] == "CR"
+    assert fields["refund_amount"]["normalised_value"] == "1051.43"
+    assert "nominated financial institution" in fields["refund_status"]["normalised_value"].lower()
+    assert fields["refund_reference"]["normalised_value"] == "ATO0007744921038562"
 
 
 def test_extract_bank_statement_transactions():
