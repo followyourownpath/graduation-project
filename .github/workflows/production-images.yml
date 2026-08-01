@@ -1,0 +1,38 @@
+name: Production image CI
+
+on:
+  pull_request:
+    paths:
+      - backend/**
+      - frontend/**
+      - deploy/**
+      - docker-compose.prod.yml
+      - .github/workflows/production-images.yml
+  push:
+    branches: [main]
+    paths:
+      - backend/**
+      - frontend/**
+      - deploy/**
+      - docker-compose.prod.yml
+      - .github/workflows/production-images.yml
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      APP_ENV_FILE: deploy/production.env.example
+      SUPABASE_URL: https://example.supabase.co
+      SUPABASE_PUBLISHABLE_KEY: validation-placeholder
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Validate Compose configuration
+        run: docker compose -f docker-compose.prod.yml config --quiet
+
+      - name: Build production images
+        run: docker compose -f docker-compose.prod.yml build
