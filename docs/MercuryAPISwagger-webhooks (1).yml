@@ -1,0 +1,4929 @@
+swagger: '2.0'
+info:
+ title: Mercury Public API (Sandbox)
+ description: Public API for Mercury (Sandbox)
+ version: "1.2.3"
+ contact:
+  name: Connective
+  url: http://www.connective.com.au
+  email: helpdesk@connective.com.au
+# the domain of the service
+host: apis.connective.com.au
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /mercury/v1
+consumes:
+  - application/json
+produces:
+  - application/json
+paths:
+  /{token}/opportunities:
+    get:
+      summary: Search for opportunities
+      description: |
+       Search for opportunities based on various criteria. If no optional query params are passed, it will return the 25 most recently created records in descending order
+      operationId: Opportunity-search
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: search
+          in: query
+          required: true
+          description: |
+                     Marker param to let the system know a search is being requested. The param name can be passed by itself.
+                     eg. both /opportunities?search and /opportunities?search=true will have the same effect
+          type: string
+          default: true
+          x-ms-visibility: internal
+        - name: searchParams
+          in: query
+          required: false
+          description: URL encoded search params JSON object
+          # Refer #/definitions/OpportunitySearchParams for allowed values
+          type: string
+          x-ms-visibility: advanced
+        - name: sortKey
+          in: query
+          required: false
+          x-ms-summary: Sort key
+          description: |
+                      The field to sort the results by. Allowed values are creationDate, lastModifiedDate. If not passed, will default to creationDate
+          type: string
+        - name: sortOrder
+          in: query
+          required: false
+          x-ms-summary: Sort order
+          description: Whether to sort ascending or descencding. Allowed values are asc and desc. Default is desc
+          type: string
+          x-ms-visibility: advanced
+        - name: count
+          in: query
+          type: number
+          description: Count of records to return. Default is 25. Max is 100
+          required: false
+          x-ms-summary: Count
+          x-ms-visibility: advanced
+        - name: offset
+          in: query
+          type: number
+          description: Number of records to skip from the beginning. Default is 0
+          required: false
+          x-ms-summary: Offset
+          x-ms-visibility: advanced
+      tags:
+        - Search for opportunities
+      responses:
+        200:
+          description: Search Results object
+          schema:
+            $ref: '#/definitions/OpportunitySearchResult'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a new opportunity
+      description: |
+       Creates a new opportunity and returns its uniqueId and emailId if the request is successful.
+       If a uniqueId is provided in the request body, it will be ignored
+      operationId: Opportunity-create
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Opportunity'
+      tags:
+        - Create a new opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}:
+    get:
+      summary: Fetch an opportunity by id
+      description: |
+        Returns information about the opportunity
+      operationId: Opportunity-get
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the opportunity to get
+          x-ms-summary: Unique id of the opportunity to get
+          required: true
+          type: string
+      tags:
+        - Fetch an opportunity by id
+      responses:
+        200:
+          description: The opportunities resource
+          schema:
+            $ref: '#/definitions/Opportunity'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update an opportunity
+      description: |
+        Update the parent opportunity entity
+      operationId: Opportunity-update
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity to update
+          x-ms-summary: Unique id of the opportunity to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Opportunity'
+      tags:
+        - Update an opportunity
+      responses:
+        200:
+          description: The success response
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/hooks:
+    x-ms-notification-content:
+      description: Details for Webhook
+      schema:
+        $ref: '#/definitions/Opportunity'
+    post:
+      description: Register a webhook for listening to opportunity events
+      summary: When an opportunity is created updated or deleted
+      operationId: Opportunity-trigger
+      x-ms-trigger: single
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          description: Request body of webhook
+          schema:
+            $ref: '#/definitions/OppHookRequestBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/WebhookCreationResponse'
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/WebhookCreationResponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+      tags:
+       - Register a webhook for listening to opportunity events
+  /{token}/opportunities/hooks/{hookId}:
+    delete:
+      description: Delete an opportunity webhook
+      summary: Deletes an opportunity webhook
+      operationId: Delete-opportunity-trigger
+      x-ms-visibility: internal
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: hookId
+          in: path
+          description: ID of the Hook being deleted
+          x-ms-summary: ID of the Hook being deleted
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Success'
+        201:
+          description: The success response
+          schema:
+            $ref: '#/definitions/WebhookCreationResponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+      tags:
+       - Delete an opportunity webhook
+  /{token}/opportunities/{id}/assets:
+    get:
+      summary: Fetch assets linked to an opportunity
+      description: |
+        Returns all assests linked to the opportunity
+      operationId: Opportunity-assets-get
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+      tags:
+        - Fetch assets linked to an opportunity
+      responses:
+        200:
+          description: Array of assets linked to the opportunity or opportunity
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Asset'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a new asset against an opportunity
+      description: |
+        Create an asset against the opportunity. Returns the uniqueId of the asset created
+      operationId: Opportunity-asset-create
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Asset'
+      tags:
+        - Create a new asset against an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}/assets/{assetId}:
+    put:
+      summary: Update an asset linked to an opportunity
+      description: |
+        Updates an asset against the opportunity
+      operationId: Opportunity-asset-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: assetId
+          in: path
+          description: Unique id of the asset
+          x-ms-summary: Unique id of the asset
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Asset'
+      tags:
+        - Update an asset linked to an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}/liabilities:
+    get:
+      summary: Fetch liabilities linked to an opportunity
+      description: |
+        Returns all liabilities linked to the opportunity
+      operationId: Opportunity-liabilities-get
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+      tags:
+        - Get liabilities linked to an opportunity
+      responses:
+        200:
+          description: Array of liabilities linked to the opportunity
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Liability'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a liability against an opportunity
+      description: |
+        Create a liability against the opportunity. Returns the uniqueId of the liability created
+      operationId: Opportunity-liability-create
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Liability'
+      tags:
+        - Create liability against an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}/liabilities/{liabilityId}:
+    put:
+      summary: Update a liability linked to an opportunity
+      description: |
+        Update a liability against the opportunity
+      operationId: Opportunity-liability-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: liabilityId
+          in: path
+          description: Unique id of the liability
+          x-ms-summary: Unique id of the liability
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Liability'
+      tags:
+        - Update a liability linked to an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}/relatedParties:
+    get:
+      summary: Fetch related parties linked to an opportunity
+      description: |
+        Returns the parties related to the opportunity
+      operationId: Opportunity-related-party-get
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          type: string
+          description: API key for the broker group
+          x-ms-summary: API key
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+      tags:
+        - Fetch related parties linked to an opportunity
+      responses:
+        200:
+          description: |
+           Array of parties related to the opportunity
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/RelatedParty'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a related party against an opportunity
+      description: |
+        Create a related party against the opportunity. Returns the uniqueId of the liability created
+      operationId: Opportunity-related-party-create
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/RelatedParty'
+      tags:
+        - Create a related party against an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/opportunities/{id}/relatedParties/{relatedPartyId}:
+    put:
+      summary: Update a related party linked to an opportunity
+      description: |
+        Update a related party against the opportunity
+      operationId: Opportunity-related-party-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the opportunity
+          x-ms-summary: Unique id of the opportunity
+          required: true
+          type: string
+        - name: relatedPartyId
+          in: path
+          description: Unique id of the related party
+          x-ms-summary: Unique id of the related party
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/RelatedParty'
+      tags:
+        - Update a related party linked to an opportunity
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts:
+    get:
+      summary: Search for contacts
+      description: |
+       Search for contacts based on various criteria. If no optional query params are passed, it will return the 25 most recently created records in descending order
+      operationId: Contact-search
+      parameters:
+        - name: token
+          in: path
+          required: true
+          description: User security token
+          x-ms-summary: User security token
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: search
+          in: query
+          required: true
+          description: Marker param to let the system know a search is being requested.  The param name can be passed by itself.
+                     eg. both /contacts?search and /contacts?search=true will have the same effect
+          type: string
+          default: true
+          x-ms-visibility: internal
+        - name: searchParams
+          in: query
+          required: false
+          description: Search params URL encoded JSON object.
+          # Refer '#/definitions/ContactSearchParams' for allowed values
+          type: string
+          x-ms-visibility: advanced
+        - name: sortKey
+          in: query
+          required: false
+          description: The field to sort the results by. Allowed values are creationDate, lastModifiedDate. If not passed, will default to creationDate
+          type: string
+          x-ms-visibility: advanced
+        - name: sortOrder
+          in: query
+          required: false
+          description: Whether to sort ascending or descencding. Allowed values are asc and desc. Default is desc
+          type: string
+          x-ms-visibility: advanced
+        - name: count
+          in: query
+          type: number
+          description: Count of records to return. Default is 25. Max is 100
+          required: false
+          x-ms-visibility: advanced
+        - name: offset
+          in: query
+          type: number
+          description: Number of records to skip from the beginning. Default is 0
+          required: false
+          x-ms-visibility: advanced
+      tags:
+        - Search for contacts
+      responses:
+        200:
+          description: Search Results object
+          schema:
+            $ref: '#/definitions/ContactSearchResult'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a new contact
+      description: |
+       Creates a new contact and returns the uniqueId of the resource if the request is successful. If a uniqueId is provided in the request body, it will be ignored
+      operationId: Contact-create
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Contact'
+      tags:
+        - Create a new contact
+      responses:
+        200:
+          description: Success response
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}:
+    get:
+      summary: Fetch a contact by id
+      description: |
+       Returns information about the contact
+      operationId: Contact-get
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact to get
+          x-ms-summary: Unique id of the contact to get
+          required: true
+          type: string
+      tags:
+        - Fetch a contact by id
+      responses:
+        200:
+          description: The contacts resource
+          schema:
+           $ref: '#/definitions/Contact'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    put:
+      summary: Update a contact
+      description: |
+        Update the contact
+      operationId: Contact-update
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          required: true
+          description: API key for the broker group
+          x-ms-summary: API key
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact to update
+          x-ms-summary: Unique id of the contact to update
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Contact'
+      tags:
+        - Update a contact
+      responses:
+        200:
+          description: The success response
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/hooks:
+    x-ms-notification-content:
+      description: Details for Webhook
+      schema:
+        $ref: '#/definitions/Contact'
+    post:
+      description: Register a webhook for listening to contact events
+      summary: When a contact is created updated or deleted
+      operationId: Contact-trigger
+      x-ms-trigger: single
+      x-ms-visibility: important
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          type: string
+          required: true
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          description: Request body of webhook
+          schema:
+            $ref: '#/definitions/ContactHookRequestBody'
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/WebhookCreationResponse'
+        201:
+          description: Created
+          schema:
+            $ref: '#/definitions/WebhookCreationResponse'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+      tags:
+       - Register a webhook for listening to contact events
+  /{token}/contacts/hooks/{hookId}:
+    delete:
+      description: Deletes a contact webhook
+      summary: Deletes a contact webhook
+      operationId: Delete-contact-trigger
+      x-ms-visibility: internal
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: The API key
+          required: true
+          type: string
+        - name: hookId
+          in: path
+          description: ID of the Hook being deleted
+          required: true
+          type: string
+      responses:
+        200:
+          description: OK
+          schema:
+            $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+      tags:
+       - Deletes a contact webhook
+  /{token}/contacts/{id}/contactMethods:
+    get:
+      summary: Fetch contact methods linked to a contact
+      description: |
+       Returns contact methods of the contact
+      operationId: Contact-method-get
+      parameters:
+       - name: token
+         in: path
+         description: User security token
+         x-ms-summary: User security token
+         required: true
+         type: string
+         x-ms-visibility: internal
+       - name: x-api-key
+         in: header
+         description: API key for the broker group
+         x-ms-summary: API key
+         required: true
+         type: string
+       - name: id
+         in: path
+         description: Unique id of the contact
+         x-ms-summary: Unique id of the contact
+         required: true
+         type: string
+      tags:
+       - Fetch contact methods linked to a contact
+      responses:
+        200:
+          description: The contacts resource
+          schema:
+           type: array
+           items:
+            $ref: '#/definitions/ContactMethod'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+    post:
+      summary: Create a contact method against a contact
+      description: |
+        Create a contact method against a contact. Returns the uniqueId of the contact method created
+      operationId: Contact-method-create
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/ContactMethod'
+      tags:
+        - Contact method create
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/contactMethods/{contactMethodId}:
+    put:
+      summary: Update a contact method
+      description: |
+        Updates a contact method against the contact
+      operationId: Contact-method-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: contactMethodId
+          in: path
+          description: Unique id of the contact method
+          x-ms-summary: Unique id of the contact method
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/ContactMethod'
+      tags:
+        - Update a contact method
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/expenses:
+   get:
+    summary: Fetch expenses linked to a contact
+    description: |
+     Returns all expenses of the contact
+    operationId: Contact-expense-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+      - Fetch expenses linked to a contact
+    responses:
+      200:
+        description: The expenses resource
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Expense'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+   post:
+    summary: Create an expense against a contact
+    description: |
+     Create an expense against a contact. Returns the uniqueId of the expense created
+    operationId: Contact-expense-create
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Expense'
+    tags:
+      - Create an expense against a contact
+    responses:
+      200:
+        description: Success response
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/expenses/{expenseId}:
+   put:
+      summary: Updates an expense against a contact
+      description: |
+        Updates an expense against the contact
+      operationId: Contact-expense-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: expenseId
+          in: path
+          description: Unique id of the expense
+          x-ms-summary: Unique id of the expense
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Expense'
+      tags:
+        - Updates an expense against a contact
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+         description: Bad request
+         schema:
+           $ref: '#/definitions/Error'
+        401:
+         description: Unauthorized
+         schema:
+           $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+           $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+           $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+           $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/incomes:
+   get:
+    summary: Fetch incomes linked to a contact
+    description: |
+     Returns all incomes of the contact
+    operationId: Contact-income-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+      - Fetch incomes linked to a contact
+    responses:
+      200:
+        description: The incomes resource
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Income'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+   post:
+    summary: Create an income against a contact
+    description: |
+     Create an income against a contact. Returns the uniqueId of the income created
+    operationId: Contact-income-create
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Income'
+    tags:
+      - Create an income against a contact
+    responses:
+      200:
+        description: Success response
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/identification:
+   get:
+    summary: Fetch identification records linked to a contact
+    description: |
+     Returns all identification records of the contact
+    operationId: Contact-identification-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+      - Fetch identification records linked to a contact
+    responses:
+      200:
+        description: The addresses resource
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Identification'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+   post:
+    summary: Create an Identification record against a contact
+    description: |
+     Create an identification record against a contact. Returns the uniqueId of the identification record created
+    operationId: Contact-dentification-create
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Identification'
+    tags:
+      - Create an Identification record against a contact
+    responses:
+      200:
+        description: Success response
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/identification/{identificationId}:
+   put:
+      summary: Update an Identification record linked to a contact
+      description: |
+        Update an identification record against the contact
+      operationId: Contact-identification-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: identificationId
+          in: path
+          description: Unique id of the identification
+          x-ms-summary: Unique id of the identification
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Identification'
+      tags:
+        - Update an identification record linked to a contact
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+           $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/incomes/{incomeId}:
+   put:
+      summary: Update an income linked to a contact
+      description: |
+        Update an income against the contact
+      operationId: Contact-income-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: incomeId
+          in: path
+          description: Unique id of the income
+          x-ms-summary: Unique id of the income
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Income'
+      tags:
+        - Update an income linked to a contact
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+           $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/addresses:
+   get:
+    summary: Fetch addresses linked to a contact
+    description: |
+     Returns all addresses of the contact
+    operationId: Contact-address-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+      - Fetch addresses linked to a contact
+    responses:
+      200:
+        description: The addresses resource
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Address'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+   post:
+    summary: Create an address against a contact
+    description: |
+     Create an address against a contact. Returns the uniqueId of the address created
+    operationId: Contact-address-create
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Address'
+    tags:
+      - Create an address against a contact
+    responses:
+      200:
+        description: Success response
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/addresses/{addressId}:
+   put:
+      summary: Update an address linked to a contact
+      description: |
+        Updates an address against the contact
+      operationId: Contact-address-update
+      parameters:
+        - name: token
+          in: path
+          description: User security token
+          x-ms-summary: User security token
+          required: true
+          type: string
+          x-ms-visibility: internal
+        - name: x-api-key
+          in: header
+          description: API key for the broker group
+          x-ms-summary: API key
+          required: true
+          type: string
+        - name: id
+          in: path
+          description: Unique id of the contact
+          x-ms-summary: Unique id of the contact
+          required: true
+          type: string
+        - name: addressId
+          in: path
+          description: Unique id of the address
+          x-ms-summary: Unique id of the address
+          required: true
+          type: string
+        - name: body
+          in: body
+          required: true
+          schema:
+           $ref: '#/definitions/Address'
+      tags:
+        - Update an address linked to a contact
+      responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+             $ref: '#/definitions/Success'
+        400:
+         description: Bad request
+         schema:
+           $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+           $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+           $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/employments:
+   get:
+    summary: Fetch employments linked to a contact
+    description: |
+     Returns all employments of the contact
+    operationId: Contact-employment-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+      - Fetch employments linked to a contact
+    responses:
+        200:
+          description: The employment resource
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Employment'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+   post:
+    summary: Create an employment against a contact
+    description: |
+     Create an employment against a contact. Returns the uniqueId of the employment created
+    operationId: Contact-employment-create
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Employment'
+    tags:
+     - Create an employment against a contact
+    responses:
+        200:
+          description: Success response
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Success'
+        400:
+          description: Bad request
+          schema:
+            $ref: '#/definitions/Error'
+        401:
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Error'
+        403:
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Error'
+        404:
+          description: Not found
+          schema:
+            $ref: '#/definitions/Error'
+        500:
+          description: Internal server error
+          schema:
+            $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/employments/{employmentId}:
+   put:
+    summary: Updates an employment against a contact
+    description: |
+     Updates an employment against the contact
+    operationId: Contact-employment-update
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+     - name: employmentId
+       in: path
+       description: Unique id of the employment
+       x-ms-summary: Unique id of the employment
+       required: true
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Employment'
+    tags:
+          - Updates an employment against a contact
+    responses:
+          200:
+            description: Success response
+            schema:
+              type: array
+              items:
+                $ref: '#/definitions/Success'
+          400:
+            description: Bad request
+            schema:
+              $ref: '#/definitions/Error'
+          401:
+            description: Unauthorized
+            schema:
+              $ref: '#/definitions/Error'
+          403:
+            description: Forbidden
+            schema:
+              $ref: '#/definitions/Error'
+          404:
+            description: Not found
+            schema:
+              $ref: '#/definitions/Error'
+          500:
+            description: Internal server error
+            schema:
+              $ref: '#/definitions/Error'
+  /{token}/contacts/{id}/opportunities:
+   get:
+    summary: Fetch opportunities related to a contact
+    description: |
+     Returns all opportunities for this contact
+    operationId: Contact-opportunity-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: id
+       in: path
+       description: Unique id of the contact
+       x-ms-summary: Unique id of the contact
+       required: true
+       type: string
+    tags:
+     - Fetch opportunities related to a contact
+    responses:
+      200:
+        description: The opportunity resource
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/Opportunity'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/partner/config:
+   get:
+    summary: Search for partner configurations
+    description: |
+     Search for partner configurations based on various criteria. If no optional query params are passed, the search is restricted to return only the client portal color codes
+    operationId: PartnerConfig-search
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: search
+       in: query
+       required: true
+       description: Marker param to let the system know a search is being requested.  The param name can be passed by itself. eg. both /partner/config?search and /partner/config?search=true will have the same effect
+       type: boolean
+       default: true
+       x-ms-visibility: internal
+     - name: searchParams
+       in: query
+       required: false
+       description: Search params URL encoded JSON object.
+       # Refer '#/definitions/PartnerConfigSearchParams' for allowed values
+       type: string
+       x-ms-visibility: advanced
+     - name: count
+       in: query
+       type: number
+       description: Count of records to return. Default is 25. Max is 100
+       required: false
+       x-ms-visibility: advanced
+     - name: offset
+       in: query
+       type: number
+       description: Number of records to skip from the beginning. Default is 0
+       required: false
+       x-ms-visibility: advanced
+    tags:
+      - Search for partner configurations
+    responses:
+      200:
+        description: Search Results object
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/PartnerConfigSearchResult'
+      400:
+        description: Bad request
+        schema:
+         $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+         $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+         $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+         $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+         $ref: '#/definitions/Error'
+   post:
+    summary: Create a new partner configuration
+    description: |
+     Creates a new partner configuration and returns its uniqueId if the request is successful.
+     If a uniqueId is provided in the request body, it will be ignored
+    operationId: PartnerConfig-create
+    x-ms-visibility: important
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       required: true
+       description: API key for the broker group
+       x-ms-summary: API key
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/PartnerConfig'
+    tags:
+      - Create a new partner configuration
+    responses:
+      200:
+        description: Success response
+        schema:
+         $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+         $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+         $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+         $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+         $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+         $ref: '#/definitions/Error'
+  /{token}/partner/config/{id}:
+   put:
+    summary: Update an partner configuration
+    description: |
+      Update the partner configuration entity
+    operationId: PartnerConfig-update
+    x-ms-visibility: important
+    parameters:
+      - name: token
+        in: path
+        description: User security token
+        x-ms-summary: User security token
+        required: true
+        type: string
+        x-ms-visibility: internal
+      - name: x-api-key
+        in: header
+        required: true
+        type: string
+        description: API key for the broker group
+        x-ms-summary: API key
+      - name: id
+        in: path
+        description: partner id of the configuration to update to update
+        x-ms-summary: partner id of the opportunity to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+         $ref: '#/definitions/PartnerConfig'
+    tags:
+      - Update an partner configuration
+    responses:
+      200:
+        description: The success response
+        schema:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+  /{token}/categories:
+   get:
+    summary: Search for categories
+    description: |
+     Search for categories
+    operationId: Category-search
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       description: API key for the broker group
+       x-ms-summary: API key
+       required: true
+       type: string
+     - name: search
+       in: query
+       required: true
+       description: Marker param to let the system know a search is being requested. The param name can be passed by itself. eg. both /category?search and /category?search=true will have the same effect
+       type: boolean
+       default: true
+       x-ms-visibility: internal
+     - name: searchParams
+       in: query
+       required: false
+       description: Search params URL encoded JSON object.
+       type: string
+       x-ms-visibility: advanced
+     - name: count
+       in: query
+       type: number
+       description: Count of records to return. Default is 25. Max is 100
+       required: false
+       x-ms-visibility: advanced
+     - name: offset
+       in: query
+       type: number
+       description: Number of records to skip from the beginning. Default is 0
+       required: false
+       x-ms-visibility: advanced
+    tags:
+      - Search for categories
+    responses:
+      200:
+        description: Search Results object
+        schema:
+         type: array
+         items:
+          $ref: '#/definitions/CategorySearchResult'
+      400:
+        description: Bad request
+        schema:
+         $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+         $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+         $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+         $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+         $ref: '#/definitions/Error'
+   post:
+    summary: Creates a new category
+    description: |
+     Creates a new category and returns its uniqueId if the request is successful.
+     If a uniqueId is provided in the request body, it will be ignored
+    operationId: Category-create
+    x-ms-visibility: important
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: x-api-key
+       in: header
+       required: true
+       description: API key for the broker group
+       x-ms-summary: API key
+       type: string
+     - name: body
+       in: body
+       required: true
+       schema:
+        $ref: '#/definitions/Category'
+    tags:
+      - Creates a new category
+    responses:
+      200:
+        description: Success response
+        schema:
+         $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+         $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+         $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+         $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+         $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+         $ref: '#/definitions/Error'
+  /{token}/categories/{id}:
+   get:
+    summary: Returns information about the category
+    description: |
+     Fetch a category by id
+    operationId: Category-get
+    parameters:
+     - name: token
+       in: path
+       description: User security token
+       x-ms-summary: User security token
+       required: true
+       type: string
+       x-ms-visibility: internal
+     - name: id
+       in: path
+       description: category id to update
+       x-ms-summary: category id to update
+       required: true
+       type: string
+     - name: searchParams
+       in: query
+       required: false
+       description: Search params URL encoded JSON object.
+       type: string
+       x-ms-visibility: advanced
+     - name: count
+       in: query
+       type: number
+       description: Count of records to return. Default is 25. Max is 100
+       required: false
+       x-ms-visibility: advanced
+     - name: offset
+       in: query
+       type: number
+       description: Number of records to skip from the beginning. Default is 0
+       required: false
+       x-ms-visibility: advanced
+    tags:
+      - Fetch a category by id
+    responses:
+      200:
+        description: The category
+        schema:
+         $ref: '#/definitions/Category'
+      400:
+        description: Bad request
+        schema:
+         $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+         $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+         $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+         $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+         $ref: '#/definitions/Error'
+   put:
+    summary: Update an category
+    description: |
+      Update an category
+    operationId: Category-update
+    x-ms-visibility: important
+    parameters:
+      - name: token
+        in: path
+        description: User security token
+        x-ms-summary: User security token
+        required: true
+        type: string
+        x-ms-visibility: internal
+      - name: x-api-key
+        in: header
+        required: true
+        type: string
+        description: API key for the broker group
+        x-ms-summary: API key
+      - name: id
+        in: path
+        description: category id to update to update
+        x-ms-summary: category id to update
+        required: true
+        type: string
+      - name: body
+        in: body
+        required: true
+        schema:
+         $ref: '#/definitions/Category'
+    tags:
+      - Update an category
+    responses:
+      200:
+        description: The success response
+        schema:
+          $ref: '#/definitions/Success'
+      400:
+        description: Bad request
+        schema:
+          $ref: '#/definitions/Error'
+      401:
+        description: Unauthorized
+        schema:
+          $ref: '#/definitions/Error'
+      403:
+        description: Forbidden
+        schema:
+          $ref: '#/definitions/Error'
+      404:
+        description: Not found
+        schema:
+          $ref: '#/definitions/Error'
+      500:
+        description: Internal server error
+        schema:
+          $ref: '#/definitions/Error'
+definitions:
+  PartnerConfig:
+   type: object
+   description: The details of the Partner configurations
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the partner configuration
+     x-ms-summary: Partner config id
+     maxLength: 44
+    partnerId:
+     type: string
+     description: partner id
+     x-ms-summary: partner id
+     maxLength: 45
+    key:
+     type: string
+     description: key of the configuration
+     x-ms-summary: configuration key
+     maxLength: 45
+    value:
+     type: string
+     description: value
+     x-ms-summary: value
+     maxLength: 225
+    primaryBg:
+     type: string
+     description: primary background colour
+     x-ms-summary: primary background
+     maxLength: 10
+    secondaryBg:
+     type: string
+     description: secondary background colour
+     x-ms-summary: secondary background
+     maxLength: 10
+    defaultBg:
+     type: string
+     description: default background colour
+     x-ms-summary: default background
+     maxLength: 10
+    primaryFont:
+     type: string
+     description: primary foreground colour
+     x-ms-summary: primary foreground
+     maxLength: 10
+    secondaryFont:
+     type: string
+     description: secondary foreground colour
+     x-ms-summary: secondary foreground
+     maxLength: 10
+    defaultFont:
+     type: string
+     description: default foreground colour
+     x-ms-summary: default foreground
+     maxLength: 10
+    vbInherit:
+     type: integer
+     format: int32
+     description: is virtual branch
+  Contact:
+   type: object
+   description: The details of the contact
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the contact
+     x-ms-summary: Contact id
+     maxLength: 44
+    company:
+     type: string
+     description: Partner id to which this contact belongs
+     x-ms-summary: Partner id
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether contact has been marked as deleted
+     x-ms-summary: Deleted contact
+    deletedBy:
+     type: string
+     description: User who deleted the contact
+     x-ms-summary: Contact deleted by
+     maxLength: 64
+    deletedOn:
+     type: string
+     format: date-time
+     description: Date contact was deleted
+     x-ms-summary: Contact deletion date
+    createdOn:
+     type: string
+     format: date-time
+     description: Date contact was created
+     x-ms-summary: Contact creation date
+    createdBy:
+     type: string
+     description: User who created the contact
+     x-ms-summary: Contact created by
+     maxLength: 45
+    firstName:
+     type: string
+     description: First name
+     x-ms-summary: First name
+     maxLength: 64
+    lastName:
+     type: string
+     description: Last name
+     x-ms-summary: Last name
+     maxLength: 124
+    middleName:
+     type: string
+     description: Middle name
+     x-ms-summary: Middle name
+     maxLength: 44
+    salutation:
+     type: string
+     description: Salutation
+     x-ms-summary: Salutation
+     maxLength: 64
+    title:
+     type: string
+     description: Title
+     enum: [Dr, Miss, Ms, Mr, Mrs, Prof, Rev]
+     x-ms-summary: Title
+     maxLength: 24
+    occupation:
+     type: string
+     description: Occupation
+     x-ms-summary: Occupation
+    employer:
+     type: string
+     description: Employer
+     x-ms-summary:
+     maxLength: 164
+    jobTitle:
+     type: string
+     description: Job title
+     x-ms-summary:
+     maxLength: 64
+    maritalStatus:
+     type: string
+     description: Marital satus
+     enum: [Single, Married, DeFacto, Separated, Divorced, Widowed, Other]
+     x-ms-summary: Marital satus
+     maxLength: 34
+    driversLicenceNumber:
+     type: string
+     description: Drivers licence number
+     x-ms-summary: Drivers licence number
+     maxLength: 64
+    driversLicenceExpiry:
+     type: string
+     format: date
+     description: Drivers licence expiry
+     x-ms-summary: Drivers licence expiry
+    driversLicenceState:
+     type: string
+     description: Drivers licence state
+     enum: [ACT, NSW, NT, QLD, SA, TAS, VIC, WA, OTHER]
+     x-ms-summary: Drivers licence state
+     maxLength: 16
+    gender:
+     type: string
+     description: Gender
+     enum: [M, F]
+     x-ms-summary: Gender
+     maxLength: 8
+    dateOfBirth:
+     type: string
+     format: date
+     description: Date of birth
+     x-ms-summary: Date of birth
+    employmentStatus:
+     type: string
+     description: Employment status
+     enum: [Full Time, Part Time, Contract, Temporary, Commission, Seasonal, Casual, Self-Employed, Unemployed]
+     x-ms-summary: Employment status
+     maxLength: 104
+    employmentCommenced:
+     type: string
+     format: date
+     description: Employment commenced date
+     x-ms-summary: Employment commenced date
+    phoneDisplayType1:
+     type: string
+     description: Phone display type 1
+     enum: [Business, Business 2, Business Fax, Home, Home 2, Home Fax, Mobile, Mobile 2]
+     x-ms-summary: Phone display type 1
+     maxLength: 45
+    phoneDisplayType2:
+     type: string
+     description: Phone display type 2
+     enum: [Business, Business 2, Business Fax, Home, Home 2, Home Fax, Mobile, Mobile 2]
+     x-ms-summary: Phone display type 2
+     maxLength: 45
+    phoneDisplayType3:
+     type: string
+     description: Phone display type 3
+     enum: [Business, Business 2, Business Fax, Home, Home 2, Home Fax, Mobile, Mobile 2]
+     x-ms-summary: Phone display type 3
+     maxLength: 45
+    phoneDisplayType4:
+     type: string
+     description: Phone display type 4
+     enum: [Business, Business 2, Business Fax, Home, Home 2, Home Fax, Mobile, Mobile 2]
+     x-ms-summary: Phone display type 4
+     maxLength: 45
+    addressDisplay:
+     type: string
+     description: Address display
+     x-ms-summary: Address display
+     maxLength: 45
+    homePhone:
+     type: string
+     description: Home phone
+     x-ms-summary: Home phone
+     maxLength: 44
+    businessPhone:
+     type: string
+     description: Business phone
+     x-ms-summary: Business phone
+     maxLength: 44
+    mobile:
+     type: string
+     description: Mobile
+     x-ms-summary: Mobile
+     maxLength: 44
+    email:
+     type: string
+     format: email
+     description: Email
+     x-ms-summary: Email
+     maxLength: 65535
+    personDataType:
+     type: string
+     description: Person data type
+     x-ms-summary: Person data type
+     maxLength: 7
+    notes:
+     type: string
+     description: Notes
+     x-ms-summary: Notes
+     maxLength: 65535
+    relationshipManager:
+     type: string
+     description: Relationship manager
+     x-ms-summary: Relationship manager
+     maxLength: 45
+    annualSalary:
+     type: number
+     format: float
+     description: Annual salary
+     x-ms-summary: Annual salary
+    contactType:
+     type: string
+     description: Contact type
+     x-ms-summary: Contact type
+     maxLength: 45
+    abn:
+     type: string
+     description: ABN
+     x-ms-summary: ABN
+     maxLength: 45
+    acn:
+     type: string
+     description: ACN
+     x-ms-summary: ACN
+     maxLength: 45
+    trustName:
+     type: string
+     description: Trust name
+     x-ms-summary: Trust name
+     maxLength: 100
+    homeSuburb:
+     type: string
+     description: Home suburb
+     x-ms-summary: Home suburb
+     maxLength: 104
+    numberOfDependents:
+     type: integer
+     format: int32
+     description: Number of dependents
+     x-ms-summary: Number of dependents
+    doNotMail:
+     type: boolean
+     description: Do not email
+     x-ms-summary: Do not email
+    funambolUsers:
+     type: string
+     description: Funambol users
+     x-ms-summary: Funambol users
+     maxLength: 200
+    markAsPrivate:
+     type: boolean
+     description: Mark as private
+     x-ms-summary: Mark as private
+    importDocumentId:
+     type: string
+     description: Import document id
+     x-ms-summary: Import document id
+     maxLength: 45
+    partnerName:
+     type: string
+     description: Partner group name
+     x-ms-summary: Partner group name
+     maxLength: 255
+    emailBounced:
+     type: boolean
+     description: Email bounced
+     x-ms-summary: Email bounced
+    webPassword:
+     type: string
+     format: password
+     description: Web password
+     x-ms-summary: Web password
+     maxLength: 64
+    webAccess:
+     type: boolean
+     description: Web access
+     x-ms-summary: Has web access?
+    relationshipManagerName:
+     type: string
+     description: Relationship manager name
+     x-ms-summary: Relationship manager name
+     maxLength: 45
+    lastUpdated:
+     type: string
+     format: date-time
+     description: Last updated time
+     x-ms-summary: Last updated time
+    lastUpdatedBy:
+     type: string
+     description: User who made the last updated
+     x-ms-summary: User who made the last updated
+     maxLength: 45
+    externalId:
+     type: string
+     description: External Id
+     x-ms-summary: External Id
+     maxLength: 45
+    leadSourceId:
+     type: string
+     description: Lead source Id (applicable only for iConnect)
+     x-ms-summary: Lead source Id (applicable only for iConnect)
+     maxLength: 124
+    leadSourceName:
+     type: string
+     description: Lead source name (applicable only for iConnect)
+     x-ms-summary: Lead source name (applicable only for iConnect)
+     maxLength: 255
+    contactMethods:
+     type: array
+     items:
+      $ref: '#/definitions/ContactMethod'
+     description: Contact methods
+     x-ms-summary: Contact methods
+    Identification:
+     type: array
+     items:
+      $ref: '#/definitions/Identification'
+     description: Identification records
+     x-ms-summary: Identification records
+    expenses:
+     type: array
+     items:
+      $ref: '#/definitions/Expense'
+     description: Expense records
+     x-ms-summary: Expenses
+    incomes:
+     type: array
+     items:
+      $ref: '#/definitions/Income'
+     description: Income records
+     x-ms-summary: Incomes
+    addresses:
+     type: array
+     items:
+      $ref: '#/definitions/Address'
+     description: Address records
+     x-ms-summary: Addresses
+    categories:
+     type: array
+     items:
+      $ref: '#/definitions/Category'
+     description: Category records
+     x-ms-summary: Categories
+    myMarketingTactics:
+     type: array
+     items:
+      $ref: '#/definitions/MyMarketingTactics'
+     description: My Marketing tactic records
+     x-ms-summary: My Marketing Tactics
+  ContactMethod:
+   type: object
+   description: The contact method of the contact
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the contact method
+     x-ms-summary: Contact method id
+     maxLength: 40
+    company:
+     type: string
+     description: Partner id to which this contact method belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether contact method has been marked as deleted
+     x-ms-summary: Contact method deleted
+     x-ms-visibility: internal
+    personID:
+     type: string
+     format: uuid
+     description: Unique id of the contact this contact method belongs to
+     x-ms-summary: Contact method contact id
+     x-ms-visibility: internal
+     maxLength: 40
+    contactMethod:
+     type: string
+     enum: [Business, Business 2, Business Fax, Email 1, Email 2, Email 3, Home, Home 2, Home Fax, Mobile, Mobile 2]
+     description: Contact method
+     x-ms-summary: Contact method
+     maxLength: 20
+    content:
+     type: string
+     description: Contact details
+     x-ms-summary: Contact details
+     maxLength: 100
+    type:
+     type: string
+     enum: [email, home, mobile, phone]
+     description: Type of contact
+     x-ms-summary: Contact type (Contact method)
+     maxLength: 45
+  Identification:
+   type: object
+   description: The details of the Contacts related Identification record
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the Identification record
+     x-ms-summary: Identification id
+     maxLength: 44
+    company:
+     type: string
+     description: Partner id to which this expense belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    createdBy:
+     type: string
+     description: User who created the Identification
+     x-ms-summary: Identification created by
+     maxLength: 45
+    createdOn:
+     type: string
+     format: date-time
+     description: Date of the Identification record that was created
+     x-ms-summary: Creation date
+     maxLength: 45
+    documentIssuedBy:
+     type: string
+     description: Documet issue by
+     x-ms-summary: Documet issued by
+     maxLength: 45
+    documentNumber:
+     type: string
+     description: Document Number to which this Identification record belongs
+     x-ms-summary: Document Number
+     maxLength: 45
+    endDate:
+     type: string
+     format: date-time
+     description: Expiry date of this Identification record
+     x-ms-summary: Expiry Date
+    isDeleted:
+     type: boolean
+     description: Whether document has been marked as deleted
+     x-ms-summary: Document deleted
+     x-ms-visibility: internal
+    parentId:
+     type: string
+     format: uuid
+     description: Unique id of the parent of the Contact record
+     x-ms-summary: Parent id (Contact)
+     x-ms-visibility: internal
+     maxLength: 36
+    nameOnDocument:
+     type: string
+     description: Name of the Document
+     x-ms-summary: Document Name
+     maxLength: 128
+    personId:
+     type: string
+     format: uuid
+     description: Unique id of the parent of the Contact record
+     x-ms-summary: Parent id (Contact)
+     x-ms-visibility: internal
+     maxLength: 45
+    placeOfIssue:
+     type: string
+     description: Place of issue of this Document
+     x-ms-summary: Place of Issue
+     enum: [ACT, NSW, NT, QLD, SA, TAS, VIC, WA, OTHER]
+     maxLength: 45
+    startDate:
+     type: string
+     format: date-time
+     description: Start date of this Identification record
+     x-ms-summary: Start Date
+    versionSighted:
+     type: string
+     description: Version of Sighted (Original or Certified)
+     x-ms-summary: Version of Sighted
+     enum: [Original, Certified]
+     maxLength: 45
+    documentType:
+     type: string
+     description: Document Type of this Identification record
+     x-ms-summary: Document Type
+     enum: [DriversLicenceAust,
+		GovtIssuePilotLicence ,
+		BirthCertificate,
+		PassportAust,
+		PassportIntl,
+		ProofOfAgeCard,
+		BirthCertAust,
+		BirthCertIntl,
+		AustCitizenshipCertificate,
+		GovtIssueHealthCard,
+		GovtPensionCard,
+		DriversLicenceIntl,
+		CitizenCertIntl,
+		PassportExpired,
+		BankCreditCard,
+		FinInstCreditCard,
+		BankCashCard,
+		FinInstCashCard,
+		BankPassbook,
+		FinInstPassbook,
+		BankStatement,
+		DeedPoll,
+		DefForceIdentityCard ,
+		ExistingCustomer,
+		GovtIssueBoatLicence ,
+		GovtIssueEmployeeCard,
+		GovtIssueFinancialBenNot,
+		GovtIssueGunLicence,
+		IdentityCard,
+		IDFromCurrEmployer,
+		LeaseContract,
+		LetterFromCurrEmployer,
+		MarriageCertificate,
+		MedicareCard,
+		OfficialStudentCard,
+		PublicServiceIDCard,
+		RateNotice,
+		Reference,
+		RentReceipt,
+		SecGuardIDCard,
+		SchoolLetterOfIntro,
+		StatementFromLandlord,
+		TaxationNoticeAust,
+		TertiaryStudentIDCard,
+		UtilityStatementElectric,
+		UtilityStatementGas,
+		UtilityStatementPhone,
+		UtilityStatementWater,
+		WrittenRefCustomer,
+		WrittenRefFinancialInst,
+		WrittenRefReferee]
+     maxLength: 45
+  Expense:
+   type: object
+   description: The expense of the contact
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the expense record
+     x-ms-summary: Expense id
+     maxLength: 36
+    company:
+     type: string
+     description: Partner id to which this expense belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether record has been marked as deleted
+     x-ms-summary: Expense deleted
+     x-ms-visibility: internal
+    personID:
+     type: string
+     format: uuid
+     description: Unique id of the contact associated with this expense
+     x-ms-summary: Expense contact id
+     x-ms-visibility: internal
+     maxLength: 36
+    personName:
+     type: string
+     description: Person name (Expense)
+     x-ms-summary: Person name
+     maxLength: 189
+    amount:
+     type: number
+     format: float
+     description: Expense amount
+     x-ms-summary: Expense amount
+    type:
+     type: string
+     description: Expense type
+     enum: [Credit Card, Home Loan, Investment Loan, Car Loan, Personal Loan, Maintenance, Rent Paid, Living Expenses, Education, Insurance, Other]
+     x-ms-summary: Expense type
+     maxLength: 44
+    frequency:
+     type: string
+     description: Expense frequency
+     enum: [Annual, Fortnightly, Monthly, Weekly]
+     x-ms-summary: Expense frequency
+     maxLength: 44
+    balance:
+     type: number
+     format: float
+     description: Expense balance
+     x-ms-summary: Expense balance
+    creditLimit:
+     type: number
+     format: float
+     description: Credit limit (Expense)
+     x-ms-summary: Credit limit
+    comment:
+     type: string
+     description: Comment (Expense)
+     x-ms-summary: Comment
+     maxLength: 104
+  Employment:
+   type: object
+   description: The employment of the contact
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique Id of the employment record
+    employerName:
+     type: string
+     description: Employer Name
+    employmentBasis:
+     type: string
+     maxLength: 104
+     description: Employment Basics Full time, Part time etc
+    employmentStatus:
+     type: string
+     maxLength: 45
+     description: Employment Status Primary, Secondary, Previous
+    employmentType:
+     type: string
+     maxLength: 45
+     description: Employment Type Payg, self employment etc
+    jobTitle:
+     type: string
+     description: Title of the position
+     maxLength: 64
+    natureOfBusiness:
+     type: string
+     description: Nature of business
+    operatingStructure:
+     type: string
+     maxLength: 45
+     description: Structure of Business
+    paygEmployerType:
+     type: string
+     maxLength: 45
+     description: Employment type Public or Private
+    abn:
+     type: string
+     maxLength: 45
+     description: ABN of the business
+    personId:
+     type: string
+     format: uuid
+     description: Unique Id of the person associated with this employment record
+    role:
+     type: string
+     maxLength: 64
+     description: Job Role
+    startDate:
+     type: string
+     format: date
+     description: Date employment commenced
+    endDate:
+     type: string
+     format: date
+     description: Date employment ended
+    onBenefits:
+     type: boolean
+     description: Unemployed or retired and on benefits
+    onProbation:
+     type: boolean
+     description: On probation
+    student:
+     type: boolean
+     description: Is student
+    incomes:
+     type: array
+     description: incomes records
+     items:
+        $ref: '#/definitions/Income'
+    address:
+     $ref: '#/definitions/Address'
+  Income:
+   type: object
+   description: The income of the contact
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the income record
+     x-ms-summary: Income id
+     maxLength: 36
+    company:
+     type: string
+     description: Partner id to which this income belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether income has been marked as deleted
+     x-ms-visibility: internal
+     x-ms-summary: Income deleted
+    personID:
+     type: string
+     format: uuid
+     description: Unique id of the person associated with this income record
+     x-ms-visibility: internal
+     x-ms-summary: Income contact id
+     maxLength: 36
+    personName:
+     type: string
+     description: Person name (Income)
+     x-ms-summary: Person name
+     maxLength: 189
+    amount:
+     type: number
+     format: float
+     description: Income amount
+     x-ms-summary: Income amount
+    type:
+     type: string
+     description: Income type
+     enum: [Bonus, Business Income, Dividends, Family Allowance, Maintenance, Overtime, Pension, Rental, Salary, Self Employed, Other]
+     x-ms-summary: Income type
+     maxLength: 44
+    frequency:
+     type: string
+     description: Income frequency
+     enum: [Annual, Fortnightly, Monthly, Weekly]
+     x-ms-summary: Income frequency
+     maxLength: 44
+    dateCommenced:
+     type: string
+     format: date
+     description: Date income commenced
+     x-ms-summary: Date income commenced
+    sortKey:
+     type: integer
+     format: int32
+     description: Sort key
+     x-ms-summary: Sort key
+     x-ms-visibility: internal
+    comment:
+     type: string
+     description: Comment (Income)
+     x-ms-summary: Comment
+     maxLength: 104
+  Opportunity:
+   type: object
+   description: The details of the opportunity or opportunity
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the opportunity
+     x-ms-summary: Opportunity id
+    company:
+     type: string
+     maxLength: 36
+     description: Partner id to which this opportunity belongs
+     x-ms-summary: Partner id
+    isDeleted:
+     type: boolean
+     description: Whether opportunity has been marked as deleted
+     x-ms-summary: Deleted?
+    deletedBy:
+     type: string
+     maxLength: 64
+     description: User who deleted the opportunity
+     x-ms-summary: Deleted by
+    deletedOn:
+     type: string
+     format: date-time
+     description: Date opportunity was deleted
+     x-ms-summary: Deletion date
+    createdOn:
+     type: string
+     format: date-time
+     description: Date opportunity was created
+     x-ms-summary: Creation date
+    createdBy:
+     type: string
+     maxLength: 64
+     description: User who created the opportunity
+     x-ms-summary: Created by
+    opportunityName:
+     type: string
+     maxLength: 164
+     description: Name of the opportunity
+     x-ms-summary: Opportunity name
+    amount:
+     type: number
+     format: float
+     description: Amount borrowed
+     x-ms-summary: Amount borrowed
+    lender:
+     type: string
+     maxLength: 30
+     description: Name of lender
+     x-ms-summary: Lender name
+    lenderNameShort:
+     type: string
+     maxLength: 45
+     description: Short name of lender
+     x-ms-summary: Lender short name
+    status:
+     type: string
+     maxLength: 84
+     description: Loan status
+     x-ms-summary: Loan status
+    agent:
+     type: string
+     maxLength: 64
+     description: CA number of the agent
+     x-ms-summary: Agent CA number
+    personActing:
+     type: string
+     maxLength: 64
+     description: CA number of the acting person
+     x-ms-summary: Acting person CA number
+    personResponsible:
+     maxLength: 44
+     type: string
+     description: CA number of the person responsible
+     x-ms-summary: Person responsible CA Number
+    lenderReference:
+     type: string
+     maxLength: 100
+     description: The lender reference
+     x-ms-summary: Lender reference
+    financeDate:
+     type: string
+     format: date-time
+     description: Finance date (yyyy-MM-dd)
+     x-ms-summary: Finance date
+    expectedSettlementDate:
+     type: string
+     format: date-time
+     description:  Settlement date (yyyy-MM-dd)
+     x-ms-summary: Settlement date
+    confirmedSettlementDate:
+     type: string
+     format: date-time
+     description: Confirmed settlement date (yyyy-MM-dd)
+     x-ms-summary: Confirmed settlement date
+    leadSourceId:
+     type: string
+     maxLength: 104
+     description: Lead source Id
+     x-ms-summary: Lead source Id
+    leadSourceDisplay:
+     type: string
+     maxLength: 255
+     description: Lead source description
+     x-ms-summary: Lead source description
+    discount:
+     type: number
+     format: float
+     description: Discount
+     x-ms-summary: Discount
+    existingAmount:
+     type: number
+     format: float
+     description: Existing amount
+     x-ms-summary: Existing amount
+    lmi:
+     type: number
+     format: float
+     description: Loan mortgage insurance amount
+     x-ms-summary: LMI amount
+    settlementDateConfirmed:
+     type: boolean
+     description: Whether settlement date has been confirmed
+     x-ms-summary: Settlement date confirmed?
+    discountType:
+     type: string
+     maxLength: 44
+     description: Discount type
+     x-ms-summary: Discount type
+    loanPersonRelationship:
+     type: string
+     maxLength: 164
+     description: Related party relationship (Opportunity)
+     x-ms-summary: Relationship
+    transactionType:
+     type: string
+     maxLength: 45
+     description: Opportunity type
+     x-ms-summary: Opportunity type
+     enum: [Loan, CommercialLoans, PlantAndEquipment, PersonalLoans, Property, FinancialPlanning, Insurance, LifeInsurance, Accounting, TermDeposit, PremiumFunding, CreditCard, CashManagementAcc]
+    notePadText:
+     type: string
+     maxLength: 21000
+     description: Notepad text
+     x-ms-summary: Notepad text
+    partnerReference:
+     type: string
+     maxLength: 44
+     description: Partner reference
+     x-ms-summary: Partner reference
+    nextGenId:
+     type: string
+     maxLength: 12
+     description: Nextgen Id
+     x-ms-summary: Nextgen Id
+    parentId:
+     type: string
+     maxLength: 44
+     description: Opportunity parent Id
+     x-ms-summary: Parent Id
+     x-ms-visibility: internal
+    workspaceUsers:
+     type: string
+     maxLength: 100
+     description: CA numbers of the workspace users
+     x-ms-summary: Workspace users
+    tranxType:
+     type: string
+     maxLength: 44
+     description: Opportunity transaction type (eg. Refinance, Purchase, Pre-Approval, etc.)
+     x-ms-summary: Transaction type
+     enum:
+      - Pre-Approval
+      - Purchase
+      - Refinance
+      - Top Up
+      - Variation
+    connectiveLodgeId:
+     type: string
+     maxLength: 10
+     description: Connective lodgement id
+     x-ms-summary: Lodgement id
+    peResidualAmount:
+     type: number
+     format: float
+     description: PE residual amount
+     x-ms-summary: Residual amount
+    peRepaymentAmount:
+     type: number
+     format: float
+     description: PE repayment amount
+     x-ms-summary: Repayment amount
+    peEffectiveRate:
+     type: number
+     format: float
+     description: PE effective rate
+     x-ms-summary: Effective rate
+    peInterestRate:
+     type: number
+     format: float
+     description: PE interest rate
+     x-ms-summary: Interest rate
+    peBrokerage:
+     type: number
+     format: float
+     description: PE brokerage
+     x-ms-summary: Brokerage
+    assetDescription:
+     type: string
+     maxLength: 21000
+     description: Asset description (Opportunity)
+     x-ms-summary: Asset description
+    nextAction:
+     type: string
+     format: date-time
+     description: Next action date (yyyy-MM-dd)
+     x-ms-summary: Next action date
+    loanTerm:
+     type: number
+     format: int32
+     description: Loan term (Opportunity)
+     x-ms-summary: Loan term
+    fixedRateExpiry:
+     type: string
+     format: date-time
+     description: Fixed rate expiry date (yyyy-MM-dd)
+     x-ms-summary: Fixed rate expiry date
+    depositDueDate:
+     type: string
+     format: date-time
+     description: Deposit due date (yyyy-MM-dd)
+     x-ms-summary: Deposit due date
+    barCodeId:
+     type: string
+     maxLength: 45
+     description: Bar code id
+     x-ms-summary: Bar code id
+    agentName:
+     type: string
+     maxLength: 511
+     description: Agent name
+     x-ms-summary: Agent name
+    personActingName:
+     type: string
+     maxLength: 511
+     description: Person acting name
+     x-ms-summary: Person acting name
+    personResponsibleName:
+     type: string
+     maxLength: 44
+     description: Person responsible name
+     x-ms-summary: Person responsible name
+    defaultPath:
+     type: string
+     maxLength: 21000
+     description: Default path
+     x-ms-summary: Default path
+    partnerName:
+     type: string
+     maxLength: 255
+     description: Partner group name
+     x-ms-summary: Partner group name
+    partnerSharedWithId:
+     type: string
+     maxLength: 45
+     description: Partner shared with Id
+     x-ms-summary: Partner shared with Id
+    partnerSharedWithName:
+     type: string
+     maxLength: 255
+     description: Partner shared with name
+     x-ms-summary: Partner shared with name
+    statusLastUpdated:
+     type: string
+     format: date-time
+     description: Status last updated time
+     x-ms-summary: Status last updated time
+    lastUpdatedBy:
+     type: string
+     maxLength: 45
+     description: User who made the last update
+     x-ms-summary: User who made the last update
+    lenderComments:
+     type: string
+     maxLength: 21000
+     description: Comments by the lender
+     x-ms-summary: Comments by the lender
+    sitRep:
+     type: string
+     maxLength: 21000
+     description: Site representative
+     x-ms-summary: Site representative
+    campaignId:
+     type: string
+     maxLength: 45
+     description: Campaign id
+     x-ms-summary: Campaign id
+    campaignName:
+     type: string
+     maxLength: 255
+     description: Campaign name
+     x-ms-summary: Campaign name
+    securityValue:
+     type: number
+     format: float
+     description: Security value
+     x-ms-summary: Security value
+    aliApplicationId:
+     type: string
+     description: Ali application id
+     maxLength: 40
+     x-ms-summary: Ali application id
+    metlifeApplicationId:
+     type: string
+     description: Metlife application id
+     x-ms-summary: Metlife application id
+     maxLength: 40
+    interestOnlyExpiry:
+     type: string
+     format: date-time
+     description: Interest only expiry date (yyyy-MM-dd)
+     x-ms-summary: Interest only expiry date
+    lastUpdated:
+     type: string
+     format: date-time
+     description: Last updated time
+     x-ms-summary: Last updated time
+    emailAccountAddress:
+     type: string
+     format: email
+     description: Opportunity email address
+     x-ms-summary: Opportunity email address
+     maxLength: 70
+    originationFee:
+     type: number
+     format: float
+     description: Origination fee
+     x-ms-summary: Origination fee
+    metaData:
+     type: string
+     description: Semicolon separated list of categories
+     x-ms-summary: Categories
+     maxLength: 255
+    relatedParties:
+     type: array
+     items:
+      $ref: '#/definitions/RelatedParty'
+     description: Related party records
+     x-ms-summary: Related parties
+    assets:
+     type: array
+     items:
+      $ref: '#/definitions/Asset'
+     description: Asset records
+     x-ms-summary: Assets
+    liabilities:
+     type: array
+     items:
+      $ref: '#/definitions/Liability'
+     description: Liability records
+     x-ms-summary: Liabilities
+  Address:
+   type: object
+   description: The physical address of the place
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id representing the address record
+     x-ms-summary: Address id
+     maxLength: 36
+    company:
+     type: string
+     description: Partner id to which this address belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether address has been marked as deleted
+     x-ms-summary: Address deleted
+     x-ms-visibility: internal
+    deletedBy:
+     type: string
+     description: User who deleted the address
+     x-ms-visibility: internal
+     x-ms-summary: Address deleted by
+     maxLength: 64
+    deletedOn:
+     type: string
+     format: date-time
+     description: Date address was deleted (yyyy-MM-dd)
+     x-ms-visibility: internal
+     x-ms-summary: Address deletion date
+    parentType:
+     type: string
+     description: Parent type (Address)
+     x-ms-summary: Parent type
+     maxLength: 20
+    parentId:
+     type: string
+     format: uuid
+     description: Unique id of the parent of the address record
+     x-ms-summary: Parent id (Address)
+     x-ms-visibility: internal
+     maxLength: 36
+    type:
+     type: string
+     description: Residence type (Address)
+     x-ms-summary: Residence type
+     maxLength: 64
+    streetName:
+     type: string
+     description: Street name (Address)
+     x-ms-summary: Street name
+     maxLength: 164
+    streetNumber:
+     type: string
+     description: Street number (Address)
+     x-ms-summary: Street number
+     maxLength: 20
+    streetType:
+     type: string
+     description: Street type (Address)
+     x-ms-summary: Street type
+     maxLength: 64
+    city:
+     type: string
+     description: City (Address)
+     x-ms-summary: City
+     maxLength: 104
+    state:
+     type: string
+     description: State (Address)
+     enum: [ACT, NSW, NT, QLD, SA, TAS, VIC, WA, OTHER]
+     x-ms-summary: State
+     maxLength: 12
+    postcode:
+     type: string
+     format: postcode
+     description: Postcode (Address)
+     x-ms-summary: Postcode
+     maxLength: 16
+    country:
+     type: string
+     description: Country (Address)
+     enum: [AD, AE, AF, AG, AI, AL, AM, AN, AO, AQ, AR, AS, AT, AU, AW, AX, AZ, BA, BB, BD, BE, BF, BG, BH, BI, BJ, BL, BM, BN, BO, BQ, BR, BS, BT, BV, BW, BY, BZ, CA, CC, CD, CF, CG, CH, CI, CK, CL, CM, CN, CO, CR, CU, CV, CW, CX, CY, CZ, DE, DJ, DK, DM, DO, DZ, EC, EE, EG, EH, ER, ES, ET, FI, FJ, FK, FM, FO, FR, GA, GB, GD, GE, GF, GG, GH, GI, GL, GM, GN, GP, GQ, GR, GS, GT, GU, GW, GY, HK, HM, HN, HR, HT, HU, ID, IE, IL, IM, IN, IO, IQ, IR, IS, IT, JE, JM, JO, JP, KE, KG, KH, KI, KM, KN, KP, KR, KW, KY, KZ, LA, LB, LC, LI, LK, LR, LS, LT, LU, LV, LY, MA, MC, MD, ME, MF, MG, MH, MK, ML, MM, MN, MO, MP, MQ, MR, MS, MT, MU, MV, MW, MX, MY, MZ, NA, NC, NE, NF, NG, NI, NL, NO, NP, NR, NU, NZ, OM, PA, PE, PF, PG, PH, PK, PL, PM, PN, PR, PS, PT, PW, PY, QA, RE, RO, RS, RU, RW, SA, SB, SC, SD, SE, SG, SH, SI, SJ, SK, SL, SM, SN, SO, SR, SS, ST, SV, SX, SY, SZ, TC, TD, TF, TG, TH, TJ, TK, TL, TM, TN, TO, TR, TT, TV, TW, TZ, UA, UG, UM, US, UY, UZ, VA, VC, VE, VG, VI, VN, VU, WF, WS, YE, YT, ZA, ZM, ZW]
+     x-ms-summary: Country
+     maxLength: 104
+    unitNumber:
+     type: string
+     description: Unit number (Address)
+     x-ms-summary: Unit number
+     maxLength: 44
+    buildingName:
+     type: string
+     description: Building name (Address)
+     x-ms-summary: Building name
+     maxLength: 164
+    floorNumber:
+     type: string
+     description: Floor number (Address)
+     x-ms-summary: Floor number
+     maxLength: 44
+    isCorrespondenceAddress:
+     type: boolean
+     description: Is correspondence address
+     x-ms-summary: Correspondence address?
+    fromDate:
+     type: string
+     format: date-time
+     description: Address effective from date (yyyy-MM-dd)
+     x-ms-summary: Effective from date
+    toDate:
+     type: string
+     format: date-time
+     description: Address effective to date (yyyy-MM-dd)
+     x-ms-summary: Effective to date
+    addressBlock:
+     type: string
+     description: Address block
+     x-ms-summary: Address block
+     maxLength: 65535
+    format:
+     type: string
+     description: Format (Address)
+     x-ms-summary: Format
+     maxLength: 45
+    housingSituation:
+     type: string
+     description: Housing situation (Address)
+     enum: [Boarding, Caravan, Own Home, Own Home - Mortgage, Renting, With Parents, Other]
+     x-ms-summary: Housing situation
+     maxLength: 45
+    requiresConfirmation:
+     type: boolean
+     description: Requires confirmation (Address)
+     x-ms-summary: Requires confirmation?
+    poBoxNumber:
+     type: string
+     description: PO box number (Address)
+     maxLength: 10
+     x-ms-summary: PO box number
+    poBoxType:
+     type: string
+     description: PO box type (Address)
+     x-ms-summary: PO box type
+     maxLength: 6
+    personName:
+     type: string
+     description: Person name (Address)
+     x-ms-summary: Person name
+     maxLength: 189
+    addrGeoLatitude:
+     type: string
+     description: Geo latitude co-ordinate (Address)
+     x-ms-summary: Geo latitude
+     maxLength: 15
+    addrGeoLongitude:
+     type: string
+     description: Geo longitude co-ordinate (Address)
+     x-ms-summary: Geo longitude
+     maxLength: 15
+  RelatedParty:
+   type: object
+   description: Details of the party related to the opportunity
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of party
+     x-ms-summary: Related party id
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether related party has been marked as deleted
+     x-ms-visibility: internal
+     x-ms-summary: Related party deleted
+    personID:
+     type: string
+     format: uuid
+     description: Unique id of the contact linked with this party record (Mandatory param when adding a related party)
+     x-ms-summary: Contact id
+     maxLength: 36
+    relationship:
+     type: string
+     description: Related party relationship type
+     enum:
+      - Adviser
+      - Agent
+      - Primary applicant
+      - Secondary applicant
+      - Assessor
+      - Bank / Lender
+      - Banker
+      - Broker
+      - Builder
+      - Accountant
+      - Conveyancer
+      - Solicitor
+      - Co-Applicant
+      - Director
+      - Employer
+      - Financial Planner
+      - Insurance referral
+      - Insurer
+      - Joint Borrower
+      - JSG/ PRE
+      - Land Agent
+      - Lender
+      - Loan Writer
+      - NonApplicant
+      - Other
+     x-ms-summary: Relationship
+     maxLength: 164
+  Asset:
+   type: object
+   description: Assets recorded on the opportunity
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of an asset
+     x-ms-summary: Asset id
+     maxLength: 36
+    company:
+     type: string
+     description: Partner id to which this asset belongs
+     x-ms-visibility: internal
+     x-ms-summary: Partner id
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether asset has been marked as deleted
+     x-ms-visibility: internal
+     x-ms-summary: Asset deleted
+    deletedBy:
+     type: string
+     description: User who deleted the asset
+     x-ms-visibility: internal
+     x-ms-summary: Asset deleted by
+     maxLength: 64
+    deletedOn:
+     type: string
+     format: date-time
+     description: Date asset was deleted
+     x-ms-visibility: internal
+     x-ms-summary: Asset deletion date
+    parentType:
+     type: string
+     description: Parent type (Asset)
+     x-ms-summary: Parent type
+     x-ms-visibility: internal
+     default: Asset
+     maxLength: 20
+    parentId:
+     type: string
+     format: uuid
+     description: Unique id of the parent
+     x-ms-summary: Asset parent id
+     x-ms-visibility: internal
+     maxLength: 36
+    name:
+     type: string
+     description: Asset name
+     enum: [Real Estate, Boat, Business Equity, Cash Management, Charge Over Cash, Cheque Account, Debenture Charge, Gifts, Guarantee, Home Contents, Investment Savings, Life Insurance, Managed Funds, Motor Vehicle, Savings Account, Shares, Superannuation, Term Deposit, Other]
+     x-ms-summary: Name
+     maxLength: 44
+    type:
+     type: string
+     description: Asset type
+     enum: [account, realEstate, vehicle, standard]
+     x-ms-summary: Type
+     maxLength: 45
+    value:
+     type: number
+     description: Asset value
+     format: float
+     x-ms-summary: Value
+    valueBasis:
+     type: string
+     description: Value basis (Asset) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     enum: [Applicant Estimate, Certified Valuation, Actual Value]
+     x-ms-summary: Value basis
+     maxLength: 45
+    details:
+     type: string
+     description: Details (Asset) [Please note that the details field is also used to GET/PUT/POST motorVehicleMake when Asset Type is Motor Vehicle]
+     x-ms-summary: Details / Vehicle make
+     maxLength: 164
+    institution:
+     type: string
+     description: Institution (Asset)
+     x-ms-summary: Institution
+     maxLength: 44
+    accountName:
+     type: string
+     description: Account name (Asset)
+     x-ms-summary: Account name
+     maxLength: 80
+    accountNumber:
+     type: string
+     description: Account number (Asset)
+     x-ms-summary: Account number
+     maxLength: 30
+    accountBSB:
+     type: string
+     description: Account BSB (Asset)
+     x-ms-summary: Account BSB
+     maxLength: 15
+    realEstateUseAsSecurity:
+     type: boolean
+     description: Real estate used as security (Asset)
+     x-ms-summary: Used as security?
+    realEstatePurpose:
+     type: string
+     description: Real estate purpose (Asset)
+     enum: [Owner Occupied, Investment]
+     x-ms-summary: Purpose
+     maxLength: 45
+    realEstateZoning:
+     type: string
+     description: Real estate zoning (Asset) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     x-ms-summary: Zoning
+     maxLength: 45
+    address:
+     $ref: '#/definitions/Address'
+     description:  Address record
+     x-ms-summary: Address
+    realEstateToBePurchased:
+     type: boolean
+     description: Is realestate to be purchased (Asset)
+     x-ms-summary: To be purchased?
+    realEstateRentalIncome:
+     type: number
+     format: float
+     description: Real estate rental income (Asset)
+     x-ms-summary: Rental income
+    realEstateRentalIncomeFrequency:
+     type: string
+     description: Real estate rental income frequency (Asset) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     enum: [annually, fortnightly, monthly, weekly]
+     x-ms-summary: Rental income frequency
+     maxLength: 45
+    realEstateRentalEvidenceOfTenancy:
+     type: boolean
+     description: Real estate rental evidence of tenancy provided (Asset)
+     x-ms-summary: Evidence of tenancy provided?
+    existingMortgageCreditor:
+     type: string
+     description: Existing mortgage creditor (Asset)
+     x-ms-summary: Mortgage creditor
+     maxLength: 45
+    existingMortgageInterestRate:
+     type: number
+     format: float
+     description: Existing mortgage Interest Rate (Asset)
+     x-ms-summary: Mortgage Interest Rate
+    existingMortgageBalance:
+     type: number
+     format: float
+     description: Existing mortgage balance (Asset)
+     x-ms-summary: Mortgage balance
+    existingMortgageRepayment:
+     type: number
+     format: float
+     description: Existing mortgage repayment (Asset)
+     x-ms-summary: Mortgage repayment
+    existingMortgageRepaymentFrequency:
+     type: string
+     description: Existing mortgage repayment frequency (Asset) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     enum: [annually, fortnightly, monthly, weekly]
+     x-ms-summary: Mortgage repayment frequency
+     maxLength: 15
+    existingMortgageRepaymentClearing:
+     type: boolean
+     description: Existing mortgage repayment clearing (Asset)
+     x-ms-summary: Mortgage repayment clearing
+    motorVehicleType:
+     type: string
+     description: Motor vehicle type (Asset) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     x-ms-summary: Vehicle type
+     maxLength: 44
+    motorVehiceYear:
+     type: string
+     description: Motor vehicle year (Asset)
+     x-ms-summary: Vehicle year
+     maxLength: 12
+    motorVehicleMake:
+     type: string
+     description: Motor vehicle make (Asset) [Please note that this is a metadata field for display purposes only. Use details field instead for passing motorVehicleMake]
+     x-ms-summary: Vehicle make
+     maxLength: 164
+  Liability:
+   type: object
+   description: Liability recorded on the opportunity
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of liability record
+     x-ms-summary: Liability id
+     maxLength: 36
+    company:
+     type: string
+     description: Partner id to which this record belongs
+     x-ms-summary: Partner id
+     x-ms-visibility: internal
+     maxLength: 36
+    isDeleted:
+     type: boolean
+     description: Whether record has been marked as deleted
+     x-ms-visibility: internal
+     x-ms-summary: Liability deleted
+    deletedBy:
+     type: string
+     description: User who deleted the record
+     x-ms-summary: Liability deleted by
+     x-ms-visibility: internal
+     maxLength: 64
+    deletedOn:
+     type: string
+     format: date-time
+     description: Date record was deleted
+     x-ms-summary: Liability deletion date
+     x-ms-visibility: internal
+    parentType:
+     type: string
+     description: Parent type (Liability)
+     x-ms-summary: Parent type
+     maxLength: 20
+    parentId:
+     type: string
+     format: uuid
+     description: Unique id of the parent (Liability)
+     x-ms-summary: Parent id
+     x-ms-visibility: internal
+     maxLength: 36
+    name:
+     type: string
+     description: Liability name
+     enum: [Commercial Bill, Credit Card, HECS, Hire Purchase, Lease, Line Of Credit, Loan As Guarantor, Maintenance, Mortgage Loan, Other Loan, Outstanding Taxation, Overdraft, Personal Loan, Store Card, Term Loan, Other]
+     x-ms-summary: Liability name
+     maxLength: 44
+    type:
+     type: string
+     description: Liability type
+     enum: [account, realEstate, vehicle, standard]
+     x-ms-summary: Liability type
+     maxLength: 45
+    value:
+     type: number
+     format: float
+     description: Liability value
+     x-ms-summary: Liability value
+    details:
+     type: string
+     description: Liability details
+     x-ms-summary: Liability details
+     maxLength: 164
+    limit:
+     type: integer
+     format: int32
+     description: Limit (Liability)
+     x-ms-summary: Limit
+    institution:
+     type: string
+     description: Institution (Liability)
+     x-ms-summary: Institution
+     maxLength: 44
+    accountName:
+     type: string
+     description: Account name (Liability)
+     x-ms-summary: Account name
+     maxLength: 80
+    accountNumber:
+     type: string
+     description: Account number (Liability)
+     x-ms-summary: Account number
+     maxLength: 30
+    accountBSB:
+     type: string
+     description: Account BSB (Liability)
+     x-ms-summary: Account BSB
+     maxLength: 15
+    accountRepayment:
+     type: number
+     format: float
+     description: Account repayment (Liability)
+     x-ms-summary: Repayment amount
+    accountRepaymentFrequency:
+     type: string
+     description: Account repayment frequency (Liability) [Please note that for AOL, this field should never be null. Please set it to an empty string instead of a null if it has null value]
+     enum: [annually, fortnightly, monthly, weekly]
+     x-ms-summary: Repayment frequency
+     maxLength: 15
+    creditCardType:
+     type: string
+     description: Credit card type
+     enum: [Amex, Diners, Mastercard, Visa]
+     x-ms-summary: Credit card type
+     maxLength: 45
+    accountClearingFromLoan:
+     type: boolean
+     description: Account clearing from loan
+     x-ms-summary: Clearing from loan
+  Category:
+   type: object
+   description: The category that will be use to person list in a group
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of the category
+     x-ms-summary: Category id
+     maxLength: 36
+    categoryName:
+     type: string
+     description: Category name
+     x-ms-summary: Category name
+     maxLength: 80
+    categoryNotes:
+     type: string
+     maxLength: 65535
+     description: Category notes
+     x-ms-summary: Category notes
+    activeCampaignId:
+     type: string
+     description: Active campaign
+     x-ms-summary: Active campaign
+     maxLength: 10
+  MyMarketingTactics:
+   type: object
+   description: The list of my marketing tactics that will be use for mailout
+   properties:
+    uniqueId:
+     type: string
+     format: uuid
+     description: Unique id of my marketing tactic
+     x-ms-summary: My marketing tactic id
+     maxLength: 45
+    itemName:
+     type: string
+     description: Name of my marketing tactic
+     x-ms-summary: My marketing tactic name
+     maxLength: 45
+  OpportunitySearchResult:
+    type: object
+    description: Search results
+    properties:
+     totalCount:
+       type: integer
+       format: int32
+       description: The total count of records for this search query in the database
+     count:
+       type: integer
+       format: int32
+       description: The count of records returned in this result set
+     offset:
+       type: integer
+       format: int32
+       description: The pagination offset used for this query
+     results:
+       type: array
+       items:
+         $ref: '#/definitions/Opportunity'
+       description: Array of opportunities
+  ContactSearchResult:
+    type: object
+    description: Search results
+    properties:
+     totalCount:
+       type: integer
+       format: int32
+       description: The total count of records for this search query in the database
+     count:
+       type: integer
+       format: int32
+       description: The count of records returned in this result set
+     offset:
+       type: integer
+       format: int32
+       description: The pagination offset used for this query
+     results:
+       type: array
+       items:
+         $ref: '#/definitions/Contact'
+       description: Array of contacts
+  PartnerConfigSearchResult:
+    type: object
+    description: Search results
+    properties:
+     totalCount:
+       type: integer
+       format: int32
+       description: The total count of records for this search query in the database
+     count:
+       type: integer
+       format: int32
+       description: The count of records returned in this result set
+     offset:
+       type: integer
+       format: int32
+       description: The pagination offset used for this query
+     results:
+       type: array
+       items:
+         $ref: '#/definitions/PartnerConfig'
+       description: Array of partner configurations
+  CategorySearchResult:
+    type: object
+    description: Search results
+    properties:
+     totalCount:
+       type: integer
+       format: int32
+       description: The total count of records for this search query in the database
+     count:
+       type: integer
+       format: int32
+       description: The count of records returned in this result set
+     offset:
+       type: integer
+       format: int32
+       description: The pagination offset used for this query
+     results:
+       type: array
+       items:
+         $ref: '#/definitions/Category'
+       description: Array of category
+  Error:
+    type: object
+    description: Error details
+    properties:
+      code:
+       type: integer
+       format: int32
+       description: HTTP status code
+      contactEmail:
+       type: string
+       format: email
+       description: Support team email address
+      description:
+       type: string
+       description: Developer message
+      homeRef:
+       type: string
+       description: Home uri
+      reasonPhrase:
+       type: integer
+       format: int32
+       description: Http error reason phrase
+      uri:
+        type: string
+        format: url
+        description: Information about the application error codes
+  Success:
+    type: object
+    description: Success details
+    properties:
+      status:
+        type: integer
+        format: int32
+        description: HTTP status code
+      uniqueId:
+        type: string
+        format: uuid
+        description: Unique id of the resource created
+  OpportunitySearchParams:
+    type: object
+    description: |
+     Search Params. Refer wiki for examples. http://wiki.connective.com.au/display/MER/Searching+Opportunities+and+Contacts
+    properties:
+      name:
+        description: Opportunity name when searching opportunities. Person name when searching contacts
+        type: string
+      isDeleted:
+        description: Whether to return deleted records. If not passed, will default to false
+        type: boolean
+      statuses:
+        type: array
+        items:
+          type: string
+          description: Opportunity status
+        description: Array of opportunity statuses
+      lastUpdated:
+        description:  Search by last updated date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format
+        type: string
+      transactionType:
+        description: The type of opportunity. If not passed, will default to "all". Other example values are "Loan","FinancialPlanning","PlantAndEquipment","Property", etc
+        type: string
+      user:
+        description: CA Number of the agent or person acting or person responsible
+        type: string
+      createdOn:
+        description: |
+         Search by creation date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Searching+Opportunities+and+Contacts#SearchingOpportunitiesandContacts-Searchingwithdates
+        type: string
+      interestOnlyExpiry:
+        description: |
+         Search by interest only rate expiry date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Search+opportunities#Searchopportunities-Searchbyinterestonlyexpirydate
+        type: string
+      fixedRateExpiry:
+        description: |
+         Search by fixed rate expiry date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Search+opportunities#Searchopportunities-Searchbyfixedrateexpirydate
+        type: string
+      confirmedSettlementDate:
+        description: |
+         Search by settlement date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format. Supports date range searches. Refer wiki for examples http://wiki.connective.com.au/display/MER/Search+opportunities#Searchopportunities-Searchbysettlementdate
+        type: string
+  PartnerConfigSearchParams:
+    type: object
+    description: |
+     Search Params. eg. searchParams={"key":"<key>","partnerId":"<partnerId>"}
+    properties:
+      key:
+        description: Key of the configuration only client portal color is supported
+        type: string
+      partnerId:
+        description: partner id for custom configuration
+        type: string
+  ContactSearchParams:
+    type: object
+    description: |
+     Search Params. Refer wiki for examples. http://wiki.connective.com.au/display/MER/Searching+Opportunities+and+Contacts
+    properties:
+      name:
+        description: Opportunity name when searching opportunities. Person name when searching contacts
+        type: string
+      isDeleted:
+        description: Whether to return deleted records. If not passed, will default to false
+        type: boolean
+      excludeDoNotMail:
+        type: boolean
+        description: Exclude contacts marked as do not email. If not passed, will default to false
+      excludeEmailBounced:
+        type: boolean
+        description: Exclude contactsm with bounced emails. If not passed, will default to false
+      lastUpdated:
+        description:  Search by last updated date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format
+        type: string
+      companyName:
+        description: Company name of the person
+        type: string
+      personType:
+        description: The relationship type of the person
+        type: string
+      categoryId:
+        description: The category id
+        type: string
+      campaignId:
+        description: The campaign id
+        type: string
+      contactNumber:
+        description: Contact number of the person
+        type: string
+      email:
+        description: Email address of the person
+        type: string
+      createdOn:
+        description: |
+         Search by creation date. Date should be in yyyy-mm-dd or yyyy-mm-dd HH:MM:SS format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Searching+Opportunities+and+Contacts#SearchingOpportunitiesandContacts-Searchingwithdates
+        type: string
+      dateOfBirth:
+        description: |
+         Search by date of birth. Date should be in yyyy-mm-dd format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Search+contacts#Searchcontacts-Searchforapersonbydateofbirth
+        type: string
+      birthday:
+        description: |
+         Search by birthday anniversary. Date should be in yyyy-mm-dd format. Supports date range searches. Refer wiki for examples
+         http://wiki.connective.com.au/display/MER/Search+contacts#Searchcontacts-Searchforpeoplebybirthdayanniversary
+        type: string
+  ContactHookRequestBody:
+    description: Webhook request body
+    type: object
+    properties:
+      active:
+        description: Whether webhook is active or not. Always default to true. Required field for MS Flow
+        type: boolean
+        default: true
+        x-ms-visibility: internal
+      name:
+        description: Webhook name. Always default to 'web'. Required field for MS Flow
+        x-ms-visibility: internal
+        type: string
+        default: web
+      config:
+        description: Configuration of the trigger
+        type: object
+        properties:
+          subscription_type:
+            type: string
+            description: The type of subscription
+            x-ms-summary: Notify me for
+            enum:
+             - All available contacts
+             - Contacts in my branch/office
+             - Contacts where I am the relationship manager
+            default: All available contacts
+          content_type:
+            type: string
+            description: Description of payload. Required field for MS Flow
+            title: Description of payload. Required field for MS Flow
+            x-ms-visibility: internal
+            default: json
+          url:
+            type: string
+            description: HTML URl of trigger
+            title: HTML URL of trigger
+            x-ms-notification-url: true
+            x-ms-visibility: internal
+      event:
+        description: Event to listen on
+        type: string
+        x-ms-summary: Notify me when a contact is
+        enum:
+         - Created
+         - Created or updated
+         - Deleted
+        default: Created
+  OppHookRequestBody:
+    description: Webhook request body
+    type: object
+    properties:
+      active:
+        description: Whether webhook is active or not. Always default to true. Required field for MS Flow
+        type: boolean
+        default: true
+        x-ms-visibility: internal
+      name:
+        description: Webhook name. Always default to 'web'. Required field for MS Flow
+        x-ms-visibility: internal
+        type: string
+        default: web
+      config:
+        description: Configuration of the trigger
+        type: object
+        properties:
+          subscription_type:
+            type: string
+            x-ms-summary: Notify me for
+            description: The type of subscription
+            enum:
+             - All available opportunities
+             - Opportunities in my branch/office
+             - Opportunities where I am the agent
+             - Opportunities where I am the admin/supervisor
+            default: All available opportunities
+          content_type:
+            type: string
+            description: Description of payload. Required field for MS Flow
+            title: Description of payload. Required field for MS Flow
+            x-ms-visibility: internal
+            default: json
+          url:
+            type: string
+            description: HTML URl of trigger
+            title: HTML URL of trigger
+            x-ms-notification-url: true
+            x-ms-visibility: internal
+      event:
+        description: Event to listen on
+        type: string
+        x-ms-summary: Notify me when an opportunity is
+        enum:
+         - Created
+         - Created or updated
+         - Deleted
+         - Opportunity Status Changed
+        default: Created
+  WebhookCreationResponse:
+    description: Webhook creation response
+    type: object
+    properties:
+      type:
+        type: string
+      id:
+        type: integer
+      name:
+        type: string
+      active:
+        type: boolean
+      events:
+        type: array
+        items:
+          type: string
+      config:
+        type: object
+        properties:
+          content_type:
+            type: string
+          url:
+            type: string
+      updated_at:
+        type: string
+      created_at:
+        type: string
+      url:
+        type: string
+      test_url:
+        type: string
+      ping_url:
+        type: string
+      last_response:
+        type: object
+        properties:
+          code:
+            type: string
+          status:
+            type: string
+          message:
+            type: string
