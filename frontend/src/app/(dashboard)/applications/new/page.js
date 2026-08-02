@@ -40,45 +40,41 @@ const SINGLE_FILE_DOCUMENT_TYPES = new Set([
 
 const DOCUMENT_REQUIREMENTS = {
   purchase: [
-    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
     { id: 'id_100', label: '100-pt ID (e.g. passport + licence)', required: true },
     { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
     { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
     { id: 'contract_of_sale', label: 'Contract of sale', required: false },
     { id: 'property_valuation', label: 'Property valuation', required: false },
   ],
   investment: [
-    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
     { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
     { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
     { id: 'contract_of_sale', label: 'Contract of sale', required: false },
     { id: 'property_valuation', label: 'Property valuation', required: false },
     { id: 'rental_appraisal', label: 'Rental appraisal / lease agreement', required: false },
   ],
   refinance: [
-    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
     { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
     { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
     { id: 'existing_loan_statements', label: 'Existing loan statements — in 6 months', required: false },
     { id: 'property_valuation', label: 'Property valuation', required: false },
   ],
   first_home: [
-    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
     { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
     { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
     { id: 'contract_of_sale', label: 'Contract of sale', required: false },
     { id: 'property_valuation', label: 'Property valuation', required: false },
     { id: 'first_home_grant', label: 'First Home Owner Grant application', required: false },
   ],
   self_employed: [
-    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
     { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
     { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
@@ -209,9 +205,6 @@ export default function NewApplicationPage() {
   // Validation
   const getMissingCategories = () => {
     return activeRequirements.filter(req => {
-      if (req.id === 'fact_find') {
-        return req.required && !isFactFindSatisfied;
-      }
       const files = categoryFiles[req.id];
       return req.required && (!files || files.length === 0);
     });
@@ -219,8 +212,8 @@ export default function NewApplicationPage() {
   
   const missingCategories = getMissingCategories();
 
-  // Every loan type requires all 4 mandatory files (Fact Find, ID, Bank Statement, NOA) to be present
-  const isValid = applicantName.trim() !== '' && missingCategories.length === 0;
+  // Every loan type requires Fact Find satisfied + 4 checklist mandatory files (Payslip, ID, Bank Statement, NOA)
+  const isValid = applicantName.trim() !== '' && isFactFindSatisfied && missingCategories.length === 0;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -451,7 +444,7 @@ export default function NewApplicationPage() {
           <div className="grid grid-cols-1 gap-4">
             {activeRequirements.map(req => {
               const files = categoryFiles[req.id] || [];
-              const isSatisfied = req.id === 'fact_find' ? isFactFindSatisfied : files.length > 0;
+              const isSatisfied = files.length > 0;
               
               return (
                 <Card key={req.id} className={`border-l-4 transition-colors ${isSatisfied ? 'border-l-emerald-500' : 'border-l-amber-400'}`}>
@@ -519,12 +512,6 @@ export default function NewApplicationPage() {
                               </div>
                             </div>
                           ))}
-                        </div>
-                      )}
-                      {req.id === 'fact_find' && factFindImported && files.length === 0 && (
-                        <div className="mt-2 text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1.5 rounded border border-emerald-200 inline-flex items-center">
-                          <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
-                          Fact Find data successfully imported/synced from CRM or Email
                         </div>
                       )}
                     </div>
