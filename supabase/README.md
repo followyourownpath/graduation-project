@@ -20,6 +20,7 @@ The current migration files are:
 2. `migrations/add_internal_staff_rls.sql`
 3. `migrations/add_document_storage_and_intake_rpc.sql`
 4. `migrations/add_ocr_response_storage.sql`
+5. `migrations/add_rules_engine_phase1.sql` — `risk_assessment` table for Rules Engine Phase 1
 
 Apply migrations in dependency order. Review their hosted-project status before running them: the initial schema and staff RLS migrations were originally executed manually in the Supabase SQL Editor, so the Supabase CLI migration history may not contain a matching baseline.
 
@@ -34,6 +35,15 @@ Only a trusted project/database administrator should execute them. See `admin/RE
 ## Verification
 
 Files under `verification/` contain read-only SQL checks. They do not create, update, or delete application data.
+
+Rules Engine Phase 1 verification:
+
+```bash
+# After applying add_rules_engine_phase1.sql
+psql "$DATABASE_URL" -f supabase/verification/verify_rules_engine_phase1.sql
+```
+
+REST resource for backend upserts: `/rest/v1/risk_assessment` with `on_conflict=fact_find_submission_id`.
 
 Expected values for the original database and staff authorization setup were:
 

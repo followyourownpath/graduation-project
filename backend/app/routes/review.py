@@ -10,8 +10,15 @@ review_bp = Blueprint("review", __name__, url_prefix="/api/v1")
 REVIEW_STATUSES = {"pending", "corrected", "confirmed", "rejected"}
 
 
-def _error(code, message, status=400):
-    return jsonify({"error": {"code": code, "message": message}}), status
+def _error(code, message, status=400, details=None):
+    body = {"error": {"code": code, "message": message}}
+    if details is not None:
+        body["error"]["details"] = details
+    return jsonify(body), status
+
+
+def _intake_error(error: IntakeError):
+    return _error(error.code, error.message, error.status, error.details)
 
 
 def _uuid(value, name):
@@ -38,7 +45,7 @@ def list_submissions():
             g.access_token, page, limit, request.args.get("status")
         )
     except IntakeError as error:
-        return _error(error.code, error.message, error.status)
+        return _intake_error(error)
     return jsonify(result)
 
 
@@ -53,7 +60,7 @@ def get_submission(submission_id):
             g.access_token, submission_id
         )
     except IntakeError as error:
-        return _error(error.code, error.message, error.status)
+        return _intake_error(error)
     return jsonify(result)
 
 
@@ -68,7 +75,7 @@ def get_extracted_data(document_id):
             g.access_token, document_id
         )
     except IntakeError as error:
-        return _error(error.code, error.message, error.status)
+        return _intake_error(error)
     return jsonify(result)
 
 
@@ -91,8 +98,9 @@ def review_field(field_id):
             g.access_token, field_id, payload, g.current_user["id"]
         )
     except IntakeError as error:
-        return _error(error.code, error.message, error.status)
+        return _intake_error(error)
     return jsonify(result)
+
 
 @review_bp.put("/submissions/<submission_id>/status")
 @require_staff
@@ -104,11 +112,15 @@ def update_submission_status(submission_id):
     status = str(payload.get("status", "")).strip().lower()
     if status not in {"approved", "rejected"}:
         return _error("invalid_status", "status must be approved or rejected.")
-    
+
     try:
+        if status == "approved":
+            current_app.extensions["rules_engine_service"].validate_readiness(
+                g.access_token, submission_id
+            )
         result = current_app.extensions["review_service"].update_submission_status(
             g.access_token, submission_id, status
         )
     except IntakeError as error:
-        return _error(error.code, error.message, error.status)
+        return _intake_error(error)
     return jsonify(result)

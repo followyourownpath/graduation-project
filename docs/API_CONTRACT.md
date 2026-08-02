@@ -46,6 +46,8 @@ Typical authentication status codes are:
 | POST | `/documents/{document_id}/ocr` | Extract and persist document data |
 | GET | `/submissions` | List submissions for the dashboard |
 | GET | `/submissions/{submission_id}` | Get a submission and its documents |
+| POST | `/submissions/{submission_id}/risk-assessment` | Run or recalculate Phase 1 risk assessment |
+| GET | `/submissions/{submission_id}/risk-assessment` | Get the saved Phase 1 risk assessment report |
 | GET | `/documents/{document_id}/extracted-data` | Get review-ready fields |
 | PUT | `/fields/{field_id}/review` | Save a field review or correction |
 | PUT | `/submissions/{submission_id}/status` | Approve or reject a submission |
@@ -181,14 +183,19 @@ Optional query parameters:
       "submission_status": "in_review",
       "extraction_status": "completed",
       "created_at": "2026-07-29T10:00:00Z",
+      "assessment_status": "not_started",
+      "overall_risk_score": null,
       "risk_level": null,
-      "overall_risk_score": null
+      "assessed_at": null
     }
   ]
 }
 ```
 
-Risk fields remain `null` until the risk-scoring module is implemented.
+`assessment_status` values: `not_started`, `processing`, `completed`, `failed`.
+`not_started` is derived when no `risk_assessment` row exists.
+
+`risk_level` values (lowercase codes; UI owns display labels): `low`, `lower`, `medium`, `higher`, `high`.
 
 ### `GET /submissions/{submission_id}`
 
@@ -201,8 +208,10 @@ Returns the same submission fields plus linked documents:
   "loan_type": "purchase",
   "submission_status": "in_review",
   "extraction_status": "completed",
-  "risk_level": null,
+  "assessment_status": "not_started",
   "overall_risk_score": null,
+  "risk_level": null,
+  "assessed_at": null,
   "documents": [
     {
       "doc_id": "document-uuid",
@@ -214,6 +223,88 @@ Returns the same submission fields plus linked documents:
   ]
 }
 ```
+
+## Risk assessment (Rules Engine Phase 1)
+
+Phase 1 scores four document buckets (`id_100`, `payslip`, `bank_statement_3m`,
+`ato_notice`) at 0 or 25 each. Overall score is therefore
+`0 | 25 | 50 | 75 | 100`.
+
+Only `submission_status=approved` submissions can be assessed. Approving a
+submission also requires Phase 1 readiness (exactly one of each required
+document type, completed OCR, and required fields).
+
+### `POST /submissions/{submission_id}/risk-assessment`
+
+Runs the 13 Phase 1 rules synchronously and upserts the single
+`risk_assessment` row for the submission.
+
+Success: `201 Created` on first assessment, `200 OK` on recalculation.
+Response body matches `GET` below.
+
+Common conflicts (`409`) include:
+
+| code | meaning |
+|---|---|
+| `submission_not_approved` | Submission is not approved |
+| `phase1_documents_missing` | A required document type is missing |
+| `phase1_duplicate_document_type` | More than one document of a required type |
+| `phase1_extraction_incomplete` | A required document lacks a completed OCR job |
+| `phase1_required_fields_missing` | Required extracted fields are missing |
+
+Conflict responses may include `error.details` with actionable missing items.
+
+### `GET /submissions/{submission_id}/risk-assessment`
+
+Returns the saved completed report.
+
+```json
+{
+  "assessment_id": "uuid",
+  "submission_id": "uuid",
+  "application_reference": "external CRM id or local application uuid",
+  "customer_name": "Alice Smith",
+  "assessment_status": "completed",
+  "ruleset_version": "phase1-v1",
+  "overall_risk_score": 25,
+  "risk_level": "lower",
+  "failed_document_count": 1,
+  "total_scored_documents": 4,
+  "assessed_at": "2026-08-02T10:30:00Z",
+  "document_results": [
+    {
+      "document_type": "id_100",
+      "display_name": "ID",
+      "source_document_id": "uuid",
+      "original_file_name": "licence.jpg",
+      "matched_applicant_numbers": [1],
+      "status": "fail",
+      "score": 25,
+      "rules": [
+        {
+          "rule_id": "FF-ID-001",
+          "label": "Applicant name matches ID",
+          "status": "fail",
+          "fact_find_field_keys": ["applicant_1_full_name"],
+          "document_field_keys": ["full_legal_name"],
+          "fact_find_value": "ALICE SMITH",
+          "document_value": "ALICIA SMITH",
+          "normalised_fact_find_value": "ALICE SMITH",
+          "normalised_document_value": "ALICIA SMITH",
+          "comparison": {
+            "operator": "name_similarity",
+            "similarity": 0.88,
+            "threshold": 0.95
+          },
+          "message": "Applicant name does not match ID."
+        }
+      ]
+    }
+  ]
+}
+```
+
+If no completed assessment exists: `404` with `error.code=risk_assessment_not_found`.
 
 ## Extracted fields and review
 
@@ -276,6 +367,10 @@ Request:
 ```
 
 Supported values are `approved` and `rejected`.
+
+Approving a submission runs the shared Phase 1 readiness validator first. If
+documents, OCR completion, or required fields are missing, the API returns
+`409` and does not change status.
 
 ```json
 {

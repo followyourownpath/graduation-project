@@ -84,7 +84,7 @@
         <mxCell id="db-c" value="Docker Container: supabase-db (PostgreSQL :5432)" style="swimlane;startSize=28;fillColor=#d5e8d4;strokeColor=#82b366;" vertex="1" parent="vps">
           <mxGeometry x="1100" y="50" width="200" height="320" as="geometry" />
         </mxCell>
-        <mxCell id="db-tables" value="Supabase Tables&#xa;─────────────&#xa;loan_applications&#xa;documents&#xa;extraction_fields&#xa;  (+ confidence %)&#xa;verification_results&#xa;discrepancies&#xa;audit_log" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;align=left;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="db-c">
+        <mxCell id="db-tables" value="Supabase Tables&#xa;─────────────&#xa;clients · applications&#xa;documents&#xa;extracted_data&#xa;extracted_field_values&#xa;verification_results · alerts&#xa;validation_rules" style="shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=12;align=left;fillColor=#ffffff;strokeColor=#82b366;" vertex="1" parent="db-c">
           <mxGeometry x="25" y="50" width="150" height="250" as="geometry" />
         </mxCell>
 
@@ -187,7 +187,7 @@
         </mxCell>
 
         <!-- Data Flow Legend -->
-        <mxCell id="legend" value="Labelled Data Flows (MVP)&#xa;&#xa;Flow A — Task i Capture:&#xa;  User upload → Next.js → Node DocumentController → store file → n8n WF1 → Azure OCR → OpenAI → extraction_fields + confidence → Supabase&#xa;&#xa;Flow B — Task ii Verification:&#xa;  User trigger validate → Node VerificationController → n8n WF2 → Verification API (+ ABR) → compare fields → discrepancies flagged → verification_results → Supabase&#xa;&#xa;Flow C — Task iii Dashboard (Nice to have):&#xa;  Next.js → Node DashboardController → DashboardService → aggregate confidence % → rank applications → UI" style="shape=note;whiteSpace=wrap;html=1;size=16;align=left;verticalAlign=top;fillColor=#ffff88;strokeColor=#36393d;" vertex="1" parent="1">
+        <mxCell id="legend" value="Labelled Data Flows (MVP)&#xa;&#xa;Flow A — Task i Capture:&#xa;  User upload → Next.js → Node DocumentController → document-storage → n8n WF1 → Azure OCR → OpenAI → extracted_data + extracted_field_values → Supabase&#xa;&#xa;Flow B — Task ii Verification:&#xa;  User trigger validate → Node VerificationController → n8n WF2 → Verification API (+ ABR) → compare fields → alerts flagged → verification_results → Supabase&#xa;&#xa;Flow C — Task iii Dashboard (Nice to have):&#xa;  Next.js → Node DashboardController → DashboardService → aggregate overall_confidence_pct → rank applications → UI" style="shape=note;whiteSpace=wrap;html=1;size=16;align=left;verticalAlign=top;fillColor=#ffff88;strokeColor=#36393d;" vertex="1" parent="1">
           <mxGeometry x="200" y="1050" width="700" height="180" as="geometry" />
         </mxCell>
 

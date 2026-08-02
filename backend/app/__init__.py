@@ -8,11 +8,13 @@ from app.routes.health import health_bp
 from app.routes.intake import intake_bp
 from app.routes.ocr import ocr_bp
 from app.routes.review import review_bp
+from app.routes.rules_engine import rules_engine_bp
 from app.services.auth import SupabaseAuthService
 from app.services.intake import SupabaseIntakeService
 from app.services.azure_document_intelligence import AzureDocumentIntelligenceClient
 from app.services.ocr_pipeline import OcrPipelineService, SupabaseOcrRepository
 from app.services.review import SupabaseReviewService
+from app.services.rules_engine import RulesEngineService, SupabaseRulesEngineRepository
 
 
 def create_app(
@@ -21,6 +23,7 @@ def create_app(
     intake_service=None,
     ocr_pipeline=None,
     review_service=None,
+    rules_engine_service=None,
 ) -> Flask:
     """Create and configure the SmartFinn API application."""
     app = Flask(__name__)
@@ -55,12 +58,19 @@ def create_app(
         azure_client,
         app.config["AZURE_DOCUMENT_INTELLIGENCE_MODEL"],
     )
+    app.extensions["rules_engine_service"] = rules_engine_service or RulesEngineService(
+        SupabaseRulesEngineRepository(
+            app.config["SUPABASE_URL"],
+            app.config["SUPABASE_PUBLISHABLE_KEY"],
+        )
+    )
 
     app.register_blueprint(health_bp)
     app.register_blueprint(auth_bp)
     app.register_blueprint(intake_bp)
     app.register_blueprint(ocr_bp)
     app.register_blueprint(review_bp)
+    app.register_blueprint(rules_engine_bp)
     register_error_handlers(app)
 
     return app

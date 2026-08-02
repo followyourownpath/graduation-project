@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { FileText, Clock, AlertTriangle, CheckCircle, ArrowRight, Loader2 } from "lucide-react";
 import Link from "next/link";
 import { api } from '@/lib/api';
+import { formatRiskScoreBadge, loanTypeLabel, riskDisplay } from "@/lib/risk-display";
 
 export default function DashboardPage() {
   const [applications, setApplications] = useState([]);
@@ -29,7 +30,7 @@ export default function DashboardPage() {
 
   const totalApps = applications.length;
   const pendingApps = applications.filter(app => app.submission_status === 'in_review').length;
-  const highRiskApps = applications.filter(app => app.risk_level === 'High').length;
+  const highRiskApps = applications.filter(app => app.risk_level === 'high').length;
   const approvedApps = applications.filter(app => app.submission_status === 'approved').length;
 
   return (
@@ -120,15 +121,7 @@ export default function DashboardPage() {
                   <TableRow key={app.id}>
                     <TableCell className="font-medium">{app.id}</TableCell>
                     <TableCell>{app.customer_name}</TableCell>
-                    <TableCell>{
-                      {
-                        'purchase': 'Owner-Occupier Purchase',
-                        'investment': 'Investment Purchase',
-                        'refinance': 'Refinance',
-                        'first_home': 'First Home Buyer',
-                        'self_employed': 'Self-Employed (any)'
-                      }[app.loan_type] || app.loan_type
-                    }</TableCell>
+                    <TableCell>{loanTypeLabel(app.loan_type)}</TableCell>
                     <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                       <Badge variant="outline" className={
@@ -141,13 +134,17 @@ export default function DashboardPage() {
                       </Badge>
                     </TableCell>
                     <TableCell>
-                      <Badge variant="outline" className={
-                        app.risk_level === 'High' ? 'border-red-500 text-red-700 bg-red-50' : 
-                        app.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
-                        'border-emerald-500 text-emerald-700 bg-emerald-50'
-                      }>
-                        {app.overall_risk_score} ({app.risk_level})
-                      </Badge>
+                      {(() => {
+                        const riskBadge = formatRiskScoreBadge(app);
+                        const risk = riskDisplay(app.risk_level);
+                        return (
+                          <Badge variant="outline" className={riskBadge.className}>
+                            {riskBadge.scoreText != null
+                              ? `${riskBadge.scoreText} (${risk.label})`
+                              : riskBadge.label}
+                          </Badge>
+                        );
+                      })()}
                     </TableCell>
                     <TableCell>
                       <Link href={`/application/${app.id}`}>

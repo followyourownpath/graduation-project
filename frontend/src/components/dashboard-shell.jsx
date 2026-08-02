@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FileText, LayoutDashboard, Loader2, LogOut, Settings, ShieldCheck } from "lucide-react";
+import { FileText, LayoutDashboard, Loader2, LogOut, Settings, ShieldAlert, ShieldCheck } from "lucide-react";
 import { api } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -11,8 +11,18 @@ import { cn } from "@/lib/utils";
 const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Applications", href: "/applications", icon: FileText },
+  { name: "Rules Engine", href: "/rules-engine", icon: ShieldAlert },
   { name: "Settings", href: "#", icon: Settings },
 ];
+
+function pageTitle(pathname) {
+  if (pathname === "/dashboard") return "Overview";
+  if (pathname === "/applications" || pathname.startsWith("/applications/")) return "Applications";
+  if (pathname.startsWith("/application/")) return "Review Application";
+  if (pathname === "/rules-engine" || pathname.startsWith("/rules-engine/")) return "Rules Engine";
+  if (pathname === "/settings" || pathname.startsWith("/settings/")) return "Settings";
+  return "Overview";
+}
 
 export function initials(name = "Staff") {
   return name.split(/\s+/).filter(Boolean).slice(0, 2).map((part) => part[0]).join("").toUpperCase();
@@ -56,10 +66,22 @@ export function DashboardShell({ children }) {
         <nav className="flex-1 space-y-2 px-4 py-6">
           {navItems.map((item) => {
             const Icon = item.icon;
-            return <Link key={item.name} href={item.href} className={cn(
-              "flex items-center rounded-lg px-4 py-3 text-sm font-medium transition-colors",
-              pathname === item.href ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white",
-            )}><Icon className="mr-3 h-5 w-5" />{item.name}</Link>;
+            const active = item.href !== "#" && (
+              pathname === item.href || pathname.startsWith(`${item.href}/`)
+            );
+            return (
+              <Link
+                key={item.name}
+                href={item.href}
+                className={cn(
+                  "flex items-center rounded-lg px-4 py-3 text-sm font-medium transition-colors",
+                  active ? "bg-blue-600 text-white" : "text-slate-300 hover:bg-slate-800 hover:text-white",
+                )}
+              >
+                <Icon className="mr-3 h-5 w-5" />
+                {item.name}
+              </Link>
+            );
           })}
         </nav>
         <div className="border-t border-slate-800 p-4">
@@ -71,7 +93,7 @@ export function DashboardShell({ children }) {
       </aside>
       <div className="flex flex-1 flex-col overflow-hidden">
         <header className="flex h-16 items-center justify-between border-b border-slate-200 bg-white px-8">
-          <h1 className="text-xl font-semibold text-slate-800">{pathname.includes("application") ? "Review Application" : "Overview"}</h1>
+          <h1 className="text-xl font-semibold text-slate-800">{pageTitle(pathname)}</h1>
           <div className="flex items-center gap-2" aria-live="polite">
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-100 text-sm font-bold text-blue-700">{staff ? initials(staff.full_name) : "…"}</div>
             <div className="text-right">

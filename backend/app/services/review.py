@@ -44,10 +44,14 @@ class SupabaseReviewService:
         applications = self._applications_by_id(
             token, [row.get("crm_application_id") for row in submissions]
         )
+        assessments = self._assessments_by_submission_ids(
+            token, [row["id"] for row in submissions]
+        )
 
         data = []
         for row in submissions:
             application = applications.get(row.get("crm_application_id"), {})
+            assessment_fields = self._assessment_summary(assessments.get(row["id"]))
             data.append({
                 "id": row["id"],
                 "local_application_id": application.get("id") or row.get("crm_application_id"),
@@ -58,8 +62,7 @@ class SupabaseReviewService:
                 "submission_status": row.get("submission_status"),
                 "extraction_status": row.get("extraction_status"),
                 "created_at": row.get("created_at"),
-                "risk_level": None,
-                "overall_risk_score": None,
+                **assessment_fields,
             })
 
         return {"total_count": self._total_count(response, len(data)), "data": data}
@@ -86,6 +89,8 @@ class SupabaseReviewService:
 
         application = self._application(token, submission.get("crm_application_id"))
         documents = self._documents(token, submission_id)
+        assessments = self._assessments_by_submission_ids(token, [submission_id])
+        assessment_fields = self._assessment_summary(assessments.get(submission_id))
         return {
             "id": submission["id"],
             "local_application_id": application.get("id") or submission.get("crm_application_id"),
@@ -96,8 +101,7 @@ class SupabaseReviewService:
             "submission_status": submission.get("submission_status"),
             "extraction_status": submission.get("extraction_status"),
             "created_at": submission.get("created_at"),
-            "risk_level": None,
-            "overall_risk_score": None,
+            **assessment_fields,
             "documents": documents,
         }
 
@@ -264,6 +268,41 @@ class SupabaseReviewService:
         )
         self._require_ok(response, "application_lookup_failed")
         return {row["id"]: row for row in response.json()}
+
+    def _assessments_by_submission_ids(self, token, submission_ids):
+        ids = [value for value in dict.fromkeys(submission_ids) if value]
+        if not ids:
+            return {}
+        response = self._request(
+            "get",
+            "/rest/v1/risk_assessment",
+            token,
+            params={
+                "select": (
+                    "fact_find_submission_id,assessment_status,overall_risk_score,"
+                    "risk_level,assessed_at"
+                ),
+                "fact_find_submission_id": f"in.({','.join(ids)})",
+            },
+        )
+        self._require_ok(response, "risk_assessment_lookup_failed")
+        return {row["fact_find_submission_id"]: row for row in response.json()}
+
+    @staticmethod
+    def _assessment_summary(assessment):
+        if not assessment:
+            return {
+                "assessment_status": "not_started",
+                "overall_risk_score": None,
+                "risk_level": None,
+                "assessed_at": None,
+            }
+        return {
+            "assessment_status": assessment.get("assessment_status") or "not_started",
+            "overall_risk_score": assessment.get("overall_risk_score"),
+            "risk_level": assessment.get("risk_level"),
+            "assessed_at": assessment.get("assessed_at"),
+        }
 
     def _signed_url(self, token, storage_uri):
         if not storage_uri:

@@ -8,10 +8,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { CheckCircle, Save, XCircle, Loader2 } from "lucide-react";
+import { CheckCircle, Save, XCircle, Loader2, ShieldAlert } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { api } from '@/lib/api';
 import { toast } from "sonner";
+import { formatRiskScoreBadge, riskDisplay } from "@/lib/risk-display";
 
 export default function ApplicationReviewPage({ params }) {
   const unwrappedParams = use(params);
@@ -153,6 +155,8 @@ export default function ApplicationReviewPage({ params }) {
   }
 
   const activeDoc = submission.documents?.find(d => d.doc_id === activeDocId);
+  const riskBadge = formatRiskScoreBadge(submission);
+  const risk = riskDisplay(submission.risk_level);
 
   // Group fields by section and ensure deterministic sorting
   const groupedFields = ocrData?.fields?.slice()
@@ -218,15 +222,21 @@ export default function ApplicationReviewPage({ params }) {
             {/* Header info */}
             <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-                <div className="flex items-center space-x-2.5">
+                <div className="flex flex-wrap items-center gap-2.5">
                   <h2 className="text-xl font-bold text-slate-900">Application Review</h2>
-                  <Badge variant="outline" className={
-                        submission.risk_level === 'High' ? 'border-red-500 text-red-700 bg-red-50 font-medium' : 
-                        submission.risk_level === 'Medium' ? 'border-amber-500 text-amber-700 bg-amber-50 font-medium' : 
-                        'border-emerald-500 text-emerald-700 bg-emerald-50 font-medium'
-                      }>
-                    Risk: {submission.overall_risk_score || 'N/A'} {submission.risk_level && `(${submission.risk_level})`}
+                  <Badge variant="outline" className={`${riskBadge.className} font-medium`}>
+                    {riskBadge.scoreText != null
+                      ? `Risk: ${riskBadge.scoreText} (${risk.label})`
+                      : riskBadge.label}
                   </Badge>
+                  {submission.assessment_status === "completed" && (
+                    <Link href={`/rules-engine/${appId}`}>
+                      <Button type="button" variant="outline" size="sm" className="h-7">
+                        <ShieldAlert className="mr-1.5 h-3.5 w-3.5" />
+                        View Risk Report
+                      </Button>
+                    </Link>
+                  )}
                 </div>
                 <Badge variant="secondary" className="w-fit text-xs px-2.5 py-0.5 bg-blue-50 text-blue-700 border border-blue-200 font-medium">
                   Source: {submission.source_channel === 'crm' ? 'Mercury CRM Channel' : 'Manual Intake Channel'}
