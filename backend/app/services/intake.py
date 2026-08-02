@@ -13,6 +13,7 @@ class IntakeError(Exception):
     code: str
     message: str
     status: int
+    details: dict[str, Any] | None = None
 
 
 class SupabaseIntakeService:

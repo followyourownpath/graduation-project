@@ -11,6 +11,7 @@ import { CloudUpload, File as FileIcon, X, CheckCircle2, Loader2, AlertCircle, U
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { api } from '@/lib/api';
+import { toast } from "sonner";
 
 // Data Configuration
 const LOAN_TYPES = [
@@ -20,6 +21,15 @@ const LOAN_TYPES = [
   { id: 'first_home', label: 'First Home Buyer' },
   { id: 'self_employed', label: 'Self-Employed (any)' }
 ];
+
+/** Phase 1 scored categories: exactly one file each (replace on re-select). */
+const SINGLE_FILE_DOCUMENT_TYPES = new Set([
+  'fact_find',
+  'id_100',
+  'payslip',
+  'bank_statement_3m',
+  'ato_notice',
+]);
 
 const DOCUMENT_REQUIREMENTS = {
   purchase: [
@@ -88,10 +98,19 @@ export default function NewApplicationPage() {
     if (e.target.files && e.target.files.length > 0) {
       handleFilesForCategory(Array.from(e.target.files), categoryId);
     }
+    // Allow re-selecting the same file path after replace
+    e.target.value = "";
   };
 
   const handleFilesForCategory = (newFiles, categoryId) => {
-    const newFilesWithProgress = newFiles.map(file => ({
+    const isSingleFileCategory = SINGLE_FILE_DOCUMENT_TYPES.has(categoryId);
+    const filesToAdd = isSingleFileCategory ? newFiles.slice(0, 1) : newFiles;
+
+    if (isSingleFileCategory && newFiles.length > 1) {
+      toast.message("Only one file allowed for this document type. Using the first selected file.");
+    }
+
+    const newFilesWithProgress = filesToAdd.map(file => ({
       file,
       id: Math.random().toString(36).substring(7),
       progress: 0,
@@ -101,7 +120,15 @@ export default function NewApplicationPage() {
     
     setCategoryFiles(prev => {
       const existing = prev[categoryId] || [];
-      return { ...prev, [categoryId]: [...existing, ...newFilesWithProgress] };
+      if (isSingleFileCategory && existing.length > 0) {
+        toast.message("Replaced the existing file for this document type.");
+      }
+      return {
+        ...prev,
+        [categoryId]: isSingleFileCategory
+          ? newFilesWithProgress
+          : [...existing, ...newFilesWithProgress],
+      };
     });
 
     // Simulate progress and OCR stages
@@ -180,6 +207,14 @@ export default function NewApplicationPage() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!isValid) return;
+
+    for (const type of SINGLE_FILE_DOCUMENT_TYPES) {
+      const files = categoryFiles[type] || [];
+      if (files.length > 1) {
+        toast.error(`Only one file is allowed for ${type}. Remove extras before submitting.`);
+        return;
+      }
+    }
     
     setIsSubmitting(true);
     try {
@@ -187,10 +222,15 @@ export default function NewApplicationPage() {
       formData.append('customer_name', applicantName);
       formData.append('loan_type', loanType);
 
+      const appendedTypes = new Set();
       for (const [categoryId, files] of Object.entries(categoryFiles)) {
         for (const fileObj of files) {
+          if (SINGLE_FILE_DOCUMENT_TYPES.has(categoryId) && appendedTypes.has(categoryId)) {
+            continue;
+          }
           formData.append('files', fileObj.file);
           formData.append('document_types', categoryId);
+          appendedTypes.add(categoryId);
         }
       }
 
@@ -198,6 +238,7 @@ export default function NewApplicationPage() {
       router.push(`/application/${data.submission_id}`);
     } catch (error) {
       console.error('Upload failed:', error);
+      toast.error(error.message || 'Upload failed.');
     } finally {
       setIsSubmitting(false);
     }
@@ -468,7 +509,7 @@ export default function NewApplicationPage() {
                     <div className="flex-shrink-0 flex items-center mt-3 md:mt-0">
                       <input 
                         type="file" 
-                        multiple 
+                        multiple={!SINGLE_FILE_DOCUMENT_TYPES.has(req.id)}
                         className="hidden" 
                         id={`file-upload-${req.id}`} 
                         onChange={(e) => handleFileInput(e, req.id)}
@@ -479,7 +520,7 @@ export default function NewApplicationPage() {
                         className="cursor-pointer inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-slate-300 bg-white hover:bg-slate-50 h-9 px-4 text-slate-700 shadow-sm"
                       >
                         <UploadCloud className="w-4 h-4 mr-2 text-slate-500" />
-                        Attach File
+                        {SINGLE_FILE_DOCUMENT_TYPES.has(req.id) && files.length > 0 ? "Replace File" : "Attach File"}
                       </Label>
                     </div>
                   </CardContent>

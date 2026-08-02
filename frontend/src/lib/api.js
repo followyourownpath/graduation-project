@@ -3,11 +3,12 @@ import { createClient } from "@/lib/supabase/client";
 const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
 export class ApiError extends Error {
-  constructor(message, status, code) {
+  constructor(message, status, code, details = null) {
     super(message);
     this.name = "ApiError";
     this.status = status;
     this.code = code;
+    this.details = details;
   }
 }
 
@@ -27,6 +28,7 @@ export async function apiFetch(path, options = {}) {
       body.error?.message || `Request failed with status ${response.status}.`,
       response.status,
       body.error?.code,
+      body.error?.details ?? null,
     );
     if (response.status === 401) await supabase.auth.signOut();
     throw apiError;
@@ -90,5 +92,19 @@ export const api = {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ status }),
     });
+  },
+
+  getApprovedSubmissions() {
+    return apiFetch("/submissions?status=approved");
+  },
+
+  startRiskAssessment(submissionId) {
+    return apiFetch(`/submissions/${encodeURIComponent(submissionId)}/risk-assessment`, {
+      method: "POST",
+    });
+  },
+
+  getRiskAssessment(submissionId) {
+    return apiFetch(`/submissions/${encodeURIComponent(submissionId)}/risk-assessment`);
   },
 };
