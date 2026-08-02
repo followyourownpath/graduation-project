@@ -22,53 +22,69 @@ const LOAN_TYPES = [
   { id: 'self_employed', label: 'Self-Employed (any)' }
 ];
 
-/** Phase 1 scored categories: exactly one file each (replace on re-select). */
+/** Phase 1 scored categories: exactly one file each (replace on re-select). All types are restricted to 1 file. */
 const SINGLE_FILE_DOCUMENT_TYPES = new Set([
   'fact_find',
   'id_100',
-  'payslip',
   'bank_statement_3m',
   'ato_notice',
+  'payslip',
+  'contract_of_sale',
+  'property_valuation',
+  'rental_appraisal',
+  'existing_loan_statements',
+  'first_home_grant',
+  'tax_return',
+  'profit_loss',
 ]);
 
 const DOCUMENT_REQUIREMENTS = {
   purchase: [
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
-    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
     { id: 'id_100', label: '100-pt ID (e.g. passport + licence)', required: true },
-    { id: 'contract_of_sale', label: 'Contract of sale', required: true },
-    { id: 'property_valuation', label: 'Property valuation', required: true },
+    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
+    { id: 'contract_of_sale', label: 'Contract of sale', required: false },
+    { id: 'property_valuation', label: 'Property valuation', required: false },
   ],
   investment: [
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
-    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
-    { id: 'contract_of_sale', label: 'Contract of sale', required: true },
-    { id: 'property_valuation', label: 'Property valuation', required: true },
-    { id: 'rental_appraisal', label: 'Rental appraisal / lease agreement', required: true },
+    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
+    { id: 'contract_of_sale', label: 'Contract of sale', required: false },
+    { id: 'property_valuation', label: 'Property valuation', required: false },
+    { id: 'rental_appraisal', label: 'Rental appraisal / lease agreement', required: false },
   ],
   refinance: [
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
-    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
-    { id: 'existing_loan_statements', label: 'Existing loan statements — in 6 months', required: true },
-    { id: 'property_valuation', label: 'Property valuation', required: true },
+    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
+    { id: 'existing_loan_statements', label: 'Existing loan statements — in 6 months', required: false },
+    { id: 'property_valuation', label: 'Property valuation', required: false },
   ],
   first_home: [
-    { id: 'payslip', label: 'Payslip — in 4 weeks', required: true },
-    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
-    { id: 'contract_of_sale', label: 'Contract of sale', required: true },
-    { id: 'property_valuation', label: 'Property valuation', required: true },
-    { id: 'first_home_grant', label: 'First Home Owner Grant application', required: true },
+    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
+    { id: 'payslip', label: 'Payslip — in 4 weeks', required: false },
+    { id: 'contract_of_sale', label: 'Contract of sale', required: false },
+    { id: 'property_valuation', label: 'Property valuation', required: false },
+    { id: 'first_home_grant', label: 'First Home Owner Grant application', required: false },
   ],
   self_employed: [
-    { id: 'tax_return', label: 'Tax returns — in 2 years', required: true },
-    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
-    { id: 'profit_loss', label: 'Profit & Loss statement — accountant-certified', required: true },
-    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'fact_find', label: 'Fact Find Sheet', required: true },
     { id: 'id_100', label: '100-pt ID', required: true },
-    { id: 'property_valuation', label: 'Property valuation', required: true },
+    { id: 'bank_statement_3m', label: 'Bank statements — in 3 months', required: true },
+    { id: 'ato_notice', label: 'ATO Notice of Assessment', required: true },
+    { id: 'tax_return', label: 'Tax returns — in 2 years', required: false },
+    { id: 'profit_loss', label: 'Profit & Loss statement — accountant-certified', required: false },
+    { id: 'property_valuation', label: 'Property valuation', required: false },
   ]
 };
 
@@ -187,22 +203,24 @@ export default function NewApplicationPage() {
     });
   };
 
+  const hasManualFactFind = categoryFiles['fact_find'] && categoryFiles['fact_find'].length > 0;
+  const isFactFindSatisfied = factFindImported || hasManualFactFind;
+
   // Validation
   const getMissingCategories = () => {
     return activeRequirements.filter(req => {
+      if (req.id === 'fact_find') {
+        return req.required && !isFactFindSatisfied;
+      }
       const files = categoryFiles[req.id];
       return req.required && (!files || files.length === 0);
     });
   };
   
   const missingCategories = getMissingCategories();
-  
-  const hasManualFactFind = categoryFiles['fact_find'] && categoryFiles['fact_find'].length > 0;
-  const isFactFindSatisfied = factFindImported || hasManualFactFind;
 
-  // Bypass missingCategories requirement for demo, just require a name, at least 1 file, and fact find satisfied
-  const hasAnyFiles = Object.values(categoryFiles).flat().length > 0 || factFindImported;
-  const isValid = applicantName.trim() !== '' && hasAnyFiles && isFactFindSatisfied;
+  // Every loan type requires all 4 mandatory files (Fact Find, ID, Bank Statement, NOA) to be present
+  const isValid = applicantName.trim() !== '' && missingCategories.length === 0;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -433,7 +451,7 @@ export default function NewApplicationPage() {
           <div className="grid grid-cols-1 gap-4">
             {activeRequirements.map(req => {
               const files = categoryFiles[req.id] || [];
-              const isSatisfied = files.length > 0;
+              const isSatisfied = req.id === 'fact_find' ? isFactFindSatisfied : files.length > 0;
               
               return (
                 <Card key={req.id} className={`border-l-4 transition-colors ${isSatisfied ? 'border-l-emerald-500' : 'border-l-amber-400'}`}>
@@ -501,6 +519,12 @@ export default function NewApplicationPage() {
                               </div>
                             </div>
                           ))}
+                        </div>
+                      )}
+                      {req.id === 'fact_find' && factFindImported && files.length === 0 && (
+                        <div className="mt-2 text-xs font-medium text-emerald-600 bg-emerald-50 px-2.5 py-1.5 rounded border border-emerald-200 inline-flex items-center">
+                          <CheckCircle2 className="w-3.5 h-3.5 mr-1.5" />
+                          Fact Find data successfully imported/synced from CRM or Email
                         </div>
                       )}
                     </div>
