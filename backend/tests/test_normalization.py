@@ -1,7 +1,7 @@
 from app.normalization.bank_statement import extract_bank_statement_fields
 from app.normalization.id_100 import extract_id_fields
 from app.normalization.payslip import extract_payslip_fields
-from app.normalization.values import australian_date, digits, money, phone
+from app.normalization.values import australian_date, digits, money, phone, parse_full_address
 
 
 def test_value_normalizers():
@@ -11,6 +11,14 @@ def test_value_normalizers():
     assert australian_date("02/06/2026") == "2026-06-02"
     assert digits("66 396 710 463") == "66396710463"
     assert phone("0412 345 678") == "+61412345678"
+    assert parse_full_address("150 Todman Ave, Kensington NSW 2033") == {
+        "street_number": "150",
+        "street_name": "Todman",
+        "street_type": "Ave",
+        "city": "Kensington",
+        "state": "NSW",
+        "postcode": "2033",
+    }
 
 
 def test_extract_payslip_fields_from_layout_tables():

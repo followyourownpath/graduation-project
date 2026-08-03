@@ -545,6 +545,7 @@ class SupabaseReviewService:
         # Compile assets
         assets = []
         # Property Assets
+        from app.normalization.values import parse_full_address
         for i in range(1, 6):
             addr = field_map.get(f"property_asset_{i}_address")
             val = field_map.get(f"property_asset_{i}_estimated_value")
@@ -553,6 +554,7 @@ class SupabaseReviewService:
                     "name": addr or "Real Estate Property",
                     "type": "realEstate",
                     "value": val or 0.0,
+                    "address": parse_full_address(addr) if addr else None,
                 })
         # Savings Account / Term Deposit
         for i in range(1, 3):
@@ -607,6 +609,24 @@ class SupabaseReviewService:
 
         # Compile liabilities
         liabilities = []
+        # Existing Mortgage Loans from Property Assets
+        for i in range(1, 6):
+            addr = field_map.get(f"property_asset_{i}_address")
+            loan_bal = field_map.get(f"property_asset_{i}_loan_balance")
+            lender = field_map.get(f"property_asset_{i}_lender")
+            if loan_bal:
+                try:
+                    val_float = float(loan_bal)
+                except ValueError:
+                    val_float = 0.0
+                if val_float > 0:
+                    liabilities.append({
+                        "name": "Mortgage Loan",
+                        "type": "realEstate",
+                        "value": val_float,
+                        "institution": lender or "Lender",
+                        "details": addr or "Property Security",
+                    })
         # Credit Cards
         for i in range(1, 4):
             bal = field_map.get(f"liability_credit_card_{i}_balance")
