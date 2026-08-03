@@ -93,7 +93,6 @@ export const api = {
       body: JSON.stringify({ status }),
     });
   },
-
   getApprovedSubmissions() {
     return apiFetch("/submissions?status=approved");
   },
@@ -106,5 +105,11 @@ export const api = {
 
   getRiskAssessment(submissionId) {
     return apiFetch(`/submissions/${encodeURIComponent(submissionId)}/risk-assessment`);
+  },
+
+  retryCrmSync(id) {
+    return apiFetch(`/submissions/${encodeURIComponent(id)}/sync/retry`, {
+      method: "POST",
+    });
   },
 };

@@ -119,8 +119,24 @@ def update_submission_status(submission_id):
                 g.access_token, submission_id
             )
         result = current_app.extensions["review_service"].update_submission_status(
-            g.access_token, submission_id, status
+            g.access_token, submission_id, status, g.current_user["id"]
         )
     except IntakeError as error:
         return _intake_error(error)
     return jsonify(result)
+
+
+@review_bp.post("/submissions/<submission_id>/sync/retry")
+@require_staff
+def retry_crm_sync(submission_id):
+    invalid = _uuid(submission_id, "submission_id")
+    if invalid:
+        return invalid
+    try:
+        result = current_app.extensions["review_service"].retry_crm_sync(
+            g.access_token, submission_id
+        )
+    except IntakeError as error:
+        return _error(error.code, error.message, error.status)
+    return jsonify(result)
+
