@@ -113,7 +113,7 @@ def extract_bank_statement_fields(result):
     if not holder_match:
         # Fallback: name placed at top before address keywords
         holder_match = re.search(
-            r"\b([A-Z][a-z]+(?:\s+(?:(?!Unit|BSB|Account|Statement|Bank|Suite|PO|Box)[A-Z][a-z]+))+)\b"
+            r"\b([A-Z][a-z]+(?:\s+(?:(?!Unit|BSB|Account|Statement|Bank|Suite|PO|Box|Licence|Credit|Mutual|LTD|Ltd|ABN|ACN|AFSL)[A-Z][a-z]+))+)\b"
             r"(?=\s+(?:Unit|\d+|BSB:|[A-Z][a-z]+\s+(?:Street|St|Road|Rd|Way|Lane|Ln|Drive|Dr|Ring|Steps|Tarn|Foreshore|Strand)))",
             content
         )
