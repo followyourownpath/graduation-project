@@ -341,7 +341,7 @@ export default function ApplicationReviewPage({ params }) {
                       <div className="grid grid-cols-2 gap-4">
                         {fields.map(field => {
                           const isEdited = editedFields[field.field_id]?.isEdited;
-                          const currentValue = editedFields[field.field_id]?.value ?? field.raw_value;
+                          const currentValue = editedFields[field.field_id]?.value ?? field.raw_value ?? "";
                           const isLowConfidence = field.confidence < 0.8;
                           
                           return (

@@ -51,16 +51,30 @@ class AzureDocumentIntelligenceClient:
             "Accept": "application/json",
         }
 
-        try:
-            response = self._session.post(
-                analyze_url,
-                params={"api-version": self._api_version},
-                headers=headers,
-                data=content,
-                timeout=self._request_timeout,
-            )
-        except requests.RequestException as error:
-            raise self._unavailable() from error
+        max_retries = 5
+        retry_delay = 3.0
+        response = None
+        for attempt in range(max_retries):
+            try:
+                response = self._session.post(
+                    analyze_url,
+                    params={"api-version": self._api_version},
+                    headers=headers,
+                    data=content,
+                    timeout=self._request_timeout,
+                )
+                if response.status_code == 429:
+                    # Rate limit reached: sleep and retry
+                    self._sleep(retry_delay)
+                    continue
+                break
+            except requests.RequestException as error:
+                if attempt == max_retries - 1:
+                    raise self._unavailable() from error
+                self._sleep(retry_delay)
+
+        if response is None:
+            raise self._unavailable()
 
         if response.status_code != 202:
             self._raise_response_error(response)
@@ -91,6 +105,10 @@ class AzureDocumentIntelligenceClient:
                 )
             except requests.RequestException as error:
                 raise self._unavailable() from error
+
+            if response.status_code == 429:
+                self._sleep(3.0)
+                continue
 
             if not response.ok:
                 self._raise_response_error(response)
