@@ -25,6 +25,7 @@ export default function ApplicationReviewPage({ params }) {
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [updatingStatus, setUpdatingStatus] = useState(false);
+  const [retryingSync, setRetryingSync] = useState(false);
   const router = useRouter();
   
   // Track edited values
@@ -62,26 +63,33 @@ export default function ApplicationReviewPage({ params }) {
     fetchOCR();
   }, [activeDocId]);
 
-  // Polling logic for pending OCR
+  // Polling logic for CRM Sync and pending OCR
   useEffect(() => {
     if (!submission) return;
-    const hasPending = submission.documents?.some(
+    const hasPendingOcr = submission.documents?.some(
       d => d.processing_status !== 'completed' && d.processing_status !== 'failed'
     );
-    if (!hasPending) return;
+    const hasPendingCrm = submission.submission_status === 'approved' && 
+      (submission.crm_sync_status === 'pending' || submission.crm_sync_status === 'in_progress');
+
+    if (!hasPendingOcr && !hasPendingCrm) return;
 
     const timer = setInterval(async () => {
       try {
         const data = await api.getSubmission(appId);
         setSubmission(data);
-        const stillPending = data.documents?.some(
+        const stillPendingOcr = data.documents?.some(
           d => d.processing_status !== 'completed' && d.processing_status !== 'failed'
         );
-        if (!stillPending) {
+        const stillPendingCrm = data.submission_status === 'approved' && 
+          (data.crm_sync_status === 'pending' || data.crm_sync_status === 'in_progress');
+
+        if (!stillPendingOcr && !stillPendingCrm) {
           clearInterval(timer);
-          // Refresh OCR data for active tab if it just completed
-          const ocr = await api.getExtractedData(activeDocId);
-          setOcrData(ocr);
+          if (activeDocId) {
+            const ocr = await api.getExtractedData(activeDocId);
+            setOcrData(ocr);
+          }
         }
       } catch (e) {
         console.error(e);
@@ -137,12 +145,33 @@ export default function ApplicationReviewPage({ params }) {
     setUpdatingStatus(true);
     try {
       await api.updateSubmissionStatus(appId, status);
-      router.push('/applications');
+      toast.success(`Application ${status} successfully.`);
+      if (status === 'approved') {
+        const data = await api.getSubmission(appId);
+        setSubmission(data);
+      } else {
+        router.push('/applications');
+      }
     } catch (error) {
       console.error(error);
       toast.error(`Failed to ${status} application.`);
     } finally {
       setUpdatingStatus(false);
+    }
+  };
+
+  const handleRetrySync = async () => {
+    setRetryingSync(true);
+    try {
+      await api.retryCrmSync(appId);
+      toast.success("CRM sync task queued for retry.");
+      const data = await api.getSubmission(appId);
+      setSubmission(data);
+    } catch (error) {
+      console.error(error);
+      toast.error("Failed to retry CRM sync.");
+    } finally {
+      setRetryingSync(false);
     }
   };
 
@@ -256,11 +285,38 @@ export default function ApplicationReviewPage({ params }) {
                 </div>
                 <div>
                   <span className="text-slate-400 block mb-1 font-medium">Mercury CRM External ID</span>
-                  {submission.crm_application_id ? (
-                    <span className="font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 flex items-center gap-1.5 shadow-2xs" title={submission.crm_application_id}>
-                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
+                  {submission.crm_sync_status === 'completed' && submission.crm_application_id ? (
+                    <span className="font-mono font-semibold text-emerald-700 bg-emerald-50 px-2 py-1 rounded border border-emerald-200 flex items-center gap-1.5 shadow-2xs w-fit" title={submission.crm_application_id}>
+                      <span className="inline-block w-2 h-2 rounded-full bg-emerald-500"></span>
                       {submission.crm_application_id}
                     </span>
+                  ) : submission.crm_sync_status === 'in_progress' ? (
+                    <span className="font-mono text-blue-700 bg-blue-50 px-2 py-1 rounded border border-blue-200 flex items-center gap-1.5 shadow-2xs w-fit">
+                      <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
+                      Syncing (In Progress)...
+                    </span>
+                  ) : submission.crm_sync_status === 'pending' ? (
+                    <span className="font-mono text-amber-700 bg-amber-50 px-2 py-1 rounded border border-amber-200 flex items-center gap-1.5 shadow-2xs w-fit">
+                      <span className="inline-block w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
+                      Syncing (Queued)...
+                    </span>
+                  ) : submission.crm_sync_status === 'failed' || submission.crm_sync_status === 'failed_permanent' ? (
+                    <div className="flex items-center gap-2">
+                      <span className="font-mono text-red-700 bg-red-50 px-2 py-1 rounded border border-red-200 flex items-center gap-1.5 shadow-2xs w-fit">
+                        <span className="inline-block w-2 h-2 rounded-full bg-red-500"></span>
+                        Sync Failed
+                      </span>
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="h-7 px-2 text-xs border-red-200 hover:bg-red-50 text-red-700 font-medium"
+                        onClick={handleRetrySync}
+                        disabled={retryingSync}
+                      >
+                        {retryingSync ? <Loader2 className="h-3.5 w-3.5 animate-spin mr-1 text-red-500" /> : null}
+                        Retry
+                      </Button>
+                    </div>
                   ) : (
                     <span className="font-mono text-slate-400 bg-slate-100/80 px-2 py-1 rounded border border-slate-200 block italic">
                       Pending Sync (Unmapped)
