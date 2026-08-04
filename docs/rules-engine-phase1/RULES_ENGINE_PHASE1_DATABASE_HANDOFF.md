@@ -4,7 +4,7 @@
 > 开始前必读：`RULES_ENGINE_PHASE1_MASTER_PLAN.md`  
 > 目标：为每个 approved submission 持久化一份可覆盖的 Phase 1 风险评估。
 
-## 1. 给 AI agent 的执行指令
+## 1. 数据库实施要求
 
 1. 先阅读总体计划和以下现有文件：
    - `supabase/migrations/create_smartfinn_schema.sql`
@@ -39,7 +39,7 @@ supabase/README.md
 
 ### 3.1 规范 SQL
 
-AI agent 应以下列 SQL 为准实现；可增加注释，不得擅自改列名或枚举值。
+实现应以下列 SQL 为准；可增加注释，不得擅自改列名或枚举值。
 
 ```sql
 begin;
