@@ -13,20 +13,20 @@ export function RiskScoreCard({ report }) {
   const totalDocs = report.total_scored_documents ?? 4;
 
   return (
-    <Card>
-      <CardContent className="pt-6">
-        <div className="grid grid-cols-1 items-center gap-8 lg:grid-cols-[auto_1fr]">
+    <Card className="rounded-xl border-slate-200 shadow-sm">
+      <CardContent className="p-5 sm:p-6">
+        <div className="grid grid-cols-1 items-center gap-6 lg:grid-cols-[auto_1fr]">
           <div className="flex flex-col items-center gap-3">
             <div
-              className="relative flex h-36 w-36 items-center justify-center rounded-full"
+              className="relative flex h-32 w-32 items-center justify-center rounded-full"
               style={{
                 background: `conic-gradient(${display.ringColor} 0deg ${degrees}deg, #e2e8f0 ${degrees}deg 360deg)`,
               }}
               role="img"
               aria-label={`Overall risk score ${score}`}
             >
-              <div className="flex h-[7.25rem] w-[7.25rem] flex-col items-center justify-center rounded-full bg-white shadow-inner">
-                <span className="text-3xl font-bold text-slate-900">{score}</span>
+              <div className="flex h-[6.5rem] w-[6.5rem] flex-col items-center justify-center rounded-full bg-white shadow-inner">
+                <span className="text-3xl font-semibold tabular-nums text-slate-950">{score}</span>
                 <span className="text-xs text-slate-500">/ 100</span>
               </div>
             </div>
@@ -37,11 +37,11 @@ export function RiskScoreCard({ report }) {
 
           <div className="space-y-6">
             <div>
-              <p className="text-sm font-medium text-slate-700">
-                Failed documents: {failedCount} / {totalDocs}
+              <p className="text-base font-semibold text-slate-950">
+                {failedCount} of {totalDocs} documents failed
               </p>
               <p className="mt-1 text-sm text-slate-500">
-                Each failed document contributes +25 to the overall risk score.
+                Deterministic score: each failed scored document contributes 25 risk points.
               </p>
             </div>
             <RiskScale score={score} />

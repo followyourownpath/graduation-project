@@ -5,9 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Checkbox } from "@/components/ui/checkbox";
-import { ShieldCheck, Loader2 } from "lucide-react";
-import Link from "next/link";
+import { ShieldCheck, Loader2, MailCheck, CircleAlert } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { withBasePath } from "@/lib/auth-utils";
 
@@ -19,11 +17,13 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [notice, setNotice] = useState(null);
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
+    setNotice(null);
 
     const supabase = createClient();
     const { data, error } = await supabase.auth.signInWithPassword({
@@ -60,68 +60,72 @@ export default function LoginPage() {
     }
     setLoading(true);
     setError(null);
+    setNotice(null);
     const redirectTo = new URL(withBasePath("/auth/confirm"), window.location.origin);
     redirectTo.searchParams.set("next", withBasePath("/update-password"));
     const { error } = await createClient().auth.resetPasswordForEmail(email, {
       redirectTo: redirectTo.toString(),
     });
     setLoading(false);
-    setError(error ? error.message : "If the account exists, a password reset link has been sent.");
+    if (error) setError(error.message);
+    else setNotice("If the account exists, a password reset link has been sent.");
   };
 
   return (
-    <div className="w-full h-screen grid lg:grid-cols-2">
+    <div className="grid min-h-dvh w-full lg:grid-cols-2">
       {/* Left Pane - Branding */}
-      <div className="hidden lg:flex flex-col justify-between bg-slate-900 p-12 text-white relative overflow-hidden">
+      <div className="relative hidden flex-col justify-between overflow-hidden bg-slate-950 p-12 text-white lg:flex">
         {/* Abstract Geometric Background */}
-        <div className="absolute inset-0 opacity-20 bg-[linear-gradient(45deg,transparent_25%,rgba(68,107,158,1)_50%,transparent_75%,transparent_100%)] bg-[length:20px_20px]" />
+        <div className="absolute inset-0 opacity-10 bg-[linear-gradient(45deg,transparent_25%,rgba(68,107,158,1)_50%,transparent_75%,transparent_100%)] bg-[length:24px_24px]" />
         <div className="absolute top-0 right-0 w-96 h-96 bg-blue-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 -translate-y-1/2 translate-x-1/2" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-emerald-500 rounded-full mix-blend-multiply filter blur-3xl opacity-20 translate-y-1/2 -translate-x-1/2" />
         
         <div className="relative z-10 flex items-center space-x-3">
           <ShieldCheck className="h-10 w-10 text-blue-400" />
-          <span className="text-3xl font-bold tracking-tight">SmartFinn</span>
+          <span className="text-2xl font-semibold tracking-tight">SmartFINN</span>
         </div>
         
         <div className="relative z-10 max-w-md">
-          <h1 className="text-4xl font-bold mb-6 leading-tight">
-            Mortgage Compliance Management Platform
+          <h1 className="mb-6 text-4xl font-semibold leading-tight tracking-tight">
+            Mortgage compliance, made reviewable.
           </h1>
           <p className="text-lg text-slate-300">
-            Secure. Reliable. Compliant. Automate document verification and streamline your risk assessment workflows.
+            Extract documents, verify key fields and assess application risk in one secure workspace.
           </p>
         </div>
         
         <div className="relative z-10 text-sm text-slate-500">
-          © 2026 SmartFinn Inc.
+          © 2026 SmartFINN
         </div>
       </div>
 
       {/* Right Pane - Login Form */}
-      <div className="flex items-center justify-center p-8 bg-white">
+      <div className="flex items-center justify-center bg-white p-6 sm:p-8">
         <div className="w-full max-w-md space-y-8">
+          <div className="flex items-center gap-2 text-slate-950 lg:hidden"><ShieldCheck className="h-5 w-5 text-blue-600" /><span className="font-semibold tracking-tight">SmartFINN</span></div>
           <div className="text-center lg:text-left">
-            <h2 className="text-3xl font-bold tracking-tight text-slate-900 mb-2">
-              Sign In to Your Account
+            <h2 className="mb-2 text-3xl font-semibold tracking-tight text-slate-950">
+              Welcome back
             </h2>
             <p className="text-sm text-slate-500">
-              Enter your credentials to access the platform.
+              Sign in with your authorised staff account.
             </p>
           </div>
 
           <form className="space-y-6" onSubmit={handleLogin}>
             {error && (
-              <div className="p-3 rounded-md bg-red-50 border border-red-200 text-sm text-red-600">
+              <div className="flex gap-2 rounded-lg border border-red-200 bg-red-50 p-3 text-sm text-red-700" role="alert"><CircleAlert className="mt-0.5 h-4 w-4 shrink-0" />
                 {error}
               </div>
             )}
+            {notice && <div className="flex gap-2 rounded-lg border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700"><MailCheck className="mt-0.5 h-4 w-4 shrink-0" />{notice}</div>}
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email Address / Username</Label>
+              <Label htmlFor="email">Email address</Label>
               <Input 
                 id="email" 
                 type="email" 
-                placeholder="john.doe@enterprise.com" 
+                placeholder="reviewer@smartfinn.app"
                 required 
                 className="h-12"
                 value={email}
@@ -144,17 +148,8 @@ export default function LoginPage() {
               />
             </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center space-x-2">
-                <Checkbox id="remember" disabled={loading} />
-                <label 
-                  htmlFor="remember" 
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Remember Me
-                </label>
-              </div>
-              <button type="button" onClick={handleForgotPassword} className="text-sm font-medium text-blue-600 hover:text-blue-500">
+            <div className="flex justify-end">
+              <button type="button" disabled={loading} onClick={handleForgotPassword} className="text-sm font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50">
                 Forgot Password?
               </button>
             </div>
@@ -166,19 +161,10 @@ export default function LoginPage() {
                   Signing In...
                 </>
               ) : (
-                "Sign In"
+                "Sign in"
               )}
             </Button>
           </form>
-
-          <div className="text-center pt-6">
-            <p className="text-sm text-slate-500">
-              Don&apos;t have an account?{' '}
-              <Link href="#" className="font-semibold text-blue-600 hover:text-blue-500">
-                Request Access
-              </Link>
-            </p>
-          </div>
         </div>
       </div>
     </div>

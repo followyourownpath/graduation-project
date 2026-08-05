@@ -1,172 +1,29 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { AlertTriangle, ArrowRight, CheckCircle2, Clock3, FileText, Plus } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { FileText, Clock, AlertTriangle, CheckCircle, ArrowRight, Loader2 } from "lucide-react";
-import Link from "next/link";
-import { api } from '@/lib/api';
+import { PageHeader } from "@/components/page-header";
+import { MetricCard } from "@/components/metric-card";
+import { ApplicationMobileCard } from "@/components/application-mobile-card";
+import { EmptyState, InlineErrorState, PageLoadingState } from "@/components/async-state";
+import { api } from "@/lib/api";
+import { formatDate } from "@/lib/formatters";
 import { formatRiskScoreBadge, loanTypeLabel, riskDisplay } from "@/lib/risk-display";
 
+function statusClass(status) { return status === "approved" ? "border-emerald-300 bg-emerald-50 text-emerald-700" : status === "rejected" ? "border-red-300 bg-red-50 text-red-700" : status === "in_review" ? "border-amber-300 bg-amber-50 text-amber-700" : "border-slate-300 bg-slate-100 text-slate-700"; }
+
 export default function DashboardPage() {
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await api.getSubmissions({ limit: 5 });
-        setApplications(response.data || []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchApplications();
-  }, []);
-
-  const totalApps = applications.length;
-  const pendingApps = applications.filter(app => app.submission_status === 'in_review').length;
-  const highRiskApps = applications.filter(app => app.risk_level === 'high').length;
-  const approvedApps = applications.filter(app => app.submission_status === 'approved').length;
-
-  return (
-    <div className="p-8 space-y-8">
-      {/* Metrics Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-500">Total Applications</CardTitle>
-            <FileText className="h-4 w-4 text-slate-400" />
-          </CardHeader>
-          <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{totalApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Based on recent data</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-500">Pending Review</CardTitle>
-            <Clock className="h-4 w-4 text-amber-500" />
-          </CardHeader>
-          <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{pendingApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Requires action</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-500">High Risk Alerts</CardTitle>
-            <AlertTriangle className="h-4 w-4 text-red-500" />
-          </CardHeader>
-          <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold text-red-600">{highRiskApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Requires close attention</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2 space-y-0">
-            <CardTitle className="text-sm font-medium text-slate-500">Approved</CardTitle>
-            <CheckCircle className="h-4 w-4 text-emerald-500" />
-          </CardHeader>
-          <CardContent>
-            {loading ? <Loader2 className="h-6 w-6 animate-spin text-slate-300" /> : (
-              <>
-                <div className="text-2xl font-bold">{approvedApps}</div>
-                <p className="text-xs text-slate-400 mt-1">Ready for settlement</p>
-              </>
-            )}
-          </CardContent>
-        </Card>
-      </div>
-
-      {/* Main Table */}
-      <Card>
-        <CardHeader>
-          <CardTitle>Recent Applications</CardTitle>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-             <div className="flex justify-center p-8"><Loader2 className="h-8 w-8 animate-spin text-blue-500" /></div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>App ID</TableHead>
-                  <TableHead>Applicant</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Risk Score</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {applications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell className="font-medium">{app.id}</TableCell>
-                    <TableCell>{app.customer_name}</TableCell>
-                    <TableCell>{loanTypeLabel(app.loan_type)}</TableCell>
-                    <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={
-                        app.submission_status === 'rejected' ? 'border-red-500 text-red-700 bg-red-50' : 
-                        app.submission_status === 'approved' ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 
-                        app.submission_status === 'in_review' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
-                        'bg-slate-100 text-slate-700'
-                      }>
-                        {app.submission_status.toUpperCase().replace('_', ' ')}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {(() => {
-                        const riskBadge = formatRiskScoreBadge(app);
-                        const risk = riskDisplay(app.risk_level);
-                        return (
-                          <Badge variant="outline" className={riskBadge.className}>
-                            {riskBadge.scoreText != null
-                              ? `${riskBadge.scoreText} (${risk.label})`
-                              : riskBadge.label}
-                          </Badge>
-                        );
-                      })()}
-                    </TableCell>
-                    <TableCell>
-                      <Link href={`/application/${app.id}`}>
-                        <Button variant="ghost" size="sm" className="-ml-3">
-                          Review <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {applications.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-6 text-slate-500">
-                      No applications found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const [applications, setApplications] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState("");
+  async function loadApplications() { setLoading(true); setError(""); try { const response = await api.getSubmissions(); setApplications(response.data || []); } catch (e) { setError(e.message || "Applications could not be loaded."); } finally { setLoading(false); } }
+  useEffect(() => { void (async () => { try { const response = await api.getSubmissions(); setApplications(response.data || []); } catch (e) { setError(e.message || "Applications could not be loaded."); } finally { setLoading(false); } })(); }, []);
+  const recent = useMemo(() => [...applications].sort((a,b) => new Date(b.created_at) - new Date(a.created_at)).slice(0,5), [applications]);
+  const metrics = { total: applications.length, pending: applications.filter((a) => a.submission_status === "in_review").length, high: applications.filter((a) => a.risk_level === "high").length, approved: applications.filter((a) => a.submission_status === "approved").length };
+  return <div className="mx-auto w-full max-w-[1600px] space-y-6 p-4 sm:p-6 lg:p-8"><PageHeader eyebrow="Workspace overview" title="Dashboard" description="Monitor application review, risk and approval activity." actions={<Link href="/applications/new"><Button className="w-full bg-blue-600 hover:bg-blue-700"><Plus className="mr-1.5 h-4 w-4" />New application</Button></Link>} />
+    {loading ? <PageLoadingState label="Loading workspace overview…" /> : error ? <InlineErrorState title="Dashboard could not be loaded" message={error} onRetry={loadApplications} /> : <><section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4"><MetricCard label="Total applications" value={metrics.total} hint="All applications in the workspace" icon={FileText} tone="info" /><MetricCard label="Pending review" value={metrics.pending} hint="Applications requiring a decision" icon={Clock3} tone="warning" /><MetricCard label="High risk" value={metrics.high} hint="Applications needing close attention" icon={AlertTriangle} tone="danger" /><MetricCard label="Approved" value={metrics.approved} hint="Ready for the next workflow step" icon={CheckCircle2} tone="success" /></section>
+      <Card className="rounded-xl border-slate-200 shadow-sm"><CardHeader className="flex flex-row items-center justify-between border-b border-slate-100 px-5 py-4"><div><CardTitle className="text-base font-semibold text-slate-900">Recent applications</CardTitle><p className="mt-1 text-sm text-slate-500">Latest five submissions</p></div><Link href="/applications" className="hidden sm:block"><Button variant="ghost" size="sm">View all <ArrowRight className="ml-1 h-3.5 w-3.5" /></Button></Link></CardHeader><CardContent className="p-0">{recent.length === 0 ? <div className="p-5"><EmptyState title="No applications yet" message="Create your first application to begin the review workflow." action={<Link href="/applications/new"><Button>New application</Button></Link>} /></div> : <><div className="hidden overflow-x-auto md:block"><Table><TableHeader><TableRow><TableHead>Applicant</TableHead><TableHead>Application</TableHead><TableHead>Loan type</TableHead><TableHead>Submitted</TableHead><TableHead>Status</TableHead><TableHead>Risk</TableHead><TableHead className="text-right"> </TableHead></TableRow></TableHeader><TableBody>{recent.map((app) => { const badge = formatRiskScoreBadge(app); const risk = riskDisplay(app.risk_level); return <TableRow key={app.id} className="hover:bg-slate-50/80"><TableCell className="font-medium text-slate-950">{app.customer_name}</TableCell><TableCell className="font-mono text-xs text-slate-500">{app.local_application_id || app.id}</TableCell><TableCell>{loanTypeLabel(app.loan_type)}</TableCell><TableCell>{formatDate(app.created_at)}</TableCell><TableCell><Badge variant="outline" className={statusClass(app.submission_status)}>{String(app.submission_status || "draft").replace("_", " ")}</Badge></TableCell><TableCell><Badge variant="outline" className={badge.className}>{badge.scoreText != null ? `${badge.scoreText} · ${risk.label}` : badge.label}</Badge></TableCell><TableCell className="text-right"><Link href={`/application/${app.id}`} className="text-sm font-medium text-blue-700 hover:text-blue-800">Review</Link></TableCell></TableRow>; })}</TableBody></Table></div><div className="space-y-3 p-4 md:hidden">{recent.map((app) => <ApplicationMobileCard key={app.id} app={app} />)}<Link href="/applications" className="block"><Button variant="outline" className="w-full">View all applications</Button></Link></div></>}</CardContent></Card></>}</div>;
 }

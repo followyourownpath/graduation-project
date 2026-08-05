@@ -18,6 +18,7 @@ import { formatRiskScoreBadge, riskDisplay } from "@/lib/risk-display";
 export default function ApplicationReviewPage({ params }) {
   const unwrappedParams = use(params);
   const appId = unwrappedParams.id;
+  const documentLabel = (type) => ({ fact_find: "Fact Find", id_100: "Identity", payslip: "Payslip", bank_statement_3m: "Bank statement", ato_notice: "ATO notice" })[type] || type;
 
   const [submission, setSubmission] = useState(null);
   const [activeDocId, setActiveDocId] = useState('');
@@ -197,15 +198,15 @@ export default function ApplicationReviewPage({ params }) {
   }, {}) || {};
 
   return (
-    <div className="h-full flex overflow-hidden">
+    <div className="flex min-h-[calc(100dvh-4rem)] flex-col overflow-hidden bg-slate-50 lg:h-[calc(100dvh-4rem)] lg:flex-row">
       {/* Left Pane - Document Viewer */}
-      <div className="w-1/2 border-r border-slate-200 bg-slate-100 flex flex-col">
+      <div className="flex min-h-[28rem] w-full flex-col border-b border-slate-200 bg-slate-100 lg:min-h-0 lg:w-1/2 lg:border-r lg:border-b-0">
         <div className="p-4 border-b border-slate-200 bg-white flex justify-between items-center">
           <Tabs value={activeDocId} onValueChange={setActiveDocId} className="w-full">
             <TabsList className="w-full justify-start overflow-x-auto">
               {submission.documents?.map(doc => (
                 <TabsTrigger key={doc.doc_id} value={doc.doc_id} className="flex items-center gap-2">
-                  {doc.document_type}
+                  {documentLabel(doc.document_type)}
                   {doc.processing_status !== 'completed' && doc.processing_status !== 'failed' && (
                     <Loader2 className="h-3 w-3 animate-spin text-slate-400" />
                   )}
@@ -244,15 +245,15 @@ export default function ApplicationReviewPage({ params }) {
       </div>
 
       {/* Right Pane - OCR Data & Review Panel */}
-      <div className="w-1/2 flex flex-col bg-white overflow-hidden">
-        <ScrollArea className="flex-1 min-h-0 h-full p-6">
+      <div className="flex w-full flex-col overflow-hidden bg-white lg:w-1/2">
+        <ScrollArea className="min-h-0 flex-1 p-4 sm:p-6">
           <div className="space-y-8 pb-12">
             
             {/* Header info */}
-            <div className="bg-slate-50 border border-slate-200 rounded-lg p-4 space-y-3">
+            <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4 shadow-sm">
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
                 <div className="flex flex-wrap items-center gap-2.5">
-                  <h2 className="text-xl font-bold text-slate-900">Application Review</h2>
+                  <h2 className="text-xl font-semibold tracking-tight text-slate-950">Application review</h2>
                   <Badge variant="outline" className={`${riskBadge.className} font-medium`}>
                     {riskBadge.scoreText != null
                       ? `Risk: ${riskBadge.scoreText} (${risk.label})`
@@ -338,7 +339,7 @@ export default function ApplicationReviewPage({ params }) {
                       <h4 className="text-sm font-semibold text-slate-500 uppercase border-b pb-1">
                         {section}
                       </h4>
-                      <div className="grid grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
                         {fields.map(field => {
                           const isEdited = editedFields[field.field_id]?.isEdited;
                           const currentValue = editedFields[field.field_id]?.value ?? field.raw_value ?? "";
@@ -406,11 +407,11 @@ export default function ApplicationReviewPage({ params }) {
         </ScrollArea>
 
         {/* Bottom Action Bar */}
-        <div className="p-4 border-t border-slate-200 bg-slate-50 flex justify-between items-center">
+        <div className="sticky bottom-0 flex flex-col gap-3 border-t border-slate-200 bg-slate-50 p-4 sm:flex-row sm:items-center sm:justify-between">
           <Button variant="outline" className="text-slate-600" onClick={() => router.push('/applications')}>
             Cancel Review
           </Button>
-          <div className="space-x-3">
+          <div className="flex gap-2 sm:gap-3">
             <Button 
               variant="destructive"
               disabled={updatingStatus}

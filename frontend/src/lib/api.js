@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { mockDocuments, mockExtractedData, mockSubmissions } from "@/lib/mock-data";
 
 const BASE_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
@@ -13,6 +14,18 @@ export class ApiError extends Error {
 }
 
 export async function apiFetch(path, options = {}) {
+  if (process.env.NODE_ENV === "development" && process.env.NEXT_PUBLIC_UI_REVIEW_MODE === "1") {
+    const idMatch = path.match(/^\/submissions\/([^/]+)$/);
+    const documentMatch = path.match(/^\/documents\/([^/]+)\/extracted-data$/);
+    if (path === "/auth/me") return { staff_profile: { full_name: "Jordan Lee", role: "reviewer" } };
+    if (path.startsWith("/submissions?") || path === "/submissions") return { data: mockSubmissions };
+    if (idMatch) {
+      const submission = mockSubmissions.find((item) => item.id === idMatch[1]) || mockSubmissions[0];
+      return { ...submission, documents: (mockDocuments[submission.id] || mockDocuments["sub-2026-001"]).map((document) => ({ ...document, storage_uri: null })) };
+    }
+    if (documentMatch) return mockExtractedData[documentMatch[1]] || { document_type: "document", fields: [] };
+    if (path.includes("risk-assessment")) return { submission_id: "sub-2026-002", application_reference: "APP-2026-00902", customer_name: "Bob Johnson", assessed_at: "2026-08-05T06:30:00Z", overall_risk_score: 25, risk_level: "lower", failed_document_count: 1, total_scored_documents: 4, document_results: [{ document_type: "id_100", display_name: "Identity document", status: "pass", rules: [] }, { document_type: "payslip", display_name: "Payslip", status: "fail", rules: [{ rule_id: "PAY-001", label: "Employer name matches", status: "fail", document_field_keys: ["employer_name"], fact_find_field_keys: ["employment.employer"], fact_find_value: "Acme Finance Pty Ltd", document_value: "Acme Financial Services", message: "Employer names differ." }] }, { document_type: "bank_statement_3m", display_name: "Bank statement", status: "pass", rules: [] }, { document_type: "ato_notice", display_name: "ATO notice", status: "pass", rules: [] }] };
+  }
   const supabase = createClient();
   const { data: { session }, error } = await supabase.auth.getSession();
   if (error || !session?.access_token) {
