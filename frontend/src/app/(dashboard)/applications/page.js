@@ -1,210 +1,34 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
+import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
+import { ArrowRight, Building2, Filter, Plus, Search, X } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ArrowRight, Plus, Search, Filter, Loader2 } from "lucide-react";
-import Link from "next/link";
-import { api } from '@/lib/api';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { ApplicationMobileCard } from "@/components/application-mobile-card";
+import { EmptyState, InlineErrorState, PageLoadingState } from "@/components/async-state";
+import { PageHeader } from "@/components/page-header";
+import { api } from "@/lib/api";
+import { formatDate } from "@/lib/formatters";
 import { formatRiskScoreBadge, loanTypeLabel, riskDisplay } from "@/lib/risk-display";
 
+const loanLabels = { all: "All loan types", purchase: "Owner-occupier purchase", investment: "Investment purchase", refinance: "Refinance", first_home: "First home buyer", self_employed: "Self-employed" };
+const statusLabels = { all: "All statuses", draft: "Draft", in_review: "In review", approved: "Approved", rejected: "Rejected" };
+const sortLabels = { desc: "Newest first", asc: "Oldest first" };
+function statusClass(status) { return status === "approved" ? "border-emerald-300 bg-emerald-50 text-emerald-700" : status === "rejected" ? "border-red-300 bg-red-50 text-red-700" : status === "in_review" ? "border-amber-300 bg-amber-50 text-amber-700" : "border-slate-300 bg-slate-100 text-slate-700"; }
+function crmLabel(app) { if (app.crm_application_id) return `Synced · ${app.crm_application_id}`; if (app.crm_sync_status === "failed" || app.crm_sync_status === "failed_permanent") return "Sync failed"; if (app.crm_sync_status === "pending") return "Queued"; if (app.crm_sync_status === "in_progress") return "Syncing"; return "Not linked"; }
+
 export default function ApplicationsPage() {
-  const [applications, setApplications] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [searchQuery, setSearchQuery] = useState('');
-  const [statusFilter, setStatusFilter] = useState('all');
-  const [loanTypeFilter, setLoanTypeFilter] = useState('all');
-  const [dateSortOrder, setDateSortOrder] = useState('desc');
-
-  useEffect(() => {
-    const fetchApplications = async () => {
-      try {
-        const response = await api.getSubmissions();
-        setApplications(response.data || []);
-      } catch (e) {
-        console.error(e);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchApplications();
-  }, []);
-
-  const filteredApplications = applications.filter(app => {
-    const matchesSearch = 
-      app.id.toLowerCase().includes(searchQuery.toLowerCase()) || 
-      (app.customer_name && app.customer_name.toLowerCase().includes(searchQuery.toLowerCase()));
-    
-    const matchesStatus = statusFilter === 'all' || app.submission_status === statusFilter;
-    const matchesLoanType = loanTypeFilter === 'all' || app.loan_type === loanTypeFilter;
-
-    return matchesSearch && matchesStatus && matchesLoanType;
-  }).sort((a, b) => {
-    const dateA = new Date(a.created_at).getTime();
-    const dateB = new Date(b.created_at).getTime();
-    return dateSortOrder === 'asc' ? dateA - dateB : dateB - dateA;
-  });
-
-  return (
-    <div className="p-8 space-y-6">
-      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-        <div>
-          <h1 className="text-2xl font-bold text-slate-900">Applications Management</h1>
-          <p className="text-sm text-slate-500 mt-1">View and manage all mortgage applications in the system.</p>
-        </div>
-        <Link href="/applications/new">
-          <Button className="bg-blue-600 hover:bg-blue-700">
-            <Plus className="mr-2 h-4 w-4" />
-            New Application
-          </Button>
-        </Link>
-      </div>
-
-      <Card>
-        <CardHeader className="pb-3 border-b border-slate-100">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            <div className="relative w-full sm:w-96">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-slate-400" />
-              <Input
-                placeholder="Search by Applicant or ID..."
-                className="pl-9"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-              />
-            </div>
-            <div className="flex flex-col sm:flex-row gap-2 w-full sm:w-auto">
-              <Select value={loanTypeFilter} onValueChange={setLoanTypeFilter}>
-                <SelectTrigger className="w-full sm:w-[240px]">
-                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
-                  <SelectValue placeholder="Loan Type" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Loan Type</SelectItem>
-                  <SelectItem value="purchase">Owner-Occupier Purchase</SelectItem>
-                  <SelectItem value="investment">Investment Purchase</SelectItem>
-                  <SelectItem value="refinance">Refinance</SelectItem>
-                  <SelectItem value="first_home">First Home Buyer</SelectItem>
-                  <SelectItem value="self_employed">Self-Employed (any)</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-full sm:w-[150px]">
-                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Statuses</SelectItem>
-                  <SelectItem value="draft">Draft</SelectItem>
-                  <SelectItem value="in_review">In Review</SelectItem>
-                  <SelectItem value="approved">Approved</SelectItem>
-                  <SelectItem value="rejected">Rejected</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select value={dateSortOrder} onValueChange={setDateSortOrder}>
-                <SelectTrigger className="w-full sm:w-[220px]">
-                  <Filter className="mr-2 h-4 w-4 text-slate-500" />
-                  <SelectValue placeholder="Sort Date" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="desc">Sort by Date: Descending</SelectItem>
-                  <SelectItem value="asc">Sort by Date: Ascending</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-        </CardHeader>
-        <CardContent className="pt-6">
-          {loading ? (
-            <div className="flex justify-center p-12">
-              <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
-            </div>
-          ) : (
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>Application ID & Source</TableHead>
-                  <TableHead>Applicant</TableHead>
-                  <TableHead>Type</TableHead>
-                  <TableHead>Date</TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead>Risk Score</TableHead>
-                  <TableHead>Action</TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {filteredApplications.map((app) => (
-                  <TableRow key={app.id}>
-                    <TableCell className="font-medium py-3">
-                      <div className="flex flex-col gap-1.5">
-                        <div className="flex items-center gap-2">
-                          <span className="font-mono text-xs text-slate-900 font-semibold">{app.local_application_id || app.id}</span>
-                          <Badge variant="secondary" className="text-[10px] px-1.5 py-0 bg-blue-50 text-blue-700 border border-blue-200 font-medium whitespace-nowrap">
-                            {app.source_channel === 'crm' ? 'Mercury CRM' : 'Manual Intake'}
-                          </Badge>
-                        </div>
-                        {app.crm_application_id ? (
-                          <span className="text-[11px] font-mono text-emerald-700 font-medium flex items-center gap-1.5 bg-emerald-50 px-1.5 py-0.5 rounded w-fit border border-emerald-200">
-                            <span className="inline-block w-1.5 h-1.5 rounded-full bg-emerald-500"></span>
-                            CRM ID: {app.crm_application_id}
-                          </span>
-                        ) : (
-                          <span className="text-[11px] text-slate-400 italic bg-slate-100/80 px-1.5 py-0.5 rounded w-fit border border-slate-200">
-                            CRM ID: Pending Sync
-                          </span>
-                        )}
-                      </div>
-                    </TableCell>
-                    <TableCell>{app.customer_name}</TableCell>
-                    <TableCell>{loanTypeLabel(app.loan_type)}</TableCell>
-                    <TableCell>{new Date(app.created_at).toLocaleDateString()}</TableCell>
-                    <TableCell>
-                      <Badge variant="outline" className={
-                        app.submission_status === 'rejected' ? 'border-red-500 text-red-700 bg-red-50' : 
-                        app.submission_status === 'approved' ? 'border-emerald-500 text-emerald-700 bg-emerald-50' : 
-                        app.submission_status === 'in_review' ? 'border-amber-500 text-amber-700 bg-amber-50' : 
-                        'bg-slate-100 text-slate-700'
-                      }>
-                        {app.submission_status.toUpperCase().replace('_', ' ')}
-                      </Badge>
-                    </TableCell>
-                    <TableCell>
-                      {(() => {
-                        const riskBadge = formatRiskScoreBadge(app);
-                        const risk = riskDisplay(app.risk_level);
-                        return (
-                          <Badge variant="outline" className={riskBadge.className}>
-                            {riskBadge.scoreText != null
-                              ? `${riskBadge.scoreText} (${risk.label})`
-                              : riskBadge.label}
-                          </Badge>
-                        );
-                      })()}
-                    </TableCell>
-                    <TableCell>
-                      <Link href={`/application/${app.id}`}>
-                        <Button variant="ghost" size="sm" className="-ml-3">
-                          Review <ArrowRight className="ml-2 h-4 w-4" />
-                        </Button>
-                      </Link>
-                    </TableCell>
-                  </TableRow>
-                ))}
-                {filteredApplications.length === 0 && (
-                  <TableRow>
-                    <TableCell colSpan={7} className="text-center py-6 text-slate-500">
-                      No applications found matching your criteria.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          )}
-        </CardContent>
-      </Card>
-    </div>
-  );
+  const [applications, setApplications] = useState([]); const [loading, setLoading] = useState(true); const [error, setError] = useState(""); const [searchQuery, setSearchQuery] = useState(""); const [statusFilter, setStatusFilter] = useState("all"); const [loanTypeFilter, setLoanTypeFilter] = useState("all"); const [dateSortOrder, setDateSortOrder] = useState("desc");
+  async function load() { setLoading(true); setError(""); try { const response = await api.getSubmissions(); setApplications(response.data || []); } catch (e) { setError(e.message || "Applications could not be loaded."); } finally { setLoading(false); } }
+  useEffect(() => { void (async () => { try { const response = await api.getSubmissions(); setApplications(response.data || []); } catch (e) { setError(e.message || "Applications could not be loaded."); } finally { setLoading(false); } })(); }, []);
+  const filtered = useMemo(() => applications.filter((app) => { const q = searchQuery.trim().toLowerCase(); const haystack = [app.id, app.local_application_id, app.crm_application_id, app.customer_name].filter(Boolean).join(" ").toLowerCase(); return (!q || haystack.includes(q)) && (statusFilter === "all" || app.submission_status === statusFilter) && (loanTypeFilter === "all" || app.loan_type === loanTypeFilter); }).sort((a,b) => dateSortOrder === "asc" ? new Date(a.created_at) - new Date(b.created_at) : new Date(b.created_at) - new Date(a.created_at)), [applications, searchQuery, statusFilter, loanTypeFilter, dateSortOrder]);
+  const hasFilters = Boolean(searchQuery || statusFilter !== "all" || loanTypeFilter !== "all" || dateSortOrder !== "desc"); const clear = () => { setSearchQuery(""); setStatusFilter("all"); setLoanTypeFilter("all"); setDateSortOrder("desc"); };
+  return <div className="mx-auto w-full max-w-[1600px] space-y-6 p-4 sm:p-6 lg:p-8"><PageHeader eyebrow="Applications" title="Applications" description="Search, review and manage mortgage applications." actions={<Link href="/applications/new"><Button className="w-full bg-blue-600 hover:bg-blue-700"><Plus className="mr-1.5 h-4 w-4" />New application</Button></Link>} />
+    <Card className="rounded-xl border-slate-200 shadow-sm"><CardContent className="space-y-4 p-4 sm:p-5"><div className="flex flex-col gap-3 lg:flex-row lg:items-center"><div className="relative flex-1"><Search className="absolute top-1/2 left-3 h-4 w-4 -translate-y-1/2 text-slate-400" /><Input className="h-10 pl-9" placeholder="Search applicant, local ID or CRM ID…" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} /></div><div className="grid grid-cols-1 gap-2 sm:grid-cols-3 lg:flex"><Select value={loanTypeFilter} onValueChange={setLoanTypeFilter}><SelectTrigger className="h-10 w-full min-w-40"><Filter className="mr-2 h-4 w-4 text-slate-400" /><SelectValue>{loanLabels[loanTypeFilter]}</SelectValue></SelectTrigger><SelectContent>{Object.entries(loanLabels).map(([value,label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select><Select value={statusFilter} onValueChange={setStatusFilter}><SelectTrigger className="h-10 w-full min-w-36"><SelectValue>{statusLabels[statusFilter]}</SelectValue></SelectTrigger><SelectContent>{Object.entries(statusLabels).map(([value,label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select><Select value={dateSortOrder} onValueChange={setDateSortOrder}><SelectTrigger className="h-10 w-full min-w-36"><SelectValue>{sortLabels[dateSortOrder]}</SelectValue></SelectTrigger><SelectContent>{Object.entries(sortLabels).map(([value,label]) => <SelectItem key={value} value={value}>{label}</SelectItem>)}</SelectContent></Select></div></div><div className="flex items-center justify-between gap-3"><p className="text-sm text-slate-500">{filtered.length} {filtered.length === 1 ? "application" : "applications"}{hasFilters ? ` of ${applications.length}` : ""}</p>{hasFilters && <Button type="button" variant="ghost" size="sm" onClick={clear}><X className="mr-1 h-3.5 w-3.5" />Clear filters</Button>}</div></CardContent></Card>
+    {loading ? <PageLoadingState label="Loading applications…" /> : error ? <InlineErrorState title="Applications could not be loaded" message={error} onRetry={load} /> : filtered.length === 0 ? <EmptyState title={applications.length ? "No applications match these filters" : "No applications yet"} message={applications.length ? "Try clearing a filter or adjusting your search." : "Create an application to begin the review workflow."} action={applications.length ? <Button variant="outline" onClick={clear}>Clear filters</Button> : <Link href="/applications/new"><Button>New application</Button></Link>} /> : <Card className="overflow-hidden rounded-xl border-slate-200 shadow-sm"><div className="hidden overflow-x-auto md:block"><Table><TableHeader><TableRow><TableHead>Application</TableHead><TableHead>Applicant</TableHead><TableHead>Loan type</TableHead><TableHead>Submitted</TableHead><TableHead>Status</TableHead><TableHead>Risk</TableHead><TableHead>CRM</TableHead><TableHead className="text-right"> </TableHead></TableRow></TableHeader><TableBody>{filtered.map((app) => { const badge = formatRiskScoreBadge(app); const risk = riskDisplay(app.risk_level); return <TableRow key={app.id} className="hover:bg-slate-50/80"><TableCell><p className="font-mono text-xs font-semibold text-slate-900">{app.local_application_id || app.id}</p><p className="mt-1 text-xs text-slate-500">{app.source_channel === "crm" ? "Mercury CRM intake" : "Manual intake"}</p></TableCell><TableCell className="font-medium text-slate-950">{app.customer_name}</TableCell><TableCell>{loanTypeLabel(app.loan_type)}</TableCell><TableCell>{formatDate(app.created_at)}</TableCell><TableCell><Badge variant="outline" className={statusClass(app.submission_status)}>{String(app.submission_status || "draft").replace("_", " ")}</Badge></TableCell><TableCell><Badge variant="outline" className={badge.className}>{badge.scoreText != null ? `${badge.scoreText} · ${risk.label}` : badge.label}</Badge></TableCell><TableCell><span className="flex max-w-44 items-center gap-1.5 truncate text-xs text-slate-600"><Building2 className="h-3.5 w-3.5 shrink-0 text-slate-400" />{crmLabel(app)}</span></TableCell><TableCell className="text-right"><Link href={`/application/${app.id}`} className="inline-flex items-center text-sm font-medium text-blue-700 hover:text-blue-800">Review <ArrowRight className="ml-1 h-3.5 w-3.5" /></Link></TableCell></TableRow>; })}</TableBody></Table></div><div className="space-y-3 p-4 md:hidden">{filtered.map((app) => <ApplicationMobileCard key={app.id} app={app} showCrm />)}</div></Card>}</div>;
 }

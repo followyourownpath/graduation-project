@@ -12,6 +12,7 @@ import { DocumentResultRow } from "@/components/rules-engine/document-result-row
 import { RuleResultTable } from "@/components/rules-engine/rule-result-table";
 import { api, ApiError } from "@/lib/api";
 import { DOCUMENT_TYPE_ORDER } from "@/lib/risk-display";
+import { formatDateTime } from "@/lib/formatters";
 
 export default function RiskAssessmentReportPage({ params }) {
   const unwrappedParams = use(params);
@@ -149,7 +150,7 @@ export default function RiskAssessmentReportPage({ params }) {
   }
 
   return (
-    <div className="mx-auto max-w-6xl space-y-8 p-8">
+    <div className="mx-auto w-full max-w-[1400px] space-y-6 p-4 sm:p-6 lg:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div>
           <Link
@@ -159,7 +160,8 @@ export default function RiskAssessmentReportPage({ params }) {
             <ArrowLeft className="mr-1 h-4 w-4" />
             Rules Engine
           </Link>
-          <h1 className="text-2xl font-bold text-slate-900">Risk Assessment Report</h1>
+          <p className="text-xs font-semibold uppercase tracking-[0.16em] text-blue-700">Rules engine</p>
+          <h1 className="mt-1 text-2xl font-semibold tracking-tight text-slate-950 sm:text-3xl">Risk assessment report</h1>
           <div className="mt-2 space-y-1 text-sm text-slate-600">
             <p>
               <span className="font-medium text-slate-500">Application Reference: </span>
@@ -171,21 +173,26 @@ export default function RiskAssessmentReportPage({ params }) {
             </p>
             <p>
               <span className="font-medium text-slate-500">Report Date: </span>
-              {report.assessed_at ? new Date(report.assessed_at).toLocaleString() : "—"}
+              {formatDateTime(report.assessed_at)}
             </p>
           </div>
         </div>
-        <Button type="button" variant="outline" disabled={starting} onClick={handleStartAssessment}>
+        <Button type="button" variant="outline" disabled={starting} onClick={handleStartAssessment} className="max-sm:w-full">
           {starting ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : <RefreshCw className="mr-2 h-4 w-4" />}
           Recalculate
         </Button>
       </div>
 
+      <div className={"rounded-xl border p-4 sm:p-5 " + (report.risk_level === "high" || report.risk_level === "higher" ? "border-red-200 bg-red-50" : report.risk_level === "medium" ? "border-amber-200 bg-amber-50" : "border-sky-200 bg-sky-50")}>
+        <p className="font-semibold text-slate-950">{report.risk_level === "high" || report.risk_level === "higher" ? "Manual review required" : report.risk_level === "medium" ? "Manual review recommended" : "Low review priority"}</p>
+        <p className="mt-1 text-sm text-slate-600">{report.risk_level === "high" || report.risk_level === "higher" ? "Significant cross-document mismatches require staff attention before progressing." : report.risk_level === "medium" ? "Review the highlighted document mismatches before progressing." : "No or limited document mismatches were detected."}</p>
+      </div>
+
       <RiskScoreCard report={report} />
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Document Results</CardTitle>
+      <Card className="rounded-xl border-slate-200 shadow-sm">
+        <CardHeader className="border-b border-slate-100">
+          <CardTitle className="text-base font-semibold">Document results</CardTitle>
         </CardHeader>
         <CardContent className="space-y-3">
           <DocumentResultRow baseline />
@@ -195,7 +202,7 @@ export default function RiskAssessmentReportPage({ params }) {
         </CardContent>
       </Card>
 
-      <Card>
+      <Card className="rounded-xl border-slate-200 shadow-sm">
         <CardContent className="pt-6">
           <RuleResultTable documentResults={report.document_results} />
         </CardContent>
