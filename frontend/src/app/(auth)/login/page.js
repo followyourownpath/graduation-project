@@ -54,11 +54,11 @@ export default function LoginPage() {
   };
 
   const handleForgotPassword = () => {
-    toast.warning("请联系管理员");
+    toast.warning("Please contact the administrator.");
   };
 
   const handleRequestAccess = () => {
-    toast.warning("请联系管理员");
+    toast.warning("Please contact the administrator.");
   };
 
   return (
