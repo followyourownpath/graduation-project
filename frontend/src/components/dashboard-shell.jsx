@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { FileText, LayoutDashboard, Loader2, LogOut, Settings, ShieldAlert, ShieldCheck } from "lucide-react";
+import { FileText, LayoutDashboard, Loader2, LogOut, ShieldAlert, ShieldCheck } from "lucide-react";
 import { api } from "@/lib/api";
 import { createClient } from "@/lib/supabase/client";
 import { cn } from "@/lib/utils";
@@ -12,7 +12,6 @@ const navItems = [
   { name: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
   { name: "Applications", href: "/applications", icon: FileText },
   { name: "Rules Engine", href: "/rules-engine", icon: ShieldAlert },
-  { name: "Settings", href: "#", icon: Settings },
 ];
 
 function pageTitle(pathname) {
@@ -20,7 +19,6 @@ function pageTitle(pathname) {
   if (pathname === "/applications" || pathname.startsWith("/applications/")) return "Applications";
   if (pathname.startsWith("/application/")) return "Review Application";
   if (pathname === "/rules-engine" || pathname.startsWith("/rules-engine/")) return "Rules Engine";
-  if (pathname === "/settings" || pathname.startsWith("/settings/")) return "Settings";
   return "Overview";
 }
 
