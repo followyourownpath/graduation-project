@@ -5,6 +5,7 @@ from __future__ import annotations
 import re
 
 from app.normalization.values import australian_date, digits, money, text
+from app.normalization.confidence_mapper import get_span_confidence
 
 
 # Always emit these keys (null when absent) so the frontend can reserve slots.
@@ -94,8 +95,14 @@ _DIR = r"(?:CR|DR)"
 _DATE_LONG = r"\d{1,2}\s+[A-Za-z]+\s+\d{4}|\d{1,2}-[A-Za-z]{3}-\d{2,4}|\d{2}/\d{2}/\d{4}"
 
 
-def _field(key, raw, normalised):
+def _field(key, raw, normalised, result=None):
     raw_str = text(raw) if raw is not None and text(raw) else None
+    confidence = None
+    if raw_str and result:
+        content = text(result.get("analyzeResult", {}).get("content", ""))
+        start = content.find(raw_str)
+        if start != -1:
+            confidence = get_span_confidence(result, start, start + len(raw_str))
     return {
         "section_name": "ato_notice",
         "applicant_number": 1,
@@ -107,6 +114,7 @@ def _field(key, raw, normalised):
         "mapped_table": None,
         "mapped_column": None,
         "review_status": "pending",
+        "confidence": confidence,
     }
 
 
@@ -341,5 +349,5 @@ def extract_ato_notice_fields(result):
     fields = []
     for key in REQUIRED_KEYS:
         raw, normalised = values[key]
-        fields.append(_field(key, raw, normalised))
+        fields.append(_field(key, raw, normalised, result))
     return fields

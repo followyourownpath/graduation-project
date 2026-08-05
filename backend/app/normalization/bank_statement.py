@@ -1,6 +1,7 @@
 import re
 
 from app.normalization.values import australian_date, digits, money, text
+from app.normalization.confidence_mapper import get_span_confidence
 
 
 def _tables(analysis):
@@ -15,20 +16,36 @@ def _tables(analysis):
     return matrices
 
 
-def _field(key, label, raw, normalised, data_type, mapped_table=None, mapped_column=None):
-    if not text(raw):
+def _cell_confidence(analysis, table_idx, row, col):
+    tables = analysis.get("tables") or []
+    if table_idx < len(tables):
+        for cell in tables[table_idx].get("cells") or []:
+            if cell.get("rowIndex") == row and cell.get("columnIndex") == col:
+                return cell.get("confidence")
+    return None
+
+
+def _field(key, label, raw, normalised, data_type, result, mapped_table=None, mapped_column=None, confidence=None):
+    raw_str = text(raw) if raw is not None else ""
+    if not raw_str:
         return None
+    if confidence is None:
+        content = text(result.get("analyzeResult", {}).get("content", ""))
+        start = content.find(raw_str)
+        if start != -1:
+            confidence = get_span_confidence(result, start, start + len(raw_str))
     return {
         "section_name": "bank_statement",
         "applicant_number": 1,
         "field_key": key,
         "field_label": label,
-        "raw_value": text(raw),
+        "raw_value": raw_str,
         "normalised_value": normalised,
         "data_type": data_type,
         "mapped_table": mapped_table,
         "mapped_column": mapped_column,
         "review_status": "pending",
+        "confidence": confidence,
     }
 
 
@@ -40,10 +57,11 @@ def _is_transaction_table(matrix):
     return any("date" in h for h in header) and any("desc" in h for h in header)
 
 
-def _extract_transactions(matrices):
+def _extract_transactions(matrices, result):
     """Find the 5-column transactions table and return a flat list of extracted_field dicts."""
+    analysis = result.get("analyzeResult") or {}
     fields = []
-    for matrix in matrices:
+    for table_idx, matrix in enumerate(matrices):
         if not _is_transaction_table(matrix):
             continue
 
@@ -58,7 +76,7 @@ def _extract_transactions(matrices):
         max_col   = max(date_col, desc_col, debit_col, credit_col, bal_col)
 
         n = 0
-        for row in matrix[1:]:          # skip header row
+        for row_idx, row in enumerate(matrix[1:], start=1):          # skip header row
             if len(row) <= max_col:
                 continue
             date_val = row[date_col].strip()
@@ -73,24 +91,30 @@ def _extract_transactions(matrices):
             credit_val = row[credit_col].strip()
             bal_val    = row[bal_col].strip()
 
+            date_conf = _cell_confidence(analysis, table_idx, row_idx, date_col)
+            desc_conf = _cell_confidence(analysis, table_idx, row_idx, desc_col)
+            debit_conf = _cell_confidence(analysis, table_idx, row_idx, debit_col) if debit_val else None
+            credit_conf = _cell_confidence(analysis, table_idx, row_idx, credit_col) if credit_val else None
+            bal_conf = _cell_confidence(analysis, table_idx, row_idx, bal_col) if bal_val else None
+
             fields.append(_field(f"{prefix}_date",
                                  f"Transaction {n} Date",
-                                 date_val, australian_date(date_val), "date"))
+                                 date_val, australian_date(date_val), "date", result, confidence=date_conf))
             fields.append(_field(f"{prefix}_description",
                                  f"Transaction {n} Description",
-                                 desc_val, text(desc_val), "text"))
+                                 desc_val, text(desc_val), "text", result, confidence=desc_conf))
             if debit_val:
                 fields.append(_field(f"{prefix}_debit",
                                      f"Transaction {n} Debit",
-                                     debit_val, money(debit_val), "money"))
+                                     debit_val, money(debit_val), "money", result, confidence=debit_conf))
             if credit_val:
                 fields.append(_field(f"{prefix}_credit",
                                      f"Transaction {n} Credit",
-                                     credit_val, money(credit_val), "money"))
+                                     credit_val, money(credit_val), "money", result, confidence=credit_conf))
             if bal_val:
                 fields.append(_field(f"{prefix}_balance",
                                      f"Transaction {n} Balance",
-                                     bal_val, money(bal_val), "money"))
+                                     bal_val, money(bal_val), "money", result, confidence=bal_conf))
 
         if n > 0:
             break  # stop after processing the first transaction table
@@ -136,26 +160,26 @@ def extract_bank_statement_fields(result):
         _field("account_holder_name", "Account Holder Name",
                holder_match.group(1).strip() if holder_match else None,
                text(holder_match.group(1).strip()) if holder_match else None,
-               "text", "applicant", "full_name"),
+               "text", result, "applicant", "full_name"),
         _field("bsb", "BSB",
                bsb_match.group(1) if bsb_match else None,
-               text(bsb_match.group(1)) if bsb_match else None, "identifier"),
+               text(bsb_match.group(1)) if bsb_match else None, "identifier", result),
         _field("account_number", "Account Number",
                acc_match.group(1) if acc_match else None,
-               digits(acc_match.group(1)) if acc_match else None, "identifier"),
-        _field("statement_period", "Statement Period", period_raw, period_raw, "text"),
+               digits(acc_match.group(1)) if acc_match else None, "identifier", result),
+        _field("statement_period", "Statement Period", period_raw, period_raw, "text", result),
         _field("statement_period_start", "Statement Period Start",
                period_match.group(1) if period_match else None,
-               australian_date(period_match.group(1)) if period_match else None, "date"),
+               australian_date(period_match.group(1)) if period_match else None, "date", result),
         _field("statement_period_end", "Statement Period End",
                period_match.group(2) if period_match else None,
-               australian_date(period_match.group(2)) if period_match else None, "date"),
+               australian_date(period_match.group(2)) if period_match else None, "date", result),
         _field("opening_balance", "Opening Balance",
                opening_match.group(1) if opening_match else None,
-               money(opening_match.group(1)) if opening_match else None, "money"),
+               money(opening_match.group(1)) if opening_match else None, "money", result),
         _field("closing_balance", "Closing Balance",
                closing_match.group(1) if closing_match else None,
-               money(closing_match.group(1)) if closing_match else None, "money"),
+               money(closing_match.group(1)) if closing_match else None, "money", result),
     ])
 
     # ------------------------------------------------------------------
@@ -175,7 +199,7 @@ def extract_bank_statement_fields(result):
     }
 
     matrices = _tables(analysis)
-    for matrix in matrices:
+    for table_idx, matrix in enumerate(matrices):
         if _is_transaction_table(matrix):
             # Handled separately below
             continue
@@ -189,11 +213,12 @@ def extract_bank_statement_fields(result):
                         key, display, data_type, table, column = summary_label_map[label]
                         val = matrix[1][col_idx]
                         norm = money(val) if data_type == "money" else text(val)
-                        fields.append(_field(key, display, val, norm, data_type, table, column))
+                        conf = _cell_confidence(analysis, table_idx, 1, col_idx)
+                        fields.append(_field(key, display, val, norm, data_type, result, table, column, confidence=conf))
                 continue
 
         # Side-by-side key-value table (label in col 0, value in col 1)
-        for row in matrix:
+        for row_idx, row in enumerate(matrix):
             if len(row) < 2:
                 continue
             label = row[0].rstrip(":").lower()
@@ -201,10 +226,11 @@ def extract_bank_statement_fields(result):
                 key, display, data_type, table, column = summary_label_map[label]
                 val = row[1]
                 norm = money(val) if data_type == "money" else (digits(val) if data_type == "identifier" else text(val))
-                fields.append(_field(key, display, val, norm, data_type, table, column))
+                conf = _cell_confidence(analysis, table_idx, row_idx, 1)
+                fields.append(_field(key, display, val, norm, data_type, result, table, column, confidence=conf))
 
     # 2b. Extract individual transaction rows
-    fields.extend(_extract_transactions(matrices))
+    fields.extend(_extract_transactions(matrices, result))
 
     # ------------------------------------------------------------------
     # 3. Deduplicate: first occurrence wins for summary fields
