@@ -12,7 +12,7 @@ python -m pip install -r requirements-dev.txt
 python wsgi.py
 ```
 
-The API will be available at `http://localhost:5000`. Copy `.env.example` to a
+The development API will be available at `http://localhost:8000`. Copy `.env.example` to a
 local `.env`; the application loads it automatically. Runtime environment
 variables can also be used. Do not commit real credentials.
 

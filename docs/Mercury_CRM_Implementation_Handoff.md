@@ -1,6 +1,6 @@
 # Mercury CRM 自动回传实施交接文档
 
-> 面向读者：后续接手开发的 AI agent、后端/前端实习生、测试人员  
+> 面向读者：后续接手开发的开发人员、后端/前端实习生、测试人员
 > 项目：SmartFINN AI Mortgage Application Automation  
 > 文档日期：2026-08-02  
 > 当前状态：**可以开始开发；尚未实现 Mercury 写回**  
@@ -1292,9 +1292,9 @@ Approve 只负责本地批准并排队；CRM 有独立状态。
 
 ---
 
-## 18. AI Agent 接手执行清单
+## 18. 开发接手执行清单
 
-接手 agent 开始工作时按以下顺序：
+接手人员开始工作时按以下顺序：
 
 1. 运行 `git status --short --branch`，保留所有用户未提交文件。
 2. 确认当前 branch 与 `origin/main` 差异，不擅自 reset/checkout。
@@ -1307,7 +1307,7 @@ Approve 只负责本地批准并排队；CRM 有独立状态。
 9. 测试账号写入前打印脱敏 preview，确认测试前缀。
 10. 每完成一个 phase，更新本文件“实施状态”。
 
-### 实施状态（后续 agent 维护）
+### 实施状态（后续维护人员更新）
 
 | Phase | 状态 | PR/Commit | 验证 |
 | --- | --- | --- | --- |

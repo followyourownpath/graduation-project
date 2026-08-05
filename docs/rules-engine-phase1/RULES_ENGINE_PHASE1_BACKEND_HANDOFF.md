@@ -4,7 +4,7 @@
 > 开始前必读：`RULES_ENGINE_PHASE1_MASTER_PLAN.md` 和 `RULES_ENGINE_PHASE1_DATABASE_HANDOFF.md`  
 > 目标：基于 approved submission 执行冻结的 13 条规则，覆盖保存风险结果，对前端提供稳定 API。
 
-## 1. 给 AI agent 的执行指令
+## 1. 后端实施要求
 
 1. 完整阅读两份前置文档，不得改变 13 条规则、分数公式或 API JSON 字段名。
 2. 阅读现有：

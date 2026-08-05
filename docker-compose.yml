@@ -1,42 +1,45 @@
-services:
-  db:
-    image: postgres:15
-    environment:
-      POSTGRES_USER: marksuser
-      POSTGRES_PASSWORD: markspass
-      POSTGRES_DB: marksdb
-    # Pre-seed script is required as a volume to load mock database
-    # Data inside the container is lost on restart unless you persist it with a volume.
-    volumes:
-      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
-      - db-data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
+name: smartfinn-local
 
+services:
   backend:
-    build: ./backend
-    ports:
-      - "5000:5000"
+    build:
+      context: ./backend
+      target: production
+    env_file:
+      - ${APP_ENV_FILE:-.env}
     environment:
-      - DB_HOST=db
-      - DB_NAME=marksdb
-      - DB_USER=marksuser
-      - DB_PASSWORD=markspass
-    depends_on:
-      - db
+      BACKEND_URL: http://localhost:8000
+      CORS_ORIGINS: http://localhost:3000
+    ports:
+      - "8000:5000"
+    healthcheck:
+      test:
+        - CMD
+        - python
+        - -c
+        - "import urllib.request; urllib.request.urlopen('http://127.0.0.1:5000/api/v1/health', timeout=5)"
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 20s
 
   frontend:
-    build: ./frontend
+    build:
+      context: ./frontend
+      target: production
+      args:
+        NEXT_PUBLIC_BASE_PATH: ""
+        NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+        NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+        NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
+    environment:
+      NODE_ENV: production
+      NEXT_PUBLIC_BASE_PATH: ""
+      NEXT_PUBLIC_API_URL: http://localhost:8000/api/v1
+      NEXT_PUBLIC_SUPABASE_URL: ${SUPABASE_URL}
+      NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY: ${SUPABASE_PUBLISHABLE_KEY}
     ports:
-      - "8080:80"
-
-  automark:
-    build: ./automark
+      - "3000:3000"
     depends_on:
-      - backend
-      - db
-    profiles:
-      - debug
-
-volumes:
-  db-data:
+      backend:
+        condition: service_healthy

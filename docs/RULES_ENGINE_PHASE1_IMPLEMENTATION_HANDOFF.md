@@ -1,6 +1,6 @@
-# Rules Engine Phase 1 — Agent Handoff
+# Rules Engine Phase 1 — Implementation Handoff
 
-> Audience: teammate AI agents and developers continuing SmartFinn work  
+> Audience: developers and maintainers continuing SmartFinn work
 > Status: **implemented in this repo** (DB migration + backend + frontend)  
 > Spec source of truth (design): `../rules-engine-phase1/RULES_ENGINE_PHASE1_MASTER_PLAN.md`  
 > Do **not** invent new rule IDs, score bands, or JSON field names.
@@ -49,7 +49,7 @@ supabase/verification/verify_rules_engine_phase1.sql
 4. REST resource used by backend: `/rest/v1/risk_assessment` with  
    `on_conflict=fact_find_submission_id` and Prefer `resolution=merge-duplicates,return=representation`.
 
-## 3. Key code map (for agents)
+## 3. Key code map
 
 ### Database
 
@@ -97,7 +97,7 @@ supabase/verification/verify_rules_engine_phase1.sql
 | Path | Role |
 |---|---|
 | `docs/API_CONTRACT.md` | Contract including risk-assessment endpoints |
-| `docs/RULES_ENGINE_PHASE1_AGENT_HANDOFF.md` | This file |
+| `docs/RULES_ENGINE_PHASE1_IMPLEMENTATION_HANDOFF.md` | This file |
 | `backend/tests/test_rules_engine_*.py` | Rules, service, routes |
 | `frontend/tests/risk-display.test.mjs` | Display helpers |
 

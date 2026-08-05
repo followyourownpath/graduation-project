@@ -4,7 +4,7 @@
 > 开始前必读：`RULES_ENGINE_PHASE1_MASTER_PLAN.md` 和其中冻结的 API JSON  
 > 目标：完成 approved application 列表、开始/重新评分和可刷新的风险报告页，并将现有 Dashboard/Applications 接入真实分数。
 
-## 1. 给 AI agent 的执行指令
+## 1. 前端实施要求
 
 1. 完整阅读总体计划，特别是第 3、4、5、8 节。
 2. 阅读现有：
