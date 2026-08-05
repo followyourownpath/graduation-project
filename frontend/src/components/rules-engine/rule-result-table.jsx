@@ -112,8 +112,8 @@ export function RuleResultTable({ documentResults }) {
               const rowKey = `${rule.document_type}-${rule.rule_id}`;
               return (
                 <TableRow key={rowKey} className="align-top">
-                  <TableCell className="font-medium">{rule.document_display_name}</TableCell>
-                  <TableCell>
+                  <TableCell className="font-medium whitespace-normal">{rule.document_display_name}</TableCell>
+                  <TableCell className="whitespace-normal">
                     <button
                       type="button"
                       className="text-left hover:underline"
@@ -125,13 +125,13 @@ export function RuleResultTable({ documentResults }) {
                     </button>
                     {expanded && <ComparisonDetails rule={rule} />}
                   </TableCell>
-                  <TableCell className="max-w-[180px] text-sm text-slate-600">
+                  <TableCell className="max-w-[180px] text-sm text-slate-600 whitespace-normal">
                     {(rule.document_field_keys || []).join(", ") || "—"}
                   </TableCell>
-                  <TableCell className="max-w-[200px] break-words text-sm">
+                  <TableCell className="max-w-[200px] break-words text-sm whitespace-normal">
                     {String(maybeMaskFieldValue(rule.fact_find_field_keys, rule.fact_find_value) ?? "—")}
                   </TableCell>
-                  <TableCell className="max-w-[200px] break-words text-sm">
+                  <TableCell className="max-w-[200px] break-words text-sm whitespace-normal">
                     {String(maybeMaskFieldValue(rule.document_field_keys, rule.document_value) ?? "—")}
                   </TableCell>
                   <TableCell>
