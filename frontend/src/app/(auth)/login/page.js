@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ShieldCheck, Loader2, MailCheck, CircleAlert } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
-import { withBasePath } from "@/lib/auth-utils";
+import { toast } from "sonner";
 
 const API_URL = (process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000/api/v1").replace(/\/$/, "");
 
@@ -53,22 +53,12 @@ export default function LoginPage() {
     }
   };
 
-  const handleForgotPassword = async () => {
-    if (!email) {
-      setError("Enter your email address first.");
-      return;
-    }
-    setLoading(true);
-    setError(null);
-    setNotice(null);
-    const redirectTo = new URL(withBasePath("/auth/confirm"), window.location.origin);
-    redirectTo.searchParams.set("next", withBasePath("/update-password"));
-    const { error } = await createClient().auth.resetPasswordForEmail(email, {
-      redirectTo: redirectTo.toString(),
-    });
-    setLoading(false);
-    if (error) setError(error.message);
-    else setNotice("If the account exists, a password reset link has been sent.");
+  const handleForgotPassword = () => {
+    toast.warning("Please contact the administrator.");
+  };
+
+  const handleRequestAccess = () => {
+    toast.warning("Please contact the administrator.");
   };
 
   return (
@@ -149,7 +139,7 @@ export default function LoginPage() {
             </div>
 
             <div className="flex justify-end">
-              <button type="button" disabled={loading} onClick={handleForgotPassword} className="text-sm font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50">
+              <button type="button" onClick={handleForgotPassword} className="text-sm font-medium text-blue-600 hover:text-blue-700 disabled:opacity-50">
                 Forgot Password?
               </button>
             </div>
@@ -165,6 +155,19 @@ export default function LoginPage() {
               )}
             </Button>
           </form>
+
+          <div className="text-center pt-4">
+            <p className="text-sm text-slate-500">
+              Don&apos;t have an account?{" "}
+              <button 
+                type="button" 
+                onClick={handleRequestAccess} 
+                className="font-semibold text-blue-600 hover:text-blue-700"
+              >
+                Request Access
+              </button>
+            </p>
+          </div>
         </div>
       </div>
     </div>
