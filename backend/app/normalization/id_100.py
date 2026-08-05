@@ -5,15 +5,22 @@ from __future__ import annotations
 import re
 
 from app.normalization.values import australian_date, digits, text
+from app.normalization.confidence_mapper import get_span_confidence
 
 
 _DATE = r"\d{1,2}\s+[A-Za-z]{3,9}\s+\d{4}|\d{2}/\d{2}/\d{4}"
 
 
-def _field(key, label, raw, normalised, data_type, mapped_table=None, mapped_column=None):
+def _field(key, label, raw, normalised, data_type, result, mapped_table=None, mapped_column=None):
     raw_str = text(raw) if raw is not None else ""
     if not raw_str:
         return None
+    content = text(result.get("analyzeResult", {}).get("content", ""))
+    start = content.find(raw_str)
+    if start != -1:
+        confidence = get_span_confidence(result, start, start + len(raw_str))
+    else:
+        confidence = None
     return {
         "section_name": "id_100",
         "applicant_number": 1,
@@ -25,6 +32,7 @@ def _field(key, label, raw, normalised, data_type, mapped_table=None, mapped_col
         "mapped_table": mapped_table,
         "mapped_column": mapped_column,
         "review_status": "pending",
+        "confidence": confidence,
     }
 
 
@@ -176,29 +184,29 @@ def extract_id_fields(result):
                         break
 
     fields = [
-        _field("document_type", "Document Type", document_type, text(document_type) if document_type else None, "text"),
-        _field("jurisdiction", "Jurisdiction", jurisdiction, text(jurisdiction) if jurisdiction else None, "text"),
+        _field("document_type", "Document Type", document_type, text(document_type) if document_type else None, "text", result),
+        _field("jurisdiction", "Jurisdiction", jurisdiction, text(jurisdiction) if jurisdiction else None, "text", result),
         _field(
             "full_legal_name", "Full Legal Name", full_name, text(full_name) if full_name else None,
-            "text", "applicant", "full_name",
+            "text", result, "applicant", "full_name",
         ),
         _field(
             "residential_address", "Residential Address", address, text(address) if address else None,
-            "text", "applicant", "residential_address",
+            "text", result, "applicant", "residential_address",
         ),
         _field(
             "licence_number", "Licence Number", licence_number,
-            digits(licence_number) or text(licence_number) if licence_number else None, "identifier",
+            digits(licence_number) or text(licence_number) if licence_number else None, "identifier", result,
         ),
-        _field("licence_class", "Licence Class", licence_class, text(licence_class).upper() if licence_class else None, "text"),
+        _field("licence_class", "Licence Class", licence_class, text(licence_class).upper() if licence_class else None, "text", result),
         _field(
             "date_of_birth", "Date of Birth", dob, australian_date(dob) if dob else None,
-            "date", "applicant", "date_of_birth",
+            "date", result, "applicant", "date_of_birth",
         ),
         _field(
             "card_number", "Card Number", card_number,
-            digits(card_number) if card_number else None, "identifier",
+            digits(card_number) if card_number else None, "identifier", result,
         ),
-        _field("expiry_date", "Expiry Date", expiry, australian_date(expiry) if expiry else None, "date"),
+        _field("expiry_date", "Expiry Date", expiry, australian_date(expiry) if expiry else None, "date", result),
     ]
     return [field for field in fields if field]

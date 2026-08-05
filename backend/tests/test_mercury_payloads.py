@@ -7,6 +7,8 @@ from app.integrations.mercury.payloads import (
     build_contact_payload,
     build_opportunity_payload,
     build_address_payload,
+    build_asset_payload,
+    build_liability_payload,
 )
 
 
@@ -134,3 +136,51 @@ def test_build_address_payload():
     assert payload["state"] == "VIC"
     assert payload["postcode"] == "3000"
     assert payload["addressBlock"] == "555 Collins Street\nMELBOURNE VIC 3000"
+
+
+def test_build_asset_payload():
+    asset = {
+        "name": "150 Todman Ave, Kensington NSW 2033",
+        "type": "realEstate",
+        "value": "1150000",
+        "account_name": "Junhong Zhong",
+        "address": {
+            "street_number": "150",
+            "street_name": "Todman",
+            "street_type": "Ave",
+            "city": "KENSINGTON",
+            "state": "NSW",
+            "postcode": "2033"
+        }
+    }
+    payload = build_asset_payload(asset)
+    assert payload["name"] == "Real Estate"
+    assert payload["type"] == "realEstate"
+    assert payload["value"] == 1150000.0
+    assert payload["details"] == "150 Todman Ave, Kensington NSW 2033"
+    assert payload["accountName"] == "Junhong Zhong"
+    assert payload["address"]["streetNumber"] == "150"
+    assert payload["address"]["city"] == "KENSINGTON"
+
+
+def test_build_liability_payload():
+    liab = {
+        "name": "Credit Card",
+        "type": "account",
+        "value": "4120",
+        "limit": "10000",
+        "institution": "ANZ",
+        "account_repayment": "280",
+        "account_repayment_frequency": "monthly",
+        "details": "150 Todman Ave, Kensington NSW 2033",
+        "account_name": "Junhong Zhong"
+    }
+    payload = build_liability_payload(liab)
+    assert payload["name"] == "Credit Card"
+    assert payload["type"] == "account"
+    assert payload["value"] == 4120.0
+    assert payload["limit"] == 10000.0
+    assert payload["institution"] == "ANZ"
+    assert payload["details"] == "150 Todman Ave, Kensington NSW 2033"
+    assert payload["accountName"] == "Junhong Zhong"
+

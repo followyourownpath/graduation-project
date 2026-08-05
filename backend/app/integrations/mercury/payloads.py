@@ -340,10 +340,15 @@ def build_asset_payload(asset: Dict[str, Any]) -> Dict[str, Any]:
     """Constructs Asset payload."""
     payload = {
         "isDeleted": False,
-        "name": asset.get("name") or "Asset",
+        "name": "Real Estate" if asset.get("type") == "realEstate" else (asset.get("name") or "Asset"),
         "type": asset.get("type") or "other",
         "value": format_number(asset.get("value")) or 0.0,
+        "details": asset.get("name") if asset.get("type") == "realEstate" else asset.get("details"),
+        "accountName": asset.get("account_name"),
     }
+
+    if asset.get("address"):
+        payload["address"] = build_address_payload(asset["address"])
 
     if asset.get("mercury_asset_id"):
         payload["uniqueId"] = asset["mercury_asset_id"]
@@ -364,6 +369,8 @@ def build_liability_payload(liab: Dict[str, Any]) -> Dict[str, Any]:
         "accountRepayment": format_number(liab.get("account_repayment")),
         "accountRepaymentFrequency": liab.get("account_repayment_frequency")
         or "monthly",
+        "details": liab.get("details"),
+        "accountName": liab.get("account_name"),
     }
 
     if liab.get("mercury_liability_id"):

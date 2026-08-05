@@ -544,7 +544,46 @@ class SupabaseReviewService:
 
         # Compile assets
         assets = []
+        
+        # Helper to retrieve account/applicant name
+        def get_account_name(ownership_key, default_applicant_index=0):
+            own = field_map.get(ownership_key) if ownership_key else None
+            app1_name = ""
+            app2_name = ""
+            if len(applicants) > 0:
+                app1_name = applicants[0].get("full_name") or f"{applicants[0].get('first_name', '')} {applicants[0].get('last_name', '')}".strip()
+            if len(applicants) > 1:
+                app2_name = applicants[1].get("full_name") or f"{applicants[1].get('first_name', '')} {applicants[1].get('last_name', '')}".strip()
+                
+            if own == "applicant_2":
+                return app2_name or app1_name
+            elif own == "both":
+                return f"{app1_name} & {app2_name}" if app2_name else app1_name
+            elif own == "applicant_1":
+                return app1_name
+            
+            if default_applicant_index == 1 and app2_name:
+                return app2_name
+            return app1_name or "Applicant 1"
+
+        # Generate default residential address for fallback security
+        app1_addr_street = field_map.get("applicant_1_current_address_street") or ""
+        app1_addr_suburb = field_map.get("applicant_1_current_address_suburb") or ""
+        app1_addr_state = field_map.get("applicant_1_current_address_state") or ""
+        app1_addr_postcode = field_map.get("applicant_1_current_address_postcode") or ""
+        
+        app1_full_address = ""
+        if app1_addr_street:
+            parts = [app1_addr_street]
+            if app1_addr_suburb:
+                parts.append(app1_addr_suburb)
+            state_post = f"{app1_addr_state} {app1_addr_postcode}".strip()
+            if state_post:
+                parts.append(state_post)
+            app1_full_address = ", ".join(parts)
+
         # Property Assets
+        from app.normalization.values import parse_full_address
         for i in range(1, 6):
             addr = field_map.get(f"property_asset_{i}_address")
             val = field_map.get(f"property_asset_{i}_estimated_value")
@@ -553,6 +592,8 @@ class SupabaseReviewService:
                     "name": addr or "Real Estate Property",
                     "type": "realEstate",
                     "value": val or 0.0,
+                    "address": parse_full_address(addr) if addr else None,
+                    "account_name": get_account_name(f"property_asset_{i}_ownership"),
                 })
         # Savings Account / Term Deposit
         for i in range(1, 3):
@@ -563,6 +604,7 @@ class SupabaseReviewService:
                     "name": "Savings Account" if "savings" in asset_type.lower() else "Term Deposit",
                     "type": "account",
                     "value": val,
+                    "account_name": get_account_name(f"savings_term_deposit_{i}_ownership"),
                 })
         # Vehicles
         for i in range(1, 3):
@@ -573,6 +615,7 @@ class SupabaseReviewService:
                     "name": "Motor Vehicle",
                     "type": "vehicle",
                     "value": val,
+                    "account_name": get_account_name(f"vehicle_{i}_ownership"),
                 })
         # Superannuation
         for i in range(1, 3):
@@ -583,6 +626,7 @@ class SupabaseReviewService:
                     "name": "Superannuation",
                     "type": "standard",
                     "value": val,
+                    "account_name": get_account_name(f"superannuation_{i}_ownership"),
                 })
         # Shares
         for i in range(1, 3):
@@ -593,6 +637,7 @@ class SupabaseReviewService:
                     "name": "Shares",
                     "type": "standard",
                     "value": val,
+                    "account_name": get_account_name(f"shares_or_trusts_{i}_ownership"),
                 })
         # Other Assets
         for i in (1, 2):
@@ -603,10 +648,30 @@ class SupabaseReviewService:
                     "name": "Home Contents" if "contents" in asset_type.lower() else "Other",
                     "type": "standard",
                     "value": val,
+                    "account_name": get_account_name(None, default_applicant_index=i-1),
                 })
 
         # Compile liabilities
         liabilities = []
+        # Existing Mortgage Loans from Property Assets
+        for i in range(1, 6):
+            addr = field_map.get(f"property_asset_{i}_address")
+            loan_bal = field_map.get(f"property_asset_{i}_loan_balance")
+            lender = field_map.get(f"property_asset_{i}_lender")
+            if loan_bal:
+                try:
+                    val_float = float(loan_bal)
+                except ValueError:
+                    val_float = 0.0
+                if val_float > 0:
+                    liabilities.append({
+                        "name": "Mortgage Loan",
+                        "type": "realEstate",
+                        "value": val_float,
+                        "institution": lender or "Lender",
+                        "details": addr or app1_full_address or "Property Security",
+                        "account_name": get_account_name(f"property_asset_{i}_ownership"),
+                    })
         # Credit Cards
         for i in range(1, 4):
             bal = field_map.get(f"liability_credit_card_{i}_balance")
@@ -623,6 +688,8 @@ class SupabaseReviewService:
                     "institution": creditor,
                     "account_repayment": repay,
                     "account_repayment_frequency": freq,
+                    "details": app1_full_address or "Credit Card Security",
+                    "account_name": get_account_name(f"liability_credit_card_{i}_ownership"),
                 })
         # Other Loans
         loan_types = [
@@ -647,6 +714,8 @@ class SupabaseReviewService:
                     "institution": creditor,
                     "account_repayment": repay,
                     "account_repayment_frequency": freq,
+                    "details": app1_full_address or f"{label} Security",
+                    "account_name": get_account_name(f"liability_{key_prefix}_ownership"),
                 })
 
         # Compile living expenses

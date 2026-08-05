@@ -126,8 +126,8 @@ export default function NewApplicationPage() {
       file,
       id: Math.random().toString(36).substring(7),
       progress: 0,
-      status: 'uploading', // uploading, processing_ocr, completed
-      ocrStatus: 'Pending OCR'
+      status: 'uploading', // uploading, completed
+      uploadStatus: 'Uploading...'
     }));
     
     setCategoryFiles(prev => {
@@ -143,7 +143,7 @@ export default function NewApplicationPage() {
       };
     });
 
-    // Simulate progress and OCR stages
+    // Simulate progress
     newFilesWithProgress.forEach(fileObj => {
       let currentProgress = 0;
       const interval = setInterval(() => {
@@ -153,29 +153,15 @@ export default function NewApplicationPage() {
           currentProgress = 100;
           clearInterval(interval);
           
-          // Move to processing OCR phase
           setCategoryFiles(current => {
             const catFiles = current[categoryId] || [];
             return {
               ...current,
               [categoryId]: catFiles.map(f => 
-                f.id === fileObj.id ? { ...f, progress: 100, status: 'processing_ocr', ocrStatus: 'Processing OCR...' } : f
+                f.id === fileObj.id ? { ...f, progress: 100, status: 'completed', uploadStatus: 'Completed' } : f
               )
             };
           });
-
-          // Simulate OCR completion
-          setTimeout(() => {
-            setCategoryFiles(current => {
-              const catFiles = current[categoryId] || [];
-              return {
-                ...current,
-                [categoryId]: catFiles.map(f => 
-                  f.id === fileObj.id ? { ...f, status: 'completed', ocrStatus: 'Ready' } : f
-                )
-              };
-            });
-          }, 1500);
 
         } else {
           setCategoryFiles(current => {
@@ -480,16 +466,15 @@ export default function NewApplicationPage() {
                                   <div className="w-full bg-slate-200 rounded-full h-1.5 mb-1 overflow-hidden">
                                     <div 
                                       className={`h-1.5 rounded-full transition-all duration-300 ease-out ${
-                                        fileObj.status === 'completed' ? 'bg-emerald-500' : 
-                                        fileObj.status === 'processing_ocr' ? 'bg-indigo-500' : 'bg-blue-500'
+                                        fileObj.status === 'completed' ? 'bg-emerald-500' : 'bg-blue-500'
                                       }`}
                                       style={{ width: `${fileObj.progress}%` }}
                                     ></div>
                                   </div>
                                   <div className="flex justify-between text-[10px] text-slate-500 uppercase tracking-wider font-semibold">
-                                    <span>{fileObj.status === 'uploading' ? 'Uploading' : 'OCR Status'}</span>
+                                    <span>Status</span>
                                     <span className={fileObj.status === 'completed' ? 'text-emerald-600' : 'text-blue-600'}>
-                                      {fileObj.ocrStatus}
+                                      {fileObj.uploadStatus}
                                     </span>
                                   </div>
                                 </div>
