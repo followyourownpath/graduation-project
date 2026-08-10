@@ -33,8 +33,8 @@ A professional Python-based synthetic data generation pipeline designed for comp
 
 1. **Clone this repository**:
    ```bash
-   git clone <your-repository-url>
-   cd <repository-directory>
+   git clone git@github.com:unsw-cse-comp99-3900/capstone-project-26t2-9900-w19b-bread.git
+   cd capstone-project-26t2-9900-w19b-bread/mock-data
    ```
 
 2. **Install the dependencies**:

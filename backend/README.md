@@ -42,7 +42,7 @@ The versioned health endpoint is `GET /api/v1/health`.
 ## Backend API contract
 
 The frontend/backend contract is maintained in
-[`API_CONTRACT.md`](./API_CONTRACT.md). It records the current endpoints,
+[`API_CONTRACT.md`](../docs/API_CONTRACT.md). It records the current endpoints,
 authentication requirement, request fields, response shapes, and common errors.
 
 Any pull request that adds, removes, or changes an endpoint must update the
