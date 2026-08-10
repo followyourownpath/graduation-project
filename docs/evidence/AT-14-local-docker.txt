@@ -1,0 +1,36 @@
+Acceptance case: AT-14 - Build and start with Docker
+Execution date: 2026-08-11 (Australia/Sydney)
+Base revision: 0c72994
+Docker Engine: 29.5.3
+
+Configuration:
+- Source: docker-compose.yml
+- Backend host port: 8000
+- Frontend host port: 3100 for this isolated run because port 3000 was already occupied
+- Supabase values: non-secret validation placeholders
+- Azure Document Intelligence: intentionally unconfigured
+- Mercury writes: disabled; dry-run enabled
+
+Observed container state:
+- backend: running and healthy
+- frontend: running
+
+Backend request:
+GET http://localhost:8000/api/v1/health
+
+Response:
+{"integrations_configured":{"azure_document_intelligence":false,"supabase":true},"service":"smartfinn-backend","status":"ok"}
+
+Frontend request:
+HEAD http://localhost:3100/login
+
+Response:
+HTTP/1.1 200 OK
+
+Browser verification:
+- page title: SmartFINN - Mortgage Compliance Engine
+- document width: 1440 px at a 1440 px viewport
+- console errors or warnings: none
+
+Cleanup:
+- both isolated containers and their Compose network were stopped and removed after verification

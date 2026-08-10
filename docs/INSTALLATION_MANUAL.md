@@ -1,6 +1,7 @@
 # SmartFINN Installation Manual
 
-Version: final software-quality submission  
+Version: final software-quality submission
+
 Target platform: Docker Engine with Docker Compose v2
 
 ## 1. Purpose
@@ -11,16 +12,32 @@ This manual gives a tester the steps required to install, configure, start, veri
 
 Install the following before starting:
 
-- Git with access to the private course repository;
 - Docker Engine or Docker Desktop;
 - Docker Compose v2 (`docker compose`);
 - a test Supabase project with its URL, browser-safe publishable key and server-only secret key;
 - an Azure Document Intelligence test resource for live OCR; and
 - approximately 4 GB free disk space.
 
+Git and access to the private course repository are optional when using the supplied Moodle ZIP archive.
+
 The tester must never place a service-role, secret, Azure or Mercury credential in frontend variables or commit a populated `.env` file.
 
 ## 3. Obtain the source
+
+### 3.1 Moodle ZIP archive (recommended for assessors)
+
+Extract the supplied `SmartFINN_Software_Quality_<revision>.zip` archive, then enter its top-level directory:
+
+```bash
+unzip SmartFINN_Software_Quality_<revision>.zip
+cd SmartFINN
+```
+
+The archive is generated directly from the final `main` revision and does not contain `.git`, populated environment files, dependency caches or credentials.
+
+### 3.2 Private repository (team members)
+
+Team members with repository access may instead clone the final `main` branch:
 
 ```bash
 git clone git@github.com:unsw-cse-comp99-3900/capstone-project-26t2-9900-w19b-bread.git
@@ -28,16 +45,29 @@ cd capstone-project-26t2-9900-w19b-bread
 git checkout main
 ```
 
-Confirm the expected revision before testing:
+For a Git checkout, confirm the expected revision before testing:
 
 ```bash
 git status --short --branch
 git log -1 --oneline
 ```
 
-The working tree should be clean and the checked-out branch should be `main`.
+The working tree should be clean and the checked-out branch should be `main`. For a Moodle archive, the revision is recorded in `docs/ACCEPTANCE_TEST_REPORT.md` and in the ZIP filename.
 
-## 4. Configure Supabase
+## 4. Obtain test-environment access
+
+SmartFINN intentionally does not package authentication or cloud-service secrets. The nominated assessor account and test-environment values must be delivered through the private Moodle submission comments or another tutor-approved private channel.
+
+The team should provide:
+
+- an active test staff email and temporary password;
+- the test Supabase URL, publishable key and server-only secret key for local Docker testing;
+- Azure Document Intelligence test credentials if live OCR is included in the agreed test; and
+- the deployed test URL, currently `https://aimeshlabs.au/bread`, when the tutor has approved testing the hosted instance.
+
+Do not place any of these secret values in the ZIP, Git history, screenshots or acceptance report. Mercury live-write credentials are not required for the standard assessment path; keep Mercury in dry-run mode unless the tutor provides or approves a dedicated Mercury test tenant.
+
+## 5. Configure Supabase
 
 Apply the SQL files below to a new test Supabase project in dependency order:
 
@@ -60,7 +90,7 @@ Create a test staff member:
 
 Run the read-only verification scripts under `supabase/verification/` before using the application.
 
-## 5. Configure environment variables
+## 6. Configure environment variables
 
 Create the root environment file:
 
@@ -95,7 +125,7 @@ Restrict access to the environment file on Unix-like systems:
 chmod 600 .env
 ```
 
-## 6. Build and start
+## 7. Build and start
 
 Validate the resolved Compose configuration:
 
@@ -122,7 +152,7 @@ Expected services:
 
 Verify both endpoints with `curl --fail http://localhost:8000/api/v1/health` and `curl --fail --head http://localhost:3000/login`. If either fails, inspect `docker compose ps` and `docker compose logs --tail=200 backend frontend`.
 
-## 7. Functional smoke test
+## 8. Functional smoke test
 
 1. Sign in with the active test staff account.
 2. Confirm the dashboard and Applications page load.
@@ -136,13 +166,13 @@ Verify both endpoints with `curl --fail http://localhost:8000/api/v1/health` and
 
 The detailed expected results are in `docs/ACCEPTANCE_TEST_REPORT.md`.
 
-## 8. Automated verification
+## 9. Automated verification
 
 Backend tests:
 
 ```bash
 cd backend
-python3.11 -m venv .venv
+python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 python -m pytest -q --cov=app --cov-report=term-missing --cov-fail-under=75
@@ -162,7 +192,7 @@ npm run build
 cd ..
 ```
 
-## 9. Stop and clean up
+## 10. Stop and clean up
 
 Stop the containers without deleting cloud data:
 
@@ -178,7 +208,7 @@ docker compose down --rmi local
 
 Remove synthetic test applications through the approved test-environment process. Do not delete shared Supabase data unless the project owner has authorised it.
 
-## 10. Troubleshooting
+## 11. Troubleshooting
 
 | Symptom | Likely cause | Action |
 |---|---|---|
@@ -190,6 +220,6 @@ Remove synthetic test applications through the approved test-environment process
 | Risk assessment returns conflict | Submission is not approved or required extraction is incomplete | Complete review and approval first |
 | Docker service is unhealthy | Configuration or startup failure | Inspect `docker compose logs --tail=200 backend frontend` |
 
-## 11. Production deployment
+## 12. Production deployment
 
 Production uses `docker-compose.prod.yml`, host Nginx and the manual deployment workflow. Follow `docs/VPS_DEPLOYMENT.md`; do not use production credentials for marking unless the tutor has explicitly approved that arrangement.

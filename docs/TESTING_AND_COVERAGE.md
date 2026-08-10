@@ -59,8 +59,11 @@ The following baseline was reproduced on 10 August 2026 from the final quality-i
 | Frontend ESLint | Passed |
 | Next.js production build | Passed |
 | Production Compose configuration | Passed |
+| Local Docker image build and container health | Passed on 11 August 2026; see `docs/evidence/AT-14-local-docker.txt` |
 
 CI retains `backend/coverage.xml` as an artifact and fails if backend coverage drops below 75%. Frontend CI fails if the configured UI coverage thresholds are not met.
+
+Sanitized Docker and responsive-login evidence is stored under `docs/evidence/`. Authenticated live checks require the assessor account and cloud credentials delivered through the tutor-approved private channel described in the installation manual; secrets are never stored with evidence.
 
 ## Happy and sad cases
 
