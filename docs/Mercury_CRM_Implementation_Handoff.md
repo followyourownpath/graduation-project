@@ -45,7 +45,7 @@ MERCURY_ALLOW_WRITES=false
 MERCURY_DRY_RUN=true
 MERCURY_BASE_URL=https://apis.connective.com.au/mercury/v1
 MERCURY_API_KEY=
-MERCURY_ACCESS_TOKEN=
+MERCURY_API_TOKEN=
 MERCURY_TEST_RECORD_PREFIX=SMARTFINN-TEST-
 ```
 
@@ -83,10 +83,8 @@ not_started -> pending -> in_progress -> completed
 Automated coverage is primarily located in:
 
 ```text
-backend/tests/test_mercury_client.py
 backend/tests/test_mercury_payloads.py
-backend/tests/test_mercury_repository.py
-backend/tests/test_mercury_sync_service.py
+backend/tests/test_crm_repository.py
 ```
 
 Run the backend suite before merging:

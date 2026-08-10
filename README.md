@@ -90,7 +90,15 @@ npm run build
 - [Testing and coverage](docs/TESTING_AND_COVERAGE.md)
 - [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
 - [Acceptance test report](docs/ACCEPTANCE_TEST_REPORT.md)
+- [Sanitized acceptance evidence](docs/evidence/README.md)
 - [API contract](docs/API_CONTRACT.md)
 - [VPS deployment](docs/VPS_DEPLOYMENT.md)
 - [Rules Engine Phase 1 handoff](docs/RULES_ENGINE_PHASE1_IMPLEMENTATION_HANDOFF.md)
 - [Supabase schema, migrations and verification](supabase/README.md)
+
+Regenerate the installation-manual PDF after editing its Markdown source:
+
+```bash
+python -m pip install -r scripts/requirements-docs.txt
+python scripts/build_installation_manual.py
+```
