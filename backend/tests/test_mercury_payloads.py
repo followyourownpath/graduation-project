@@ -32,21 +32,21 @@ def test_split_full_name_western():
 
 def test_split_full_name_chinese():
     # Two character names
-    assert split_full_name("张三") == (None, "三", None, "张")
-    assert split_full_name("李四") == (None, "四", None, "李")
+    assert split_full_name("\u5f20\u4e09") == (None, "\u4e09", None, "\u5f20")
+    assert split_full_name("\u674e\u56db") == (None, "\u56db", None, "\u674e")
     
     # Three character names
-    assert split_full_name("李嘉琦") == (None, "嘉琦", None, "李")
-    assert split_full_name("王小明") == (None, "小明", None, "王")
+    assert split_full_name("\u674e\u5609\u7426") == (None, "\u5609\u7426", None, "\u674e")
+    assert split_full_name("\u738b\u5c0f\u660e") == (None, "\u5c0f\u660e", None, "\u738b")
     
     # Four character names with double family prefixes
-    assert split_full_name("司马相如") == (None, "相如", None, "司马")
-    assert split_full_name("诸葛孔明") == (None, "孔明", None, "诸葛")
-    assert split_full_name("欧阳六七") == (None, "六七", None, "欧阳")
+    assert split_full_name("\u53f8\u9a6c\u76f8\u5982") == (None, "\u76f8\u5982", None, "\u53f8\u9a6c")
+    assert split_full_name("\u8bf8\u845b\u5b54\u660e") == (None, "\u5b54\u660e", None, "\u8bf8\u845b")
+    assert split_full_name("\u6b27\u9633\u516d\u4e03") == (None, "\u516d\u4e03", None, "\u6b27\u9633")
     
     # Four character names with single family name fallback
-    # "赵钱孙李" -> Zhaoqian (趙錢) / Sunli (孫李)? Defaults to Zhaoqian (赵钱) as Family name, Sunli (孙李) as Given name
-    assert split_full_name("赵钱孙李") == (None, "孙李", None, "赵钱")
+    # Four code points without a known compound surname use a two-and-two split.
+    assert split_full_name("\u8d75\u94b1\u5b59\u674e") == (None, "\u5b59\u674e", None, "\u8d75\u94b1")
 
 
 def test_format_phone():
@@ -183,4 +183,3 @@ def test_build_liability_payload():
     assert payload["institution"] == "ANZ"
     assert payload["details"] == "150 Todman Ave, Kensington NSW 2033"
     assert payload["accountName"] == "Junhong Zhong"
-

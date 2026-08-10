@@ -2,7 +2,7 @@
 
 > Audience: developers and maintainers continuing SmartFinn work
 > Status: **implemented in this repo** (DB migration + backend + frontend)  
-> Spec source of truth (design): `../rules-engine-phase1/RULES_ENGINE_PHASE1_MASTER_PLAN.md`  
+> Sources of truth: the frozen API contract, the 13-rule registry, and automated tests
 > Do **not** invent new rule IDs, score bands, or JSON field names.
 
 ## 1. What shipped
@@ -145,7 +145,7 @@ Error shape:
 }
 ```
 
-Full report JSON field names are frozen in the master plan §8.4. Frontend must render API values only.
+Full report JSON field names are frozen in `docs/API_CONTRACT.md`. Frontend must render API values only.
 
 ## 5. Rules registry (do not expand in Phase 1)
 
@@ -158,7 +158,7 @@ FF-NOA-001, FF-NOA-002
 
 Exactly **13** rules. Tests assert registry length. Adding rules is a new phase + contract change.
 
-## 6. Hard constraints for follow-up agents
+## 6. Hard constraints for future work
 
 1. Prefer `normalised_value` over `raw_value` for comparisons (`FieldValue.comparison_value`).
 2. Bind each document to applicant(s) via subject name once; do not mix Applicant 1/2 field-by-field.
@@ -205,7 +205,7 @@ curl -H "Authorization: Bearer <token>" \
 - Async assessment queue if rule set becomes large.
 - Lender-specific thresholds / rule editor.
 
-Any of the above requires updating the master plan and API contract **before** coding.
+Any of the above requires updating the API contract and rule-registry tests **before** coding.
 
 ## 9. Definition of Done checklist (current)
 

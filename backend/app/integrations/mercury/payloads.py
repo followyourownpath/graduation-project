@@ -56,16 +56,17 @@ def split_full_name(
         elif n == 1:
             return title, chinese_name, None, None
         elif n == 2:
-            return title, chinese_name[1:], None, chinese_name[0]  # e.g., 张三
+            return title, chinese_name[1:], None, chinese_name[0]
         elif n == 3:
-            return title, chinese_name[1:], None, chinese_name[0]  # e.g., 李嘉琦
+            return title, chinese_name[1:], None, chinese_name[0]
         elif n == 4:
             double_family_prefixes = {
-                "司马", "欧阳", "诸葛", "东方", "皇甫", "独孤", "南宫", "公孙"
+                "\u53f8\u9a6c", "\u6b27\u9633", "\u8bf8\u845b", "\u4e1c\u65b9",
+                "\u7687\u752b", "\u72ec\u5b64", "\u5357\u5bab", "\u516c\u5b59",
             }
             prefix = chinese_name[:2]
             if prefix in double_family_prefixes:
-                return title, chinese_name[2:], None, prefix  # e.g., 司马相如
+                return title, chinese_name[2:], None, prefix
             else:
                 return title, chinese_name[2:], None, chinese_name[:2]
         else:

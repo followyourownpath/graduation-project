@@ -62,7 +62,7 @@ comment on table public.risk_assessment is
   'Latest overwrite-only Rules Engine assessment for one Fact Find submission.';
 
 comment on column public.risk_assessment.report_json is
-  'Versioned Phase 1 report payload; shape is defined by RULES_ENGINE_PHASE1_MASTER_PLAN.';
+  'Versioned Phase 1 report payload; shape is defined by docs/API_CONTRACT.md.';
 
 create index risk_assessment_status_idx
   on public.risk_assessment(assessment_status);

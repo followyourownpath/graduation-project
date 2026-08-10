@@ -10,6 +10,7 @@ import json
 import mimetypes
 import os
 import sys
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -18,19 +19,30 @@ from dotenv import load_dotenv
 
 BACKEND = Path(__file__).resolve().parents[1]
 REPO = BACKEND.parent
-OFFLINE = REPO.parent / "1" / "ocr_id_noa_offline"
+MOCK_DATA = Path(
+    os.getenv("E2E_MOCK_DATA_ROOT", REPO / "mock-data" / "goldenData")
+).expanduser()
+EXPECTED = Path(
+    os.getenv("E2E_EXPECTED_ROOT", REPO / "mock-data" / "expected")
+).expanduser()
+OUTPUT = Path(
+    os.getenv(
+        "E2E_OUTPUT_ROOT",
+        Path(tempfile.gettempdir()) / "smartfinn-e2e-id-noa",
+    )
+).expanduser()
 
 CASES = [
     {
         "document_type": "id_100",
-        "path": Path("/Users/xjwzd/Documents/UNSW/2026 T2/9900/MOCK_DATA/id/WechatIMG2429.jpg"),
-        "expected": OFFLINE / "expected" / "id_licence.fields.json",
+        "path": MOCK_DATA / "id.jpg",
+        "expected": EXPECTED / "id_licence.fields.json",
         "min_fields": 9,
     },
     {
         "document_type": "ato_notice",
-        "path": Path("/Users/xjwzd/Documents/UNSW/2026 T2/9900/MOCK_DATA/NOA/Mock_Notice_of_Assessment.pdf"),
-        "expected": OFFLINE / "expected" / "noa.fields.json",
+        "path": MOCK_DATA / "Mock_Notice_of_Assessment.pdf",
+        "expected": EXPECTED / "noa.fields.json",
         "min_fields": 20,
     },
 ]
@@ -163,7 +175,7 @@ def main():
         else:
             print(f"NOTE: no golden at {expected_path}, skipped value compare")
 
-        out = OFFLINE / "actual" / f"e2e_{doc_type}.fields.json"
+        out = OUTPUT / f"e2e_{doc_type}.fields.json"
         out.parent.mkdir(parents=True, exist_ok=True)
         out.write_text(json.dumps(actual, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
         print(f"Wrote {out}")

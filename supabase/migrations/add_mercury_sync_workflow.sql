@@ -1,12 +1,12 @@
 begin;
 
--- 1. 扩展 approved_fact_find_data 表
+-- 1. Extend approved_fact_find_data.
 alter table public.approved_fact_find_data
   add column if not exists version integer not null default 1,
   add column if not exists source_hash text,
   add column if not exists schema_version text not null default '1';
 
--- 2. 扩展 crm_update_tracking 表
+-- 2. Extend crm_update_tracking.
 alter table public.crm_update_tracking
   add column if not exists approved_data_id uuid
     references public.approved_fact_find_data(id) on delete restrict,
@@ -20,7 +20,7 @@ alter table public.crm_update_tracking
   add column if not exists last_error_message text,
   add column if not exists payload_hash text;
 
--- 3. 新建 crm_update_item 表以追踪细分 CRM 对象操作
+-- 3. Track individual CRM entity operations.
 create table if not exists public.crm_update_item (
   id uuid primary key default gen_random_uuid(),
   crm_update_tracking_id uuid not null
@@ -28,8 +28,8 @@ create table if not exists public.crm_update_item (
   sequence_number integer not null,
   entity_type text not null,          -- 'contact', 'opportunity', 'related_party', 'address', 'employment', 'income', 'asset', 'liability', 'extension'
   operation text not null,            -- 'create', 'update'
-  local_reference text,               -- 本地主键或特定 key
-  mercury_unique_id text,             -- CRM 唯一主键
+  local_reference text,               -- Local primary key or stable reference
+  mercury_unique_id text,             -- Mercury CRM unique identifier
   status text not null default 'pending', -- 'pending', 'completed', 'failed'
   attempt_count integer not null default 0,
   request_hash text,
@@ -41,11 +41,11 @@ create table if not exists public.crm_update_item (
   created_at timestamptz default now()
 );
 
--- 4. 索引优化
+-- 4. Add the work-item lookup index.
 create index if not exists crm_update_item_tracking_idx
   on public.crm_update_item(crm_update_tracking_id, sequence_number);
 
--- 5. RLS 及安全配置
+-- 5. Configure row-level security and grants.
 alter table public.crm_update_item enable row level security;
 
 revoke all on table public.crm_update_item from anon;
@@ -56,7 +56,7 @@ create policy active_staff_insert on public.crm_update_item for insert to authen
 create policy active_staff_update on public.crm_update_item for update to authenticated using (public.is_active_staff()) with check (public.is_active_staff());
 create policy admin_delete on public.crm_update_item for delete to authenticated using (public.is_staff_admin());
 
--- 6. 创建原子性审批并排队同步的任务 RPC 函数
+-- 6. Atomically approve the submission and enqueue CRM synchronization.
 create or replace function public.approve_submission_and_queue_crm_sync(
   p_submission_id uuid,
   p_approved_data_json jsonb,
@@ -75,7 +75,7 @@ declare
   v_approved_data_id uuid;
   v_tracking_id uuid;
 begin
-  -- A. 锁定 submission 并获取对应的 crm_application_id
+  -- A. Lock the submission and retrieve its CRM application ID.
   select crm_application_id
   into v_crm_application_id
   from public.fact_find_submission
@@ -86,13 +86,13 @@ begin
     raise exception 'Submission not found' using errcode = 'P0002'; -- query_no_data
   end if;
 
-  -- B. 计算版本号
+  -- B. Allocate the next snapshot version.
   select coalesce(max(version), 0) + 1
   into v_version
   from public.approved_fact_find_data
   where fact_find_submission_id = p_submission_id;
 
-  -- C. 冻结 approved 快照
+  -- C. Freeze the approved snapshot.
   insert into public.approved_fact_find_data (
     fact_find_submission_id,
     approved_data_json,
@@ -115,14 +115,14 @@ begin
   )
   returning id into v_approved_data_id;
 
-  -- D. 更新 submission 状态和同步状态
+  -- D. Update submission and synchronization status.
   update public.fact_find_submission
   set submission_status = 'approved',
       crm_sync_status = 'pending',
       updated_at = now()
   where id = p_submission_id;
 
-  -- E. 创建 CRM 同步队列跟踪记录
+  -- E. Create the CRM synchronization tracking row.
   insert into public.crm_update_tracking (
     fact_find_submission_id,
     crm_application_id,
@@ -149,7 +149,7 @@ begin
   )
   returning id into v_tracking_id;
 
-  -- F. 记录审计事件
+  -- F. Record the audit event.
   insert into public.audit_event (
     fact_find_submission_id,
     crm_application_id,
