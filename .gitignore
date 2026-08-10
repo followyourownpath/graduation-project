@@ -24,6 +24,7 @@ tmp/
 # JavaScript/frontend dependencies and build output.
 node_modules/
 dist/
+coverage/
 
 # OS/editor files.
 .DS_Store
