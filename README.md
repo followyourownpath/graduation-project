@@ -35,7 +35,7 @@ Flask REST API
 Prerequisites: Git, Docker Engine and Docker Compose.
 
 ```bash
-git clone <repository-url>
+git clone git@github.com:unsw-cse-comp99-3900/capstone-project-26t2-9900-w19b-bread.git
 cd capstone-project-26t2-9900-w19b-bread
 cp deploy/production.env.example .env
 ```
@@ -85,6 +85,11 @@ npm run build
 
 ## Documentation
 
+- [Installation manual](docs/INSTALLATION_MANUAL.md)
+- [Installation manual PDF](output/pdf/SmartFINN_Installation_Manual.pdf)
+- [Testing and coverage](docs/TESTING_AND_COVERAGE.md)
+- [Requirements traceability](docs/REQUIREMENTS_TRACEABILITY.md)
+- [Acceptance test report](docs/ACCEPTANCE_TEST_REPORT.md)
 - [API contract](docs/API_CONTRACT.md)
 - [VPS deployment](docs/VPS_DEPLOYMENT.md)
 - [Rules Engine Phase 1 handoff](docs/RULES_ENGINE_PHASE1_IMPLEMENTATION_HANDOFF.md)
