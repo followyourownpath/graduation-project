@@ -1,69 +1,68 @@
-# Feature Implementation Status Report
+# Final Feature Implementation Status
 
-This document compares the current frontend implementation with the specifications, meeting
-minutes, and feature tables in the `/project requirement` folder. It records which modules are
-implemented and which remain outstanding.
+This report records the delivered SmartFINN scope at the final software-quality baseline. It replaces the earlier frontend-only progress report, which predated backend integration.
 
-## 1. Implemented Frontend UI and Interaction Foundations
+## Status definitions
 
-The following core workflows have a working frontend UI and component interactions backed by
-mock data:
+| Status | Meaning |
+|---|---|
+| Complete | Implemented in the application and covered by automated or documented verification |
+| Operational dependency | Implemented, but requires an external service or credential to exercise end to end |
+| Out of scope | Explicitly excluded from the agreed MVP |
 
-- [x] **Authentication:** A full-screen `/login` page with email and password fields, a
-  remember-me option, and a branded geometric background.
-- [x] **Compliance dashboard:**
-  - Shared layout with sidebar navigation and user details in the header.
-  - Summary cards for total applications, pending cases, and high-risk alerts.
-  - A mortgage application table with clear colour coding for status and risk level.
-- [x] **Application review page:**
-  - Split-pane layout at `/application/[id]`.
-  - Document tabs and a preview placeholder for payslips, passports, and bank statements.
-  - Editable forms for structured OCR output.
-  - A compliance-alert panel for cross-document discrepancies, with note and resolution actions.
-  - Approval controls for Approve, Reject, and Cancel.
-- [x] **Application management:** A complete application list at `/applications` with a
-  `+ New Application` entry point.
-- [x] **Application creation and upload:**
-  - Interactive drag-and-drop upload area at `/applications/new`.
-  - Simulated upload progress feedback.
+## Delivered objectives
 
----
+| Objective | Status | Implementation evidence | Verification evidence |
+|---|---|---|---|
+| Staff authentication and route protection | Complete | `frontend/src/lib/supabase/`, `frontend/src/proxy.js`, `backend/app/auth.py`, `backend/app/services/auth.py` | `frontend/tests/auth-utils.test.mjs`, `backend/tests/test_auth.py` |
+| Active staff access control | Complete | Supabase `staff_profile` lookup and RLS migrations under `supabase/migrations/` | `backend/tests/test_auth.py`, `supabase/verification/verify_internal_staff_rls.sql` |
+| Mortgage application intake | Complete | `frontend/src/app/(dashboard)/applications/new/page.js`, `backend/app/routes/intake.py`, `backend/app/services/intake.py` | `backend/tests/test_intake.py`, `backend/tools/smoke_test_intake.py` |
+| Document upload and storage | Complete | Supabase Storage upload, SHA-256 metadata, document records, and rollback on metadata failure | `backend/tests/test_intake.py`, `backend/tools/smoke_test_intake.py` |
+| Azure OCR processing | Complete | `backend/app/services/azure_document_intelligence.py`, `backend/app/services/ocr_pipeline.py` | `backend/tests/test_azure_document_intelligence.py`, `backend/tests/test_ocr_route.py` |
+| Fact Find extraction | Complete | Direct AcroForm extraction with paged Azure OCR fallback | `backend/tests/test_fact_find.py`, `backend/tests/test_fact_find_ocr.py` |
+| ID, payslip, bank statement and ATO normalisation | Complete | Normalisers under `backend/app/normalization/` | `backend/tests/test_normalization.py` plus document-specific test fixtures |
+| OCR confidence presentation | Complete | Confidence mapping and review-page confidence UI | `backend/tests/test_confidence_mapper.py` |
+| Human review and correction | Complete | Review API, extracted-field editing, document preview and submission status workflow | `backend/app/routes/review.py`, `backend/tests/test_review.py` |
+| Application dashboard and search | Complete | Dashboard metrics, application list, risk/status presentation and search/filter controls | Frontend production build and final demonstration |
+| Deterministic risk assessment | Complete | Phase 1 cross-document rules, readiness checks, scoring and persistent assessment reports | `backend/tests/test_rules_engine_rules.py`, `backend/tests/test_rules_engine_service.py`, golden zero-risk dataset |
+| Traceable rule results | Complete | Per-document rules include compared field values, result messages and risk contribution | Rules Engine detail pages and backend rules tests |
+| Mercury CRM writeback | Complete with operational dependency | Payload mapping, extension merging, retry workflow, dry-run controls and background worker | `backend/tests/test_mercury_payloads.py`; live writeback requires Mercury credentials |
+| Docker-based local deployment | Complete | `docker-compose.yml`, multi-stage frontend/backend Dockerfiles and health checks | Production image CI and Compose configuration validation |
+| VPS production deployment | Complete | `docker-compose.prod.yml`, Nginx configuration, deployment script and manual GitHub Actions workflow | `docs/VPS_DEPLOYMENT.md` and production health checks |
 
-## 2. Outstanding Frontend Work
+## Supported document scope
 
-The core MVP pages have initial implementations, but several capabilities remain incomplete.
+The implemented and scored Phase 1 workflow uses one document of each of the following types:
 
-### 2.1 Pages Without UI
+- Fact Find;
+- 100-point identity document;
+- payslip;
+- three-month bank statement; and
+- ATO Notice of Assessment.
 
-All key pages required for the core MVP have an initial UI.
+The upload interface also accepts agreed optional supporting-document categories. Optional categories that do not participate in Phase 1 scoring are retained with the application for review.
 
-### 2.2 Explicitly Outside the MVP
+## Operational dependencies
 
-The meeting minutes dated 22 June 2026 mark the following items as outside the MVP:
+The following integrations are implemented but cannot be exercised without the corresponding test-environment configuration:
 
-- [~] **Audit trail and history:** The broader requirements mention an audit trail, but the
-  meeting confirmed that the audit log can remain out of scope for now.
-- [~] **System settings and advanced RBAC:** The requirements distinguish administrators and
-  reviewers, but full role management is deferred while the team focuses on document processing.
+- Supabase Auth, PostgreSQL and Storage;
+- Azure Document Intelligence; and
+- Connective Mercury CRM for live writeback.
 
-### 2.3 Incomplete Frontend Details
+Automated tests mock external success and failure responses. Repository smoke-test tools provide explicit live-integration checks when credentials are available. Mercury writeback remains disabled and in dry-run mode by default.
 
-- [ ] **PDF and image rendering:** The review pane still uses a placeholder. Add `react-pdf` or
-  a native iframe to support multi-page scrolling and zoom.
-- [ ] **Advanced table interactions:** Add pagination, column sorting, and coordinated filters
-  for risk and status.
-- [ ] **State and notifications:** Integrate Zustand or Context, global loading states, and
-  toast feedback for actions such as uploads and saves.
+## Agreed MVP exclusions
 
----
+The following items were explicitly outside the final MVP and are not represented as incomplete delivery:
 
-## 3. Backend-Dependent Work
+- a general-purpose audit-log viewer;
+- advanced role and permission administration;
+- automatic email inbox ingestion; and
+- risk rules beyond the agreed Phase 1 document set.
 
-The following items require stable backend APIs before final integration:
+Supabase authentication events, application timestamps, OCR job records, review records and CRM tracking rows still provide operational traceability for the delivered workflows.
 
-- [ ] **Authentication and JWT handling:** Connect the login endpoint and protect routes with
-  tokens.
-- [ ] **OCR extraction and automated risk scoring:** Connect the Python backend and receive
-  asynchronous parsing results and risk scores through polling or WebSocket updates.
-- [ ] **Persistence:** Store reviewer corrections and final approval or rejection decisions in
-  the database.
+## Final readiness statement
+
+All agreed core workflows have production implementations. Remaining activities are delivery controls rather than missing product features: configure a test environment, run the documented installation and acceptance checks, confirm CI is green on `main`, and package the repository with the installation manual for submission.
